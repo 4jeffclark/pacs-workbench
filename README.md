@@ -1,8 +1,18 @@
 # AgentPlaybookPack
 
-AgentPlaybookPack, abbreviated APP, is a proposed open framework for packaging complete agent-run domain workflows.
+AgentPlaybookPack, abbreviated APP, is an open framework for packaging complete agent-run domain workflows.
 
 APP is intentionally positioned above the Agent Skills layer. Agent Skills define portable capability units. APP defines how domain playbooks compose skills, tools, workflows, contracts, gates, overlays, and outputs into repeatable user-intent jobs.
+
+## Active Program
+
+The current active work in this repository is the TeamFoundry stack realignment program:
+
+- Start here: [`docs/tfy-stack-realignment/README.md`](docs/tfy-stack-realignment/README.md)
+- Vision: [`docs/tfy-stack-realignment/teamfoundry-stack-realignment-vision.md`](docs/tfy-stack-realignment/teamfoundry-stack-realignment-vision.md)
+- Plan: [`docs/tfy-stack-realignment/teamfoundry-stack-realignment-plan.md`](docs/tfy-stack-realignment/teamfoundry-stack-realignment-plan.md)
+
+During this phase, `agent-playbook-pack` is the temporary architecture workbench for APP and TeamFoundry alignment. `teamfoundry.ai` should remain a read-only reference repo on adjacent workstations unless explicitly moving into the later integration phase.
 
 ## Why This Exists
 
@@ -31,7 +41,7 @@ An AgentPlaybookPack is a runtime-neutral domain package containing:
 
 ## Relationship To Agent Skills
 
-APP should use the agentskills.io structure explicitly for its granular skill layer.
+APP uses the agentskills.io structure explicitly for its granular skill layer.
 
 Local skills can be stored as Agent Skills directories:
 
@@ -57,7 +67,7 @@ Layer 0  Workflows       lifecycle infrastructure and gates
 Runtime  Tools           MCP, APIs, shell, browser, databases
 ```
 
-## Initial Repository Shape
+## Repository Shape
 
 ```text
 README.md
@@ -65,14 +75,18 @@ docs/
   framework.md
   agent-skills-integration.md
   pack-store.md
+  naming.md
+  tfy-stack-realignment/
 schema/
   app-manifest-v0.1.md
 examples/
   trading-coach-mini/
+tools/
+  tfy-simulator/
 store/
   README.md
 ```
 
 ## Status
 
-This is a baseline concept scaffold for local iteration before the first commit of a standalone APP framework repository.
+APP is an active framework repository. General framework docs and examples exist, and the TeamFoundry stack realignment program is the current priority for architecture and pilot work.
