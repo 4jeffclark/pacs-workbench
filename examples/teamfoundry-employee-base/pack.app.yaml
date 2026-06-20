@@ -1,0 +1,44 @@
+appVersion: "0.1"
+kind: pack
+packId: teamfoundry-employee-base
+name: TeamFoundry Employee Base
+version: "0.1.0"
+description: >
+  Baseline operating behaviors shared by all TeamFoundry employees.
+  Pilot pack; only daily-backup is materialized in this example so far.
+
+license: TBD
+
+compatibility:
+  agentSkills: ">=1.0"
+  runtimes:
+    - openclaw
+  consumptionProfile:
+    intendedConsumer: teamfoundry
+    compositionRole: base
+    composeOrder: last
+    requiresAssemblyContext:
+      - identity.name
+      - identity.instance
+      - deployment.opsChannel
+      - deployment.supervisor
+      - secrets.backupPassphrase
+
+paths:
+  playbooks: playbooks/
+  skills: skills/
+  workflows: workflows/
+  overlays: overlays/
+  contracts: contracts/
+  gates: gates/
+
+playbooks:
+  - id: daily-backup
+    path: playbooks/daily-backup/playbook.app.yaml
+    activation: scheduled
+
+sourceCorpus:
+  repository: teamfoundry.ai
+  cast: teamfoundry-employee
+  castVersion: "1.0.5"
+  readOnly: true

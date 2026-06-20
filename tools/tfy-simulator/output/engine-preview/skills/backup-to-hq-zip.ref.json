@@ -1,0 +1,13 @@
+{
+  "_previewNote": "Reference-install sketch. APP declares skill use; TFY adapter resolves to corpus inventory because pilot skill is not materialized locally.",
+  "appReference": "../../skills/backup-to-hq-zip",
+  "resolution": "corpus-reference",
+  "corpusPath": "foundry/ops/inventories/skills/backup-to-hq-zip/",
+  "openclawInstallTarget": "skills/backup-to-hq-zip/",
+  "includesScripts": [
+    "backup-to-hq-zip.sh",
+    "archive-cron.sh"
+  ],
+  "retentionPolicySource": "contracts/backup-artifact-contract.md",
+  "retentionPolicyStatus": "contract-not-materialized; fallback to corpus SKILL.md retention table"
+}

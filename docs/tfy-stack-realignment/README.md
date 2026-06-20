@@ -1,38 +1,29 @@
 # TeamFoundry Stack Realignment
 
-This folder is the active program workspace for aligning APP and TeamFoundry during a temporary multi-repo realignment phase.
+This folder contains documentation for the temporary APP and TeamFoundry stack realignment program.
 
-## Start Here
+For current phase, priorities, pilot status, and decisions, read `teamfoundry-stack-realignment-plan.md`. That plan document is the only place program status should be tracked or updated.
 
-Read in this order:
+## Read Order
 
 1. `teamfoundry-stack-realignment-vision.md` — baseline strategic thesis; stable after acceptance
-2. `teamfoundry-stack-realignment-plan.md` — current focus, work patterns, pillars, decision log
-3. `app-design.md` — current APP design for the shared behavior contract
+2. `teamfoundry-stack-realignment-plan.md` — status, work patterns, pillars, decision log
+3. `app-design.md` — current APP design
 4. `tfy-design.md` — current TeamFoundry design, translation flow, simulator model
 
 When the vision and plan disagree on implementation details, follow the plan decision log and the current design documents.
 
 ## Document Roles
 
-| Document | Role |
-| --- | --- |
-| Vision | Why the realignment exists; initial stack model and roadmap pillars |
-| Plan | Shared coordination, status, work patterns, decisions, next actions |
-| APP design | Current APP-owned behavior contract model |
-| TFY design | Current TeamFoundry-owned consumption, assembly, translation, simulator model |
+| Document | Role | Update frequency |
+| --- | --- | --- |
+| Vision | Why the realignment exists; initial stack model and roadmap pillars | Rarely; baseline only |
+| Plan | Status, coordination, work patterns, decisions, next actions | Frequently |
+| APP design | Current APP-owned behavior contract model | As design changes |
+| TFY design | Current TeamFoundry-owned consumption, assembly, translation, simulator model | As design changes |
+| This README | How to use this folder | Infrequently |
 
 Design documents are current-state only. They do not narrate history. Meaningful pivots belong in the plan decision log.
-
-## Current Phase
-
-```text
-Phase: Baseline Pillar 1 and prepare first pilot
-Active repo: agent-playbook-pack
-Reference repo: teamfoundry.ai (read-only)
-Optional reference: openclaw (runtime mechanics only)
-Do not edit: teamfoundry.ai during early APP exploration
-```
 
 ## Adjacent Repositories
 
@@ -61,8 +52,6 @@ Use these entry points when reading `teamfoundry.ai`:
 
 ## APP Framework References
 
-During this realignment, treat these as the durable APP framework references unless superseded by an accepted decision and updated design doc:
-
 | Path | Use for |
 | --- | --- |
 | `docs/framework.md` | Core APP concepts and layer model |
@@ -70,29 +59,22 @@ During this realignment, treat these as the durable APP framework references unl
 | `docs/naming.md` | APP naming and ASP pivot context |
 | `schema/app-manifest-v0.1.md` | Draft manifest shape |
 | `examples/trading-coach-mini/` | Miniature APP pack example |
+| `examples/teamfoundry-employee-base/` | TFY realignment pilot example and design sketch |
 
-Realignment-specific design lives in `app-design.md` and may evolve ahead of the general framework docs during pilots.
-
-## Work Rules For Development Agents
-
-- Treat `agent-playbook-pack` as the implementation workspace.
-- Read from `teamfoundry.ai`; do not edit it during early realignment work.
-- Use pilot-first, adapter-last, and two-step TFY implementation patterns from the plan.
-- Update the plan decision log for meaningful architecture decisions.
-- Update `app-design.md` or `tfy-design.md` to reflect accepted current design.
-- Do not rewrite the vision document to track later pivots.
-- Do not treat OpenClaw-shaped inventory as the APP source-of-truth format.
-- Do not build TFY integration in the TFY repo until APP representations and simulator validation are credible.
+Example READMEs describe pack intent and design. They are not status trackers. Check the plan document for what exists on disk and what to do next.
 
 ## Implementation Artifact Locations
 
-| Artifact | Intended location |
+| Artifact | Location |
 | --- | --- |
 | TFY-derived APP examples | `examples/` |
 | Local TFY simulator | `tools/tfy-simulator/` |
 | Simulator preview output | `tools/tfy-simulator/output/` |
 | Stable APP framework docs | `docs/`, `schema/`, `examples/` after graduation from design docs |
 
-## Accepted Model Reminder
+## How To Use This Folder
 
-Translation is TeamFoundry-owned through assistant assembly context. APP expresses portable behavior intent. TeamFoundry ingests APP packs, assembles assistant inputs, and translates to HQ-deployable, engine-specific artifacts. See the 2026-06-20 decision log entry in the plan document.
+- Read the plan before starting work.
+- Use design documents for current APP or TFY design boundaries.
+- Use example directories for pack design reference; verify file existence on disk or in the plan before assuming materialization.
+- Record status, decisions, and next actions only in the plan document.

@@ -1,0 +1,10 @@
+{
+  "_previewNote": "Reference-install sketch for notification signing enforcement.",
+  "appReference": "../../skills/message-signing",
+  "resolution": "corpus-reference",
+  "corpusPath": "foundry/ops/inventories/skills/message-signing/",
+  "openclawInstallTarget": "skills/message-signing/",
+  "signatureFormat": "— Warren.001.{sessionId}",
+  "enforcementLayer": "message tool intercept for channel=slack",
+  "overlayBinding": "signed-communication"
+}

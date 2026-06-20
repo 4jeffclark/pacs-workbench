@@ -1,0 +1,27 @@
+TFY Simulator Preview Warnings — daily-backup-openclaw-preview-001
+=================================================================
+
+MISSING MATERIALIZED DEPENDENCIES (pilot subset)
+- skill ../../skills/backup-to-hq-zip: path not on disk; resolved via read-only TFY corpus reference
+- skill ../../skills/message-signing: path not on disk; resolved via read-only TFY corpus reference
+- workflow workflows/backup-verification: path not on disk; habit prompt steps fall back to TFY corpus habit text
+- contract contracts/backup-artifact-contract.md: not materialized; retention naming rules taken from corpus SKILL.md
+- contract contracts/message-signature-contract.md: not materialized; signature format taken from corpus message-signing skill
+- overlay overlays/signed-communication.md: not materialized; overlay id only in playbook manifest
+
+PROVISIONAL SCHEMA (not in app-manifest-v0.1.md)
+- playbook.schedule: proposed field; maps cleanly to OpenClaw habit when/run
+- playbook.inputs.resolveFrom: proposed field; requires TFY assembly context binding
+- pack.compatibility.consumptionProfile: proposed field; Forge composition metadata
+
+ASSEMBLY / TRANSLATION GAPS
+- gate backup-passphrase-available: no APP gate definition file; only assembly secret binding declared
+- HQ snapshot git push policy: TFY operations concern; not expressible in current materialized APP files
+- backup script exec paths (~/.openclaw/workspace/skills/...): engine adapter surface; APP references skill behavior not script paths
+- habit prompt still embeds imperative steps; APP workflow/contract split not yet driving prompt generation
+
+PREVIEW LIMITATIONS
+- Simulator code not implemented; artifacts are hand-authored spec previews
+- No diff validation against a forged Warren instance tree
+- Role cast composition not exercised (base pack only)
+- packOverlays at pack level not materialized; playbook-level overlay reference only

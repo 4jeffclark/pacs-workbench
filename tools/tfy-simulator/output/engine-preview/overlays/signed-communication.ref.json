@@ -1,0 +1,10 @@
+{
+  "_previewNote": "Policy overlay sketch. APP declares overlay id; TFY binds identity fields at assembly; engine applies via message-signing skill.",
+  "appOverlayId": "signed-communication",
+  "kind": "policy",
+  "appliesWhen": "outbound Slack status messages from daily-backup playbook",
+  "contractRef": "contracts/message-signature-contract.md",
+  "contractStatus": "not-materialized",
+  "assembledSignatureTemplate": "— Warren.001.{sessionId}",
+  "corpusEnforcementSkill": "foundry/ops/inventories/skills/message-signing/SKILL.md"
+}

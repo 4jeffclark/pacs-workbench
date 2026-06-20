@@ -2,11 +2,32 @@
 
 Local development harness for previewing how TeamFoundry would ingest an APP pack, assemble assistant context, and translate the result into target engine deployable artifacts.
 
-This tool is part of the TeamFoundry stack realignment program. Design lives in `docs/tfy-stack-realignment/tfy-design.md`.
+Design: `docs/tfy-stack-realignment/tfy-design.md`
 
 ## Status
 
 Not implemented yet. This directory is reserved for the simulator scaffold and preview output.
+
+## First Preview Target
+
+```text
+Pack: examples/teamfoundry-employee-base/pack.app.yaml
+Playbook: daily-backup
+Engine profile: openclaw
+```
+
+Suggested mock assembly context for previews:
+
+```yaml
+identity:
+  name: Warren
+  instance: "001"
+deployment:
+  opsChannel: agent-ops
+  supervisor: supervisor-id
+secrets:
+  backupPassphrase: resolved-by-tfy-not-stored-in-app
+```
 
 ## Intended Usage
 

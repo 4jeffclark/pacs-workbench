@@ -1,0 +1,44 @@
+appVersion: "0.1"
+kind: playbook
+id: daily-backup
+packId: teamfoundry-employee-base
+version: "0.1.0"
+description: Encrypt workspace configuration and report backup status.
+
+schedule:
+  at: "04:30"
+  timezone: UTC
+  days: [monday, tuesday, wednesday, thursday, friday]
+  mode: background
+
+inputs:
+  agentOpsChannel:
+    type: string
+    required: true
+    resolveFrom: deployment.opsChannel
+  supervisorId:
+    type: string
+    required: true
+    resolveFrom: deployment.supervisor
+
+requires:
+  - workflow: workflows/backup-verification
+
+uses:
+  - skill: ../../skills/backup-to-hq-zip
+  - skill: ../../skills/message-signing
+
+gates:
+  - backup-passphrase-available
+
+overlays:
+  - id: signed-communication
+    kind: policy
+
+outputs:
+  primary:
+    type: archive
+    contract: contracts/backup-artifact-contract.md
+  notification:
+    type: status-message
+    contract: contracts/message-signature-contract.md

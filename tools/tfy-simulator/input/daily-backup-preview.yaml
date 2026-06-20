@@ -1,0 +1,87 @@
+# TFY Simulator Input Spec — daily-backup preview
+# Hand-off artifact for the first TFY-mediated translation preview.
+# Simulator implementation should consume this shape; this file is the spec stub.
+
+specVersion: "0.1"
+kind: simulator-run
+runId: daily-backup-openclaw-preview-001
+description: >
+  Preview how TeamFoundry would ingest teamfoundry-employee-base,
+  assemble mock assistant context, and translate daily-backup into
+  OpenClaw-shaped deployable sketches.
+
+# --- Primary inputs (required) ---
+
+packPath: examples/teamfoundry-employee-base/pack.app.yaml
+playbookId: daily-backup
+engineProfile: openclaw
+
+# --- Mock TFY assembly context (required for resolve + assemble stages) ---
+
+assemblyContext:
+  identity:
+    name: Warren
+    instance: "001"
+  deployment:
+    opsChannel: agent-ops
+    supervisor: supervisor-id
+  secrets:
+    backupPassphrase: resolved-by-tfy-not-stored-in-app
+
+# --- Optional context (minimal for this playbook) ---
+
+customerContext: {}
+
+roleCast: null  # base pack only; no role cast composed ahead of employee-base
+
+# --- Read-only reference corpus for diff-style preview (optional) ---
+
+referenceCorpus:
+  repository: teamfoundry.ai
+  readOnly: true
+  sourceCast: teamfoundry-employee
+  sourceCastVersion: "1.0.5"
+  compareTargets:
+    - foundry/ops/inventories/habits/daily-backup.json
+    - foundry/ops/inventories/skills/backup-to-hq-zip/SKILL.md
+    - foundry/ops/inventories/skills/message-signing/SKILL.md
+    - foundry/ops/casts/teamfoundry-employee.json
+
+# --- Pipeline stages (TFY-mediated path per tfy-design.md) ---
+
+stages:
+  - id: ingest
+    description: Read pack and playbook manifests; validate references and compatibility metadata
+  - id: resolve
+    description: Resolve inputs, skill refs, workflows, gates, overlays, contracts, outputs
+  - id: assemble
+    description: Merge APP behavior with mock identity, deployment, and secrets context
+  - id: translate
+    description: Emit OpenClaw inventory preview sketches for the selected playbook scope
+  - id: report
+    description: Write translation manifest, construction plan, and warnings
+
+# --- Scope constraints for this preview ---
+
+previewScope:
+  materializedOnly: true
+  includedPlaybooks: [daily-backup]
+  excludedPackEntries:
+    - session-readiness
+    - channel-registration
+  emitEngineArtifacts:
+    - habits/daily-backup.json
+    - skills/backup-to-hq-zip.ref.json
+    - skills/message-signing.ref.json
+    - overlays/signed-communication.ref.json
+
+# --- Expected output paths (relative to tools/tfy-simulator/) ---
+
+expectedOutputs:
+  - output/assistant-construction-plan.md
+  - output/translation-manifest.json
+  - output/engine-preview/habits/daily-backup.json
+  - output/engine-preview/skills/backup-to-hq-zip.ref.json
+  - output/engine-preview/skills/message-signing.ref.json
+  - output/engine-preview/overlays/signed-communication.ref.json
+  - output/warnings.txt

@@ -13,6 +13,8 @@ Read order:
 3. `docs/tfy-stack-realignment/app-design.md`
 4. `docs/tfy-stack-realignment/tfy-design.md`
 
+All program status, pilot materialization state, and next actions live in the plan document.
+
 ## Work Rules
 
 - Use `agent-playbook-pack` as the active workspace.
@@ -21,9 +23,20 @@ Read order:
 - Do not rewrite the vision document to track later pivots.
 - Update the plan decision log for meaningful architecture decisions.
 - Update `app-design.md` or `tfy-design.md` for accepted current design changes.
+- Do not add status tracking to README files; update the plan instead.
+- Use Sketch-Then-Materialize: do not create whole example trees unless explicitly requested.
 
 ## Key References
 
 - APP framework: `docs/framework.md`
 - APP manifest draft: `schema/app-manifest-v0.1.md`
 - Simulator design and location: `docs/tfy-stack-realignment/tfy-design.md`, `tools/tfy-simulator/`
+- Pilot example design sketch: `examples/teamfoundry-employee-base/README.md`
+
+## Agent Test Tasks
+
+Use these in a fresh Cursor thread to validate repo bootstrap:
+
+1. Summarize the realignment effort and current phase without chat history.
+2. Run the task in the plan `Current Focus` section.
+3. Propose the next single file to materialize for the accepted pilot and explain why.

@@ -1,0 +1,133 @@
+{
+  "specVersion": "0.1",
+  "runId": "daily-backup-openclaw-preview-001",
+  "status": "preview-hand-authored",
+  "inputs": {
+    "packPath": "examples/teamfoundry-employee-base/pack.app.yaml",
+    "playbookId": "daily-backup",
+    "engineProfile": "openclaw",
+    "assemblyContext": {
+      "identity": { "name": "Warren", "instance": "001" },
+      "deployment": { "opsChannel": "agent-ops", "supervisor": "supervisor-id" },
+      "secrets": { "backupPassphrase": "resolved-by-tfy-not-stored-in-app" }
+    }
+  },
+  "stages": {
+    "ingest": {
+      "status": "ok-with-warnings",
+      "packId": "teamfoundry-employee-base",
+      "packVersion": "0.1.0",
+      "playbookCount": 1,
+      "consumptionProfile": {
+        "intendedConsumer": "teamfoundry",
+        "compositionRole": "base",
+        "composeOrder": "last"
+      },
+      "warnings": [
+        "pack lists only daily-backup; other playbooks from sketch not materialized",
+        "provisional fields present: schedule, resolveFrom, consumptionProfile"
+      ]
+    },
+    "resolve": {
+      "status": "partial",
+      "resolvedInputs": {
+        "agentOpsChannel": "agent-ops",
+        "supervisorId": "supervisor-id"
+      },
+      "unresolvedReferences": [
+        { "kind": "skill", "path": "../../skills/backup-to-hq-zip", "reason": "not materialized in pilot pack" },
+        { "kind": "skill", "path": "../../skills/message-signing", "reason": "not materialized in pilot pack" },
+        { "kind": "workflow", "path": "workflows/backup-verification", "reason": "not materialized in pilot pack" },
+        { "kind": "contract", "path": "contracts/backup-artifact-contract.md", "reason": "not materialized in pilot pack" },
+        { "kind": "contract", "path": "contracts/message-signature-contract.md", "reason": "not materialized in pilot pack" },
+        { "kind": "overlay", "path": "overlays/signed-communication.md", "reason": "not materialized in pilot pack" },
+        { "kind": "gate", "id": "backup-passphrase-available", "reason": "gate definition file not materialized; assembly binding only" }
+      ]
+    },
+    "assemble": {
+      "status": "ok",
+      "assistantLabel": "Warren.001",
+      "boundContext": [
+        "identity.name",
+        "identity.instance",
+        "deployment.opsChannel",
+        "deployment.supervisor",
+        "secrets.backupPassphrase"
+      ],
+      "overlayBindings": [
+        {
+          "id": "signed-communication",
+          "signatureTemplate": "— Warren.001.{sessionId}"
+        }
+      ]
+    },
+    "translate": {
+      "status": "preview-only",
+      "engineProfile": "openclaw",
+      "artifacts": [
+        {
+          "appElement": "playbook.daily-backup.schedule",
+          "previewTarget": "engine-preview/habits/daily-backup.json",
+          "corpusReference": "foundry/ops/inventories/habits/daily-backup.json"
+        },
+        {
+          "appElement": "uses.skill.backup-to-hq-zip",
+          "previewTarget": "engine-preview/skills/backup-to-hq-zip.ref.json",
+          "corpusReference": "foundry/ops/inventories/skills/backup-to-hq-zip/SKILL.md"
+        },
+        {
+          "appElement": "uses.skill.message-signing",
+          "previewTarget": "engine-preview/skills/message-signing.ref.json",
+          "corpusReference": "foundry/ops/inventories/skills/message-signing/SKILL.md"
+        },
+        {
+          "appElement": "overlays.signed-communication",
+          "previewTarget": "engine-preview/overlays/signed-communication.ref.json",
+          "corpusReference": "foundry/ops/inventories/skills/message-signing/SKILL.md"
+        }
+      ]
+    },
+    "report": {
+      "status": "complete",
+      "warningCount": 8,
+      "warningsFile": "output/warnings.txt"
+    }
+  },
+  "mappingSummary": [
+    {
+      "app": "pack.compatibility.consumptionProfile",
+      "openclawPreview": "Forge cast composition metadata (base, last)",
+      "tfyOwned": true
+    },
+    {
+      "app": "playbook.schedule",
+      "openclawPreview": "habits/daily-backup.json when/run",
+      "tfyOwned": false
+    },
+    {
+      "app": "playbook.inputs.resolveFrom",
+      "openclawPreview": "habit prompt variable substitution (${AGENT_OPS_CHANNEL}, ${SUPERVISOR_ID})",
+      "tfyOwned": true
+    },
+    {
+      "app": "playbook.uses.backup-to-hq-zip",
+      "openclawPreview": "skills/backup-to-hq-zip/ inventory install + exec in habit prompt",
+      "tfyOwned": false
+    },
+    {
+      "app": "playbook.overlays.signed-communication",
+      "openclawPreview": "message-signing skill enforcement on Slack send",
+      "tfyOwned": false
+    },
+    {
+      "app": "playbook.outputs.primary.archive",
+      "openclawPreview": "HQ snapshots path convention + retention (not habit file)",
+      "tfyOwned": true
+    },
+    {
+      "app": "gates.backup-passphrase-available",
+      "openclawPreview": "pre-run secret check (~/.teamfoundry.private/backup-passphrase)",
+      "tfyOwned": true
+    }
+  ]
+}

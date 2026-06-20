@@ -1,0 +1,28 @@
+{
+  "_previewNote": "OpenClaw habit sketch emitted by TFY translation preview. Non-authoritative; derived from APP playbook schedule + assembled context + TFY corpus habit shape.",
+  "name": "Daily Backup to HQ",
+  "description": "Encrypt and upload daily workspace backup to HQ storage",
+  "when": {
+    "type": "scheduled",
+    "at": "04:30",
+    "timezone": "UTC",
+    "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+  },
+  "run": {
+    "mode": "background",
+    "prompt": "MANDATORY INSTRUCTIONS - EXECUTE USING TOOLS: (1) Run ~/.openclaw/workspace/skills/backup-to-hq-zip/backup-to-hq-zip.sh via exec tool; (2) Verify backup file created in ~/teamfoundry.ai/teamHQ/Agents-InService/Warren/snapshots/; (3) Confirm backup size is reasonable (>1MB, <500MB); (4) If backup successful: DELIVERY via Slack message tool EXACTLY: target='channel:agent-ops', action='send', caption='✅ Daily backup complete: backup-YYYY-MM-DD_HHMMSS.7z'. If backup fails: target='supervisor-id' with caption='🚨 Backup failed - manual intervention required'. CRITICAL: Use the canonical message-signing standard from the employee handbook. DO NOT include backup contents in message - only filename and status.",
+    "use_light_context": true
+  },
+  "notify": {
+    "where": "slack",
+    "to": "channel:agent-ops"
+  },
+  "_translationBindings": {
+    "appPlaybookId": "daily-backup",
+    "resolvedInputs": {
+      "agentOpsChannel": "agent-ops",
+      "supervisorId": "supervisor-id"
+    },
+    "corpusDiff": "Schedule and mode match APP playbook.schedule; prompt channel/supervisor placeholders substituted from assembly context; agent name path uses Warren from identity assembly"
+  }
+}
