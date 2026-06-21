@@ -135,26 +135,24 @@ The source-of-truth boundary model is defined in `teamfoundry-stack-realignment-
 - Do not treat simulator success as TFY integration completion.
 - Do preserve notes about what remains TFY-owned, APP-owned, skill-owned, or engine-owned.
 
-### Decision Log Pattern
+### Design Decision Log Pattern
 
 **Status:** Exploring
 
-**Intent:** Preserve important architecture choices as durable planning notes before they become hidden implementation assumptions.
+**Intent:** Preserve important architecture and product-design choices as durable planning notes before they become hidden implementation assumptions.
 
 **Pattern:**
 
-When a pillar produces a meaningful decision, record a short entry in that pillar's `Decisions` section or move it later into a dedicated decision log. Each entry should capture:
+When a pillar produces a meaningful **design** decision, record a short row in the **APP Design Decision Log** or **TFY Design Decision Log** table below (or in that pillar's `Decisions` section until promoted). Use the table columns: Date, Status, Decision, Impact. Keep rows brief; expand in design docs when needed.
 
-- Context: what question or tension prompted the decision
-- Decision: what direction was chosen
-- Rationale: why this direction is preferred now
-- Impact: which repos, examples, schemas, adapters, or migration paths are affected
+Do not record program coordination, documentation process, or pilot selection here. Those belong in **Current Focus**, work patterns, or pillar planning notes.
 
 **Guardrails:**
 
-- Do not rely on chat history as the only record of architecture decisions.
+- Do not rely on chat history as the only record of design decisions.
 - Do not over-document transient ideas that have not affected direction.
-- Do record decisions that change source-of-truth boundaries, pilot scope, adapter assumptions, or repo responsibilities.
+- Do record decisions that change source-of-truth boundaries, schema shape, translation model, adapter assumptions, or ownership of behavior concepts.
+- Do not use this log for status tracking, README scope, vision-doc editing rules, or which pilot is active.
 
 ### Adapter-Last Pattern
 
@@ -206,7 +204,7 @@ When a pillar produces a meaningful decision, record a short entry in that pilla
 **Pattern:**
 
 1. Pilot examples may use provisional manifest fields.
-2. Log new field ideas as **Proposed** decisions until a pilot validates them.
+2. Log new field ideas as **Proposed** rows in the APP Design Decision Log until a pilot validates them.
 3. Promote fields to **Accepted** only when the pilot exposes a real gap that the baseline schema cannot express.
 4. Update `schema/app-manifest-v0.1.md` and `app-design.md` only after acceptance.
 
@@ -225,7 +223,7 @@ When a pillar produces a meaningful decision, record a short entry in that pilla
 
 1. Use `AGENTS.md` and `docs/tfy-stack-realignment/README.md` as entry points.
 2. Use this plan document for status, immediate priorities, and pilot materialization state.
-3. Use the decision log for accepted direction.
+3. Use the APP and TFY design decision log tables for accepted design direction.
 4. Do not rely on chat history as program state.
 
 **Guardrails:**
@@ -257,12 +255,12 @@ When a pillar produces a meaningful decision, record a short entry in that pilla
 
 **Status:** Exploring
 
-**Intent:** Keep design documentation useful as a clean statement of the current design model, while using the vision document and decision log for different purposes.
+**Intent:** Keep design documentation useful as a clean statement of the current design model, while using the vision document and APP/TFY design decision logs for different purposes.
 
 **Documentation Layers:**
 
 - Vision document: baseline strategic intent; stable after acceptance.
-- Plan document: active work tracking, pillar status, work patterns, and decisions.
+- Plan document: active work tracking, pillar status, work patterns, and design decisions.
 - Design documents: complete current design thinking for a specific concept.
 - Implementation artifacts: examples, schemas, simulator code, adapters, and migration outputs.
 
@@ -274,9 +272,9 @@ Create or update a design document when a concept becomes too detailed for this 
 
 - Do not rewrite the vision document to track later pivots; treat it as the baseline thesis once accepted.
 - Do not use design documents to narrate history, editorial commentary, or past discarded models.
-- Do not duplicate the decision log inside design documents.
+- Do not duplicate the design decision logs inside design documents.
 - Do keep design documents current, direct, and complete enough for implementation agents to act from.
-- Do record meaningful pivots in the decision log, then update the relevant design document so it reflects the accepted current design.
+- Do record meaningful design pivots in the APP or TFY design decision log, then update the relevant design document so it reflects the accepted current design.
 - Do graduate stable design content into framework docs, schema docs, examples, or adapter docs when it becomes durable.
 - Do keep this plan document monolithic for shared coordination, while keeping product design in separate design documents.
 - Do separate APP design and TeamFoundry design so development agents do not mix source-of-truth boundaries.
@@ -286,155 +284,28 @@ Create or update a design document when a concept becomes too detailed for this 
 - `app-design.md`: APP as the portable behavior contract.
 - `tfy-design.md`: TeamFoundry assistant construction, storefront, operations, APP consumption, translation, and simulator model.
 
-## Decision Log
+## Design Decision Log
 
-Use this section for architecture decisions that affect realignment direction, source-of-truth boundaries, pilot scope, adapter assumptions, or repo responsibilities.
+Record **product and architecture design** decisions here by primary ownership. Status values: `Proposed`, `Accepted`, `Superseded`.
 
-### Decision Entry Template
+Do not use this section for program process (status tracking, README rules, pilot selection, or documentation layout). Those live in **Current Focus**, accepted work patterns, and pillar planning notes.
 
-**Date:** YYYY-MM-DD
+### APP Design Decision Log
 
-**Status:** Proposed | Accepted | Superseded
+| Date | Status | Decision | Impact |
+| --- | --- | --- | --- |
+| 2026-06-20 | Proposed | Allow `schedule` on playbook manifests during the pilot. | Do not generalize into `schema/app-manifest-v0.1.md` until preview validates. |
+| 2026-06-20 | Proposed | Playbook inputs may declare `resolveFrom` assembly-context references. | Document in pilot and `app-design.md` if accepted after simulator validation. |
+| 2026-06-20 | Proposed | Allow pack `compatibility.consumptionProfile` during the pilot. | No global schema until simulator preview and Forge composition review. |
+| 2026-06-20 | Proposed | Undecided: `identity-context-loaded` in APP gates vs TFY-only precondition. | Resolve at `session-readiness` materialization or simulator preview. |
+| 2026-06-20 | Proposed | Skills describe backup scope as engine-neutral categories, not paths or scripts. | Adapters map categories; may update skill guidance after preview. |
+| 2026-06-20 | Proposed | Undecided: retention tiers in skill, output contract, or both. | Resolve when materializing `contracts/backup-artifact-contract.md`. |
 
-**Context:** TBD
+### TFY Design Decision Log
 
-**Decision:** TBD
-
-**Rationale:** TBD
-
-**Impact:** TBD
-
-### 2026-06-20: TFY-Mediated Translation Model
-
-**Status:** Accepted
-
-**Context:** The baseline vision describes an APP-to-engine translation layer with direct illustrative mappings from APP concepts to runtime artifacts. Subsequent design work clarified that TeamFoundry should ingest APP packs as a native assistant-construction input layer and translate assembled assistant context into HQ-deployable, engine-specific artifacts.
-
-**Decision:** Translation is TeamFoundry-owned through assistant assembly context. APP expresses portable behavior intent and adapter-facing expectations. TeamFoundry ingests APP packs, assembles assistant inputs, and runs the translation path to target engine deployables. Engine adapters operate at the end of that path, with OpenClaw as the first concrete target.
-
-**Rationale:** This preserves APP runtime neutrality, keeps TeamFoundry as the assistant construction and operations layer, and avoids treating OpenClaw-shaped inventory as the long-term source format for reusable behavior.
-
-**Impact:** Primary translation design lives in `tfy-design.md`. APP adapter profile expectations live in `app-design.md`. Pillar 4 planning should follow this split rather than treating translation as a direct APP-to-engine concern. The vision document remains the unchanged baseline thesis.
-
-### 2026-06-20: Documentation And Design Track Model
-
-**Status:** Accepted
-
-**Context:** Realignment work spans APP and TeamFoundry design evolution, but the two products must remain architecturally separable for development agents.
-
-**Decision:** Keep one monolithic plan document with a shared decision log. Maintain two current-state design documents: `app-design.md` for APP and `tfy-design.md` for TeamFoundry including translation and simulator design. Do not use a separate translation design document or a mixed design index.
-
-**Rationale:** Coordination is shared, but source-of-truth boundaries differ. Separate design documents reduce agent context mixing while preserving one program plan.
-
-**Impact:** All future design updates must target the correct design document. The plan remains the shared coordination surface.
-
-### 2026-06-20: Vision Document Immutability
-
-**Status:** Accepted
-
-**Context:** The vision document defines the baseline thesis, but later design work may refine implementation details such as TFY-mediated translation.
-
-**Decision:** Treat `teamfoundry-stack-realignment-vision.md` as the accepted baseline vision. Do not rewrite it to track later pivots. Record pivots in the decision log and update the relevant current-state design document instead.
-
-**Rationale:** Preserve a stable strategic anchor while allowing design to evolve based on pilots and implementation learning.
-
-**Impact:** When vision language conflicts with accepted design, follow the plan decision log and current design documents.
-
-### 2026-06-20: First Pilot Selection
-
-**Status:** Accepted
-
-**Context:** The program needed one bounded TFY behavior to test APP expressiveness and TFY-mediated translation boundaries.
-
-**Decision:** Use `teamfoundry-employee-base` as the first pilot, derived from TFY cast `teamfoundry-employee` v1.0.5. Initial materialization focuses on the `daily-backup` playbook.
-
-**Rationale:** TeamFoundry Employee is mandatory on every forged assistant, mixes portable operating behavior with clearly TFY-owned identity and deployment content, and exposes scheduled-behavior translation without requiring a full TFY migration.
-
-**Impact:** Active example lives at `examples/teamfoundry-employee-base/`. Pillars 1, 3, 4, and 7 should reference this pilot. Other candidate pilots remain deferred.
-
-### 2026-06-20: Playbook Schedule Metadata
-
-**Status:** Proposed
-
-**Context:** The `daily-backup` pilot needs to express scheduled behavior intent before TFY translates it to engine-native cron/habit artifacts.
-
-**Decision:** Allow `schedule` on playbook manifests during the pilot.
-
-**Rationale:** Scheduled behavior is part of portable workflow intent and should not be encoded only as OpenClaw habit JSON in APP.
-
-**Impact:** Do not generalize into `schema/app-manifest-v0.1.md` until the pilot preview validates the shape.
-
-### 2026-06-20: Input resolveFrom References
-
-**Status:** Proposed
-
-**Context:** Some playbook inputs depend on TFY assembly context such as deployment channels and supervisor targets.
-
-**Decision:** Allow playbook inputs to declare `resolveFrom` references to assembly context rather than embedding deployment values in APP.
-
-**Rationale:** Preserves APP runtime neutrality while making TFY assembly requirements explicit.
-
-**Impact:** Document in pilot example and `app-design.md` if accepted after simulator validation.
-
-### 2026-06-20: Pack consumptionProfile Metadata
-
-**Status:** Proposed
-
-**Context:** TeamFoundry base packs need to express composition role and required assembly context.
-
-**Decision:** Allow pack-level `compatibility.consumptionProfile` metadata during the pilot.
-
-**Rationale:** Helps TFY ingest APP packs as assistant construction input without turning APP into a persona or deployment system.
-
-**Impact:** Do not generalize into global schema until validated by simulator preview and Forge composition review.
-
-### 2026-06-20: identity-context-loaded Gate Placement
-
-**Status:** Proposed
-
-**Context:** Session readiness requires identity context, but identity content is TFY-owned.
-
-**Decision:** Undecided whether `identity-context-loaded` belongs in APP gates or only as a TFY assembly precondition outside the pack.
-
-**Rationale:** This affects how strictly APP can declare prerequisites without owning identity content.
-
-**Impact:** Resolve during `session-readiness` materialization or simulator preview; do not treat as accepted APP schema yet.
-
-### 2026-06-20: Skill Backup Scope Categories
-
-**Status:** Proposed
-
-**Context:** Materializing `backup-to-hq-zip/SKILL.md` required separating portable backup intent from TFY/OpenClaw-specific paths in the source skill.
-
-**Decision:** APP skills may describe backup and restore scope as engine-neutral **categories** (configuration state vs content state). Concrete paths, exec scripts, and storage locations are adapter or TFY assembly concerns.
-
-**Rationale:** Preserves runtime neutrality while keeping enough procedure detail for translation planning. Matches the pilot boundary that APP references behavior, not deployment paths.
-
-**Impact:** Future engine adapters map categories to inventory paths. May inform `app-design.md` skill authoring guidance if accepted after next simulator preview.
-
-### 2026-06-20: Retention Policy In Skill Vs Contract
-
-**Status:** Proposed
-
-**Context:** The TFY source skill embeds retention tiers inline. The pilot sketch also places retention rules in `contracts/backup-artifact-contract.md`.
-
-**Decision:** Undecided whether retention tiers should live only in the output contract, only in the skill procedure, or in both with the contract as canonical for outputs.
-
-**Rationale:** Duplication risks drift; skill-only retention may be insufficient for playbook output validation without a materialized contract.
-
-**Impact:** Resolve when materializing `contracts/backup-artifact-contract.md` or re-running simulator resolve for `daily-backup`.
-
-### 2026-06-20: README Scope For Program Docs
-
-**Status:** Accepted
-
-**Context:** Status tracking began appearing in folder and example README files, duplicating the plan and increasing maintenance churn.
-
-**Decision:** README files in this program explain how to use a folder or example. All status updates, materialization progress, current phase, and next actions belong in `teamfoundry-stack-realignment-plan.md` only.
-
-**Rationale:** Keeps READMEs stable and infrequently updated while preserving one coordination surface for agents.
-
-**Impact:** Update **Pilot Materialization Status** and **Current Focus** in this plan. Do not add status sections to README files.
+| Date | Status | Decision | Impact |
+| --- | --- | --- | --- |
+| 2026-06-20 | Accepted | Translation is TFY-owned via assistant assembly; OpenClaw is first adapter target. | Design in `tfy-design.md`; APP stays runtime-neutral. |
 
 ## Status Legend
 
@@ -460,7 +331,7 @@ Use this section for architecture decisions that affect realignment direction, s
 
 **Decisions:**
 
-- See decision log entries dated 2026-06-20.
+- See **APP Design Decision Log**.
 
 **Next Actions:**
 
@@ -500,7 +371,7 @@ Use this section for architecture decisions that affect realignment direction, s
 
 **Decisions:**
 
-- See decision log entry: 2026-06-20 First Pilot Selection.
+- Accepted pilot: **Current Focus** and pillar 7.
 
 **Next Actions:**
 
@@ -515,14 +386,14 @@ Use this section for architecture decisions that affect realignment direction, s
 
 **Planning Notes:**
 
-- The baseline vision pillar name remains APP-to-engine, but the accepted current model is TFY-mediated translation. See the 2026-06-20 decision log entry.
+- The baseline vision pillar name remains APP-to-engine, but the accepted current model is TFY-mediated translation. See **TFY Design Decision Log** (translation row).
 - Primary translation design lives in `tfy-design.md`, including APP ingestion, assistant assembly, HQ-deployable output, simulator model, and OpenClaw adapter preview.
 - APP-side translation inputs live in `app-design.md`, especially adapter profile expectations and what APP must expose for TeamFoundry consumption.
 - Do not treat direct APP-to-runtime mappings as the implementation model unless a pilot proves a narrower path is sufficient.
 
 **Decisions:**
 
-- See decision log entry: 2026-06-20 TFY-Mediated Translation Model.
+- See **TFY Design Decision Log** (translation row).
 
 **Next Actions:**
 
@@ -589,7 +460,7 @@ Use this section for architecture decisions that affect realignment direction, s
 
 **Decisions:**
 
-- See decision log entry: 2026-06-20 First Pilot Selection.
+- Accepted pilot: **Current Focus** and pillar 7.
 
 **Next Actions:**
 

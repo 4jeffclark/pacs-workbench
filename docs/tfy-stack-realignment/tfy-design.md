@@ -16,8 +16,8 @@ Baseline strategic intent lives in `teamfoundry-stack-realignment-vision.md`. Ac
 
 - Keep this design document current-state only.
 - Do not narrate design history in this document.
-- Do not duplicate the decision log in this document.
-- Record meaningful pivots in `teamfoundry-stack-realignment-plan.md`.
+- Do not duplicate the design decision log in this document.
+- Record meaningful design pivots in `teamfoundry-stack-realignment-plan.md`.
 - Update this document after a decision so it reflects the accepted current TeamFoundry design.
 - Graduate stable TeamFoundry design into TFY docs or implementation artifacts when it becomes durable.
 
@@ -125,7 +125,7 @@ Agent Engine
 
 Translation should not bypass TeamFoundry assistant assembly context. APP behavior is translated through TFY-owned construction inputs before becoming engine-native deployable artifacts.
 
-The baseline vision pillar name remains APP-to-engine, but the accepted implementation model is TFY-mediated translation. See the plan decision log entry dated 2026-06-20.
+The baseline vision pillar name remains APP-to-engine, but the accepted implementation model is TFY-mediated translation. See the **TFY Design Decision Log** in the plan.
 
 ## Simulator Model
 

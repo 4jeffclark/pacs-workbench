@@ -7,23 +7,23 @@ For current phase, priorities, pilot status, and decisions, read `teamfoundry-st
 ## Read Order
 
 1. `teamfoundry-stack-realignment-vision.md` — baseline strategic thesis; stable after acceptance
-2. `teamfoundry-stack-realignment-plan.md` — status, work patterns, pillars, decision log
+2. `teamfoundry-stack-realignment-plan.md` — status, work patterns, pillars, design decision logs
 3. `app-design.md` — current APP design
 4. `tfy-design.md` — current TeamFoundry design, translation flow, simulator model
 
-When the vision and plan disagree on implementation details, follow the plan decision log and the current design documents.
+When the vision and plan disagree on implementation details, follow the plan design decision logs and the current design documents.
 
 ## Document Roles
 
 | Document | Role | Update frequency |
 | --- | --- | --- |
 | Vision | Why the realignment exists; initial stack model and roadmap pillars | Rarely; baseline only |
-| Plan | Status, coordination, work patterns, decisions, next actions | Frequently |
+| Plan | Status, coordination, work patterns, design decision logs | Frequently |
 | APP design | Current APP-owned behavior contract model | As design changes |
 | TFY design | Current TeamFoundry-owned consumption, assembly, translation, simulator model | As design changes |
 | This README | How to use this folder | Infrequently |
 
-Design documents are current-state only. They do not narrate history. Meaningful pivots belong in the plan decision log.
+Design documents are current-state only. They do not narrate history. Meaningful design pivots belong in the APP and TFY design decision log tables in the plan.
 
 ## Adjacent Repositories
 

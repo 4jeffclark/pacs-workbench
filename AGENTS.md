@@ -19,9 +19,9 @@ All program status, pilot materialization state, and next actions live in the pl
 
 - Use `agent-playbook-pack` as the active workspace.
 - Treat `teamfoundry.ai` as read-only during early realignment work.
-- Follow accepted decisions in the plan decision log when vision and current design differ.
+- Follow accepted design decisions in the plan design decision log when vision and current design differ.
 - Do not rewrite the vision document to track later pivots.
-- Update the plan decision log for meaningful architecture decisions.
+- Update the plan design decision log for meaningful architecture and product-design decisions.
 - Update `app-design.md` or `tfy-design.md` for accepted current design changes.
 - Do not add status tracking to README files; update the plan instead.
 - Use Sketch-Then-Materialize: do not create whole example trees unless explicitly requested.

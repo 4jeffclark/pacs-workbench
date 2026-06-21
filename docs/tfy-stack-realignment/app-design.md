@@ -16,8 +16,8 @@ Baseline strategic intent lives in `teamfoundry-stack-realignment-vision.md`. Ac
 
 - Keep this design document current-state only.
 - Do not narrate design history in this document.
-- Do not duplicate the decision log in this document.
-- Record meaningful pivots in `teamfoundry-stack-realignment-plan.md`.
+- Do not duplicate the design decision log in this document.
+- Record meaningful design pivots in `teamfoundry-stack-realignment-plan.md`.
 - Update this document after a decision so it reflects the accepted current APP design.
 - Graduate stable APP design into `docs/framework.md`, `schema/`, `examples/`, or adapter docs when it becomes durable.
 
