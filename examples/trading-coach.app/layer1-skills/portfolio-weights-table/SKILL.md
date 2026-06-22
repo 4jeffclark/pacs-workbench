@@ -1,12 +1,11 @@
 ---
 name: portfolio-weights-table
+compatibility: Requires Python 3.11+ when running bundled scripts
 description: TradingCoach skill: portfolio-weights-table
-sourceCorpus:
-  repository: trading-coach
-  path: capabilities/portfolio-weights-table/
-  readOnly: true
 metadata:
   legacyCapabilityKind: synthesize
+  sourcePath: capabilities/portfolio-weights-table
+  sourceRepository: trading-coach
 ---
 
 Requires completed `period-weight-reconstruction` and confirmed maps.
@@ -41,6 +40,20 @@ Pie rules: denominator = total live account value at period end; liquidity slice
 **Required:** duplicate Figure 1 data as a markdown table in Section 3 (the table is canonical; the pie is optional visual).
 
 Optional **Figure 2** (top categories bar-style view): use a markdown table only — do not use Mermaid bar/xy charts.
+
+## Scripts
+
+Run from this skill directory. Paths are relative to the skill root per [agentskills.io](https://agentskills.io/specification).
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/run.py` | Execute skill logic; writes workspace artifacts and `skill-result.json` |
+
+```bash
+python scripts/run.py --datastore "$USER_DATASTORE" --workspace "$AGENT_WORKSPACE" --thematic true
+```
+
+Set `compatibility: Requires Python 3.11+` when the runtime must execute bundled scripts.
 
 ## Outputs
 

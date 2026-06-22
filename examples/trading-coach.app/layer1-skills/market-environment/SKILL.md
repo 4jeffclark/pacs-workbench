@@ -1,12 +1,11 @@
 ---
 name: market-environment
+compatibility: Requires Python 3.11+ when running bundled scripts
 description: TradingCoach skill: market-environment
-sourceCorpus:
-  repository: trading-coach
-  path: capabilities/market-environment/
-  readOnly: true
 metadata:
   legacyCapabilityKind: retrieve
+  sourcePath: capabilities/market-environment
+  sourceRepository: trading-coach
 ---
 
 1. Broad regime narrative across confirmed windows
@@ -17,6 +16,20 @@ metadata:
 6. Body sections may summarize context; Appendix C holds the complete citation list.
 
 When `evaluation: false`, describe context without coaching judgments.
+
+## Scripts
+
+Run from this skill directory. Paths are relative to the skill root per [agentskills.io](https://agentskills.io/specification).
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/run.py` | Execute skill logic; writes workspace artifacts and `skill-result.json` |
+
+```bash
+python scripts/run.py --datastore "$USER_DATASTORE" --workspace "$AGENT_WORKSPACE" --period-start YYYYMMDD --period-end YYYYMMDD
+```
+
+Set `compatibility: Requires Python 3.11+` when the runtime must execute bundled scripts.
 
 ## Outputs
 

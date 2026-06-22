@@ -1,8 +1,23 @@
 # Skills
 
-Layer 1 reusable expert work units (migrated from legacy ASP capabilities). Each skill is an agentskills.io `SKILL.md` directory.
+Layer 1 reusable expert work units. **Each directory is a true [agentskills.io](https://agentskills.io/specification) Agent Skill.**
 
-Legacy `capabilityKind` values are preserved in skill frontmatter `metadata.legacyCapabilityKind` where applicable.
+Framework baseline: [`docs/app-skills.md`](../../../docs/app-skills.md) in the AgentPlaybookPack standards repo.
+
+## Directory shape
+
+```text
+layer1-skills/<skill-id>/
+  SKILL.md
+  scripts/run.py       # skill entrypoint (agentskills.io)
+  scripts/README.md
+  references/README.md
+assets/tc-lib/         # shared Python helpers (pack instance)
+```
+
+Every skill includes `scripts/run.py`. See [`docs/app-skills.md`](../../../docs/app-skills.md).
+
+Regenerate after skill logic changes: `python tools/materialize-skill-scripts.py` (workbench).
 
 ## Portfolio domain
 
@@ -46,5 +61,3 @@ Legacy `capabilityKind` values are preserved in skill frontmatter `metadata.lega
 | --- | --- |
 | `datastore-inventory` | retrieve |
 | `source-profile-insights` | synthesize |
-
-Procedures live in `layer1-skills/<id>/SKILL.md`.

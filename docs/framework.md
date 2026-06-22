@@ -75,7 +75,7 @@ Layer 0  Workflows
 
 Cross-cutting pack folders `contracts/` and `gates/` are not layer-numbered. Each pack lives in a self-contained `{packId}.app/` folder. APP distribution repos contain only `README.md` and `*.app/` at repo root.
 
-**Execution agents:** read [`app-execution.md`](app-execution.md) (framework) and each pack's `APP-EXECUTION.md` (instance copy). Layout and discovery rules are normative in those guides. See [`README.md`](README.md) for the full standards index.
+**Execution agents:** read [`app-execution.md`](app-execution.md) and each pack's `APP-EXECUTION.md`. **Skills:** true agentskills.io directories per [`app-skills.md`](app-skills.md).
 
 The pack may also describe tool requirements, but tool implementations belong to runtimes or tool protocols such as MCP.
 

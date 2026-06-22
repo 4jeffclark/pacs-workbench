@@ -88,7 +88,7 @@ Folder names are **fixed by convention**. Do not expect a `paths:` block in `pac
 | --- | --- | --- |
 | Pack | `pack.app.yaml` | Identity, `inputs`, playbook index |
 | Playbook | `playbook.app.yaml` | Composition, gates, outputs |
-| Skill | `layer1-skills/<id>/SKILL.md` | agentskills.io frontmatter only |
+| Skill | `layer1-skills/<id>/` | agentskills.io skill directory (`SKILL.md` + optional `scripts/`, `references/`, `assets/`) |
 | Workflow, overlay, contract, gate | **None** | Markdown procedures; referenced by path or id |
 
 ### Playbook location convention
@@ -102,8 +102,14 @@ Playbook ids in `pack.app.yaml` are listed by id; paths follow the convention ab
 ### Skill location convention
 
 ```text
-layer1-skills/<skill-id>/SKILL.md
+layer1-skills/<skill-id>/
+  SKILL.md
+  scripts/       # required directory; bundled executables per agentskills.io
+  references/    # optional
+  assets/        # optional
 ```
+
+Every APP skill is a true [agentskills.io](https://agentskills.io/specification) skill. See [`app-skills.md`](app-skills.md) for the scripting baseline.
 
 ### Workflow location convention
 
@@ -161,7 +167,8 @@ Pack-specific subdirectory layout under `userDatastore` is defined in that pack'
 
 ## Execution rules
 
-- **Prompt-first** — follow skill and workflow markdown; workspace artifacts are optional intermediates.
+- **Prompt-first** — follow skill and workflow markdown; use bundled `scripts/` when `SKILL.md` instructs it.
+- **No ad-hoc scripts** — do not invent executable tooling during a run; only pack-authored scripts under `layer1-skills/<id>/scripts/`.
 - **No git required** — APP does not require commit-on-run unless the user chooses git-backed storage.
 - **Core vs augmented** — run core outputs without optional overlays unless playbook inputs request them.
 - **Structured run record** — canonical record is `run-manifest.yaml`; human summaries are optional derivatives.

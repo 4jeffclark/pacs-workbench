@@ -48,7 +48,7 @@ All platforms should implement the three-mode routing in [agent-bootstrap.md](ag
 - Resolve inputs via **Structured Inputs Framework**; present **Inputs Resolved**
 - Write report folders using **timestamp-first** naming (`{userDatastore}/reports/<GenerationTimestamp>-<PlaybookReportId>-<AnalysisStart>-<AnalysisEnd>/`)
 - Populate `Manifest.md` with ASP execution record fields (`Output Mode`, typed layer1-skills/overlays)
-- Finalize `Report.md` self-contained per `PROJECT.md` (full Appendix C citations; GitHub-safe Mermaid + table fallbacks; no analysis scripts)
+- Finalize `Report.md` self-contained per `PROJECT.md` (full Appendix C citations; GitHub-safe Mermaid + table fallbacks; report narrative is agent-authored — data scripts may write intermediate CSVs only)
 - Do not require users to type CLI-style parameter syntax
 
 ## Layer paths
@@ -102,7 +102,7 @@ Cursor simulates an arm's-length agent layer when the user opens a **fresh chat*
 
 The consumer rule is intentionally minimal. Deeper execution detail lives in pack-owned docs (`AGENTS.md`, `PROJECT.md`), not in Cursor config.
 
-**Report finalization:** enforce self-contained `Report.md`, GitHub-safe Mermaid + table fallbacks, no analysis scripts — see **Report finalization** in `.cursor/rules/asp-consumer.mdc`.
+**Report finalization:** enforce self-contained `Report.md`, GitHub-safe Mermaid + table fallbacks — see **Report finalization** in `.cursor/rules/asp-consumer.mdc`. Bundled skill scripts under `layer1-skills/*/scripts/` per agentskills.io are allowed when `SKILL.md` instructs.
 
 #### What stays out of Cursor config
 

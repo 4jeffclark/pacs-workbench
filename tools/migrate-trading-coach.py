@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import re
 import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 import yaml
@@ -457,6 +459,14 @@ def main() -> None:
     write_app_execution()
     ensure_layer2_readme()
     write_distribution_readme()
+    subprocess.run(
+        [sys.executable, str(REPO_ROOT / "tools" / "baseline-app-skills.py")],
+        check=True,
+    )
+    subprocess.run(
+        [sys.executable, str(REPO_ROOT / "tools" / "materialize-skill-scripts.py")],
+        check=True,
+    )
     print(f"Migrated to {PACK_ROOT}")
     print(f"  skills: {len(CAPABILITIES)}")
     print(f"  workflows: {len(WORKFLOWS)}")

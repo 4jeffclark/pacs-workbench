@@ -1,12 +1,11 @@
 ---
 name: theme-map-inference
+compatibility: Requires Python 3.11+ when running bundled scripts
 description: TradingCoach skill: theme-map-inference
-sourceCorpus:
-  repository: trading-coach
-  path: capabilities/theme-map-inference/
-  readOnly: true
 metadata:
   legacyCapabilityKind: transform
+  sourcePath: capabilities/theme-map-inference
+  sourceRepository: trading-coach
 ---
 
 1. Start from confirmed or inferred `HoldingsMap.csv`.
@@ -17,6 +16,20 @@ metadata:
 6. Record `MappingConfidence` and concise notes for ambiguous assignments.
 7. Write `ThemeRegistry.csv` and `ThemeMap.csv`.
 8. Route to `theme-map-confirmation` before quantification.
+
+## Scripts
+
+Run from this skill directory. Paths are relative to the skill root per [agentskills.io](https://agentskills.io/specification).
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/run.py` | Execute skill logic; writes workspace artifacts and `skill-result.json` |
+
+```bash
+python scripts/run.py --datastore "$USER_DATASTORE" --workspace "$AGENT_WORKSPACE" --input-dir "$AGENT_WORKSPACE/holdings-standards-map"
+```
+
+Set `compatibility: Requires Python 3.11+` when the runtime must execute bundled scripts.
 
 ## Outputs
 

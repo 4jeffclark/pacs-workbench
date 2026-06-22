@@ -289,6 +289,7 @@ Do not use this section for program process (status tracking, README rules, pilo
 
 | 2026-06-21 | Accepted | **Canonical instance layout is convention, not manifest.** Only `pack.app.yaml` and `playbook.app.yaml` are APP manifests; layer folders, contracts, gates, and workflows use markdown only; skills use `SKILL.md`. Omit `paths:` and playbook paths when using standard layout. | Executors resolve fixed folder names; playbook index is id list only. |
 | 2026-06-21 | Accepted | **`docs/app-execution.md`** is the framework execution-agent guide; each `{packId}.app/` instance includes **`APP-EXECUTION.md`** so pulled APP repos are self-sufficient without the workbench. | Separates runtime instructions from `app-design.md` development design. |
+| 2026-06-21 | Accepted | **APP skills are true agentskills.io skills.** Every `layer1-skills/<id>/` directory baselines `scripts/` (with `README.md`), valid `SKILL.md` frontmatter, and a **Scripts** section; bundled scripts are pack-authored code the agent runs when instructed. No ad-hoc scripts during runs. Normative: `docs/app-skills.md`. | Aligns layer 1 with agentskills.io; scripting is inside the skill directory, not an APP execution mode. |
 
 ### TFY Design Decision Log
 

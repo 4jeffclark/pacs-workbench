@@ -31,7 +31,7 @@
 
 ## Prompt-first execution
 
-Do not add repo-owned executable tooling as the default execution path. **Do not create analysis scripts** (Python, shell, etc.) during playbook runs — compute and write artifacts per capability procedures in markdown.
+Follow skill procedures in `SKILL.md`. Use **bundled scripts** under `layer1-skills/<id>/scripts/` when `SKILL.md` instructs it (agentskills.io). Do **not** invent ad-hoc analysis scripts during playbook runs.
 
 ## Do not read by default
 

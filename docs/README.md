@@ -10,17 +10,19 @@ Development workbench material for TeamFoundry alignment lives separately in [`t
 | --- | --- | --- |
 | 1 | [`framework.md`](framework.md) | Authors, integrators, store builders |
 | 2 | [`app-execution.md`](app-execution.md) | Execution agents and reference executors |
-| 3 | [`agent-skills-integration.md`](agent-skills-integration.md) | Skill packaging and references |
-| 4 | [`naming.md`](naming.md) | Naming and folder conventions |
-| 5 | [`../schema/app-manifest-v0.1.md`](../schema/app-manifest-v0.1.md) | Manifest authors |
-| 6 | [`pack-store.md`](pack-store.md) | Pack Store design |
+| 3 | [`app-skills.md`](app-skills.md) | Skill directories and scripting baseline |
+| 4 | [`agent-skills-integration.md`](agent-skills-integration.md) | Skill composition in playbooks |
+| 5 | [`naming.md`](naming.md) | Naming and folder conventions |
+| 6 | [`../schema/app-manifest-v0.1.md`](../schema/app-manifest-v0.1.md) | Manifest authors |
+| 7 | [`pack-store.md`](pack-store.md) | Pack Store design |
 
 ## By Role
 
 ### Pack authors
 
 1. [`framework.md`](framework.md) — concepts and layer model
-2. [`naming.md`](naming.md) — `{packId}.app/` and distribution repo rules
+2. [`app-skills.md`](app-skills.md) — agentskills.io skill directories and `scripts/` baseline
+3. [`naming.md`](naming.md) — `{packId}.app/` and distribution repo rules
 3. [`../schema/app-manifest-v0.1.md`](../schema/app-manifest-v0.1.md) — `pack.app.yaml` and `playbook.app.yaml`
 4. [`../examples/trading-coach.app/`](../examples/trading-coach.app/) — reference materialized instance
 
@@ -57,6 +59,11 @@ pack.app.yaml
 README.md
 layer0-workflows/
 layer1-skills/
+  <skill-id>/
+    SKILL.md
+    scripts/
+    references/
+    assets/
 layer2-overlays/
 layer3-playbooks/<id>/
   playbook.app.yaml

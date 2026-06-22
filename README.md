@@ -11,6 +11,7 @@ This repository is the **APP standards storefront**: framework docs, manifest sc
 | Audience | Read |
 | --- | --- |
 | Authors and integrators | [`docs/framework.md`](docs/framework.md) |
+| Skill authors | [`docs/app-skills.md`](docs/app-skills.md) |
 | Execution agents | [`docs/app-execution.md`](docs/app-execution.md) |
 | Full standards index | [`docs/README.md`](docs/README.md) |
 | Manifest shape | [`schema/app-manifest-v0.1.md`](schema/app-manifest-v0.1.md) |
@@ -77,6 +78,7 @@ README.md
 docs/                     # APP standards (see docs/README.md)
   framework.md
   app-execution.md
+  app-skills.md
   agent-skills-integration.md
   naming.md
   pack-store.md
@@ -88,6 +90,8 @@ examples/                 # reference APP distribution repo: README.md + *.app/
 sketches/                 # non-published design sketches
 store/                    # Pack Store design home
 tools/
+  baseline-app-skills.py
+  materialize-skill-scripts.py
   migrate-trading-coach.py
   tfy-simulator/          # TFY workbench tool (outlier)
 ```

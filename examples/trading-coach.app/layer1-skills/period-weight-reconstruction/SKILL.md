@@ -1,12 +1,11 @@
 ---
 name: period-weight-reconstruction
+compatibility: Requires Python 3.11+ when running bundled scripts
 description: Reconstruct period boundary holdings weights
-sourceCorpus:
-  repository: trading-coach
-  path: capabilities/period-weight-reconstruction/
-  readOnly: true
 metadata:
   legacyCapabilityKind: analyze
+  sourcePath: capabilities/period-weight-reconstruction
+  sourceRepository: trading-coach
 ---
 
 Follow **Period Holdings Weight Reconstruction** in `contracts/datastore-contract.md`.
@@ -17,6 +16,20 @@ Follow **Period Holdings Weight Reconstruction** in `contracts/datastore-contrac
 4. Do not substitute a post-period reference snapshot without explicit non-period labeling
 
 Calculate at each boundary: total live account value; invested MV; total liquidity and liquidity %; symbol-level holdings MV.
+
+## Scripts
+
+Run from this skill directory. Paths are relative to the skill root per [agentskills.io](https://agentskills.io/specification).
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/run.py` | Execute skill logic; writes workspace artifacts and `skill-result.json` |
+
+```bash
+python scripts/run.py --datastore "$USER_DATASTORE" --workspace "$AGENT_WORKSPACE" --period-start YYYYMMDD --period-end YYYYMMDD
+```
+
+Set `compatibility: Requires Python 3.11+` when the runtime must execute bundled scripts.
 
 ## Outputs
 

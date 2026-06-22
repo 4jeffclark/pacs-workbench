@@ -6,9 +6,10 @@ Start here for normative APP work:
 
 1. `docs/README.md` — standards index
 2. `docs/framework.md` — concepts and layer model
-3. `docs/app-execution.md` — execution agent guide
-4. `schema/app-manifest-v0.1.md` — manifest draft
-5. `examples/trading-coach.app/` — reference materialized instance
+3. `docs/app-skills.md` — agentskills.io skill directories and scripting baseline
+4. `docs/app-execution.md` — execution agent guide
+5. `schema/app-manifest-v0.1.md` — manifest draft
+6. `examples/trading-coach.app/` — reference materialized instance
 
 Sketches in `sketches/` are non-published and may not follow current conventions.
 
@@ -42,6 +43,7 @@ All program status, pilot materialization state, and next actions live in the pl
 
 - APP standards index: `docs/README.md`
 - APP framework: `docs/framework.md`
+- APP skills baseline: `docs/app-skills.md`
 - APP execution guide: `docs/app-execution.md`
 - APP manifest draft: `schema/app-manifest-v0.1.md`
 - Simulator design and location: `docs/tfy-stack-realignment/tfy-design.md`, `tools/tfy-simulator/`

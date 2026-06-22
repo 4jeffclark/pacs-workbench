@@ -64,7 +64,7 @@ trading-coach.app/
 | --- | --- |
 | Pack | `pack.app.yaml` |
 | Playbook | `layer3-playbooks/<id>/playbook.app.yaml` |
-| Skill | `layer1-skills/<id>/SKILL.md` |
+| Skill | `layer1-skills/<id>/` | agentskills.io directory (`SKILL.md`, `scripts/`, `references/`, `assets/`) |
 | Workflow, overlay, contract, gate | Markdown only |
 
 Playbook ids in `pack.app.yaml`: `aggregate-state-review`, `environment-review`, `unit-decision-review`, `activity-period-review`, `source-profile`.
@@ -78,7 +78,7 @@ Playbook ids in `pack.app.yaml`: `aggregate-state-review`, `environment-review`,
 3. Bind `userDatastore` and `agentWorkspace` (mediate if not supplied)
 4. Run required `layer0-workflows/` in manifest order
 5. Clear gates in `gates/` and playbook manifest
-6. Execute `layer1-skills/` per playbook composition
+6. Execute `layer1-skills/` per playbook composition — true agentskills.io skills; use bundled `scripts/` when `SKILL.md` instructs
 7. Apply playbook `overlays/` when conditions match
 8. Write outputs and `run-manifest.yaml` per `contracts/report-artifact-contract.md`
 
@@ -103,7 +103,9 @@ No persistent data or reports belong in the APP behavior repo.
 
 ## TradingCoach execution notes
 
-- **Prompt-first** — follow skill and workflow procedures; do not add analysis scripts during runs unless needed as workspace intermediates
+- **Skills** — each `layer1-skills/<id>/` is an agentskills.io skill with `scripts/run.py` (Python 3.11+ stdlib); shared lib at `assets/tc-lib/`
+- **Prompt-first** — follow `SKILL.md` procedures; run bundled scripts when instructed
+- **No ad-hoc scripts** — do not invent executable tooling during a run
 - **Report folders** — `{userDatastore}/reports/<timestamp>-<PlaybookReportId>-<AnalysisStart>-<AnalysisEnd>/` per `contracts/report-artifact-contract.md`
 - **`timestamp`** — actual wall-clock time at folder creation; never placeholders
 - **`Report.md`** — self-contained per report contract; GitHub-safe Mermaid only

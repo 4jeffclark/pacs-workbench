@@ -1,12 +1,11 @@
 ---
 name: datastore-inventory
+compatibility: Requires Python 3.11+ when running bundled scripts
 description: TradingCoach skill: datastore-inventory
-sourceCorpus:
-  repository: trading-coach
-  path: capabilities/datastore-inventory/
-  readOnly: true
 metadata:
   legacyCapabilityKind: retrieve
+  sourcePath: capabilities/datastore-inventory
+  sourceRepository: trading-coach
 ---
 
 ### Step 1 — Inventory the datastore
@@ -28,6 +27,20 @@ Observed cash, account-history activity, estimated cash curves; document confide
 ### Step 5 — Profile derived data quality
 
 Normalization, parsing quality, duplicate detection, provenance; label Observed / Derived / Estimated / Low Confidence.
+
+## Scripts
+
+Run from this skill directory. Paths are relative to the skill root per [agentskills.io](https://agentskills.io/specification).
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/run.py` | Execute skill logic; writes workspace artifacts and `skill-result.json` |
+
+```bash
+python scripts/run.py --datastore "$USER_DATASTORE" --workspace "$AGENT_WORKSPACE"
+```
+
+Set `compatibility: Requires Python 3.11+` when the runtime must execute bundled scripts.
 
 ## Outputs
 

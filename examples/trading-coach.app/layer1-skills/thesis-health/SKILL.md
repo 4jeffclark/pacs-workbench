@@ -1,12 +1,11 @@
 ---
 name: thesis-health
+compatibility: Requires Python 3.11+ when running bundled scripts
 description: TradingCoach skill: thesis-health
-sourceCorpus:
-  repository: trading-coach
-  path: capabilities/thesis-health/
-  readOnly: true
 metadata:
   legacyCapabilityKind: analyze
+  sourcePath: capabilities/thesis-health
+  sourceRepository: trading-coach
 ---
 
 **When `thematic: true`:**
@@ -20,6 +19,20 @@ metadata:
 
 1. Factual sector/factor health proxies for owned categories
 2. **Figure 2 — Top Category Weights** (not thesis-health quadrant)
+
+## Scripts
+
+Run from this skill directory. Paths are relative to the skill root per [agentskills.io](https://agentskills.io/specification).
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/run.py` | Execute skill logic; writes workspace artifacts and `skill-result.json` |
+
+```bash
+python scripts/run.py --datastore "$USER_DATASTORE" --workspace "$AGENT_WORKSPACE"
+```
+
+Set `compatibility: Requires Python 3.11+` when the runtime must execute bundled scripts.
 
 ## Outputs
 

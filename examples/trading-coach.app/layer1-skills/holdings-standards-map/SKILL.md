@@ -1,12 +1,11 @@
 ---
 name: holdings-standards-map
+compatibility: Requires Python 3.11+ when running bundled scripts
 description: TradingCoach skill: holdings-standards-map
-sourceCorpus:
-  repository: trading-coach
-  path: capabilities/holdings-standards-map/
-  readOnly: true
 metadata:
   legacyCapabilityKind: transform
+  sourcePath: capabilities/holdings-standards-map
+  sourceRepository: trading-coach
 ---
 
 1. Build the symbol mapping universe per `PROJECT.md` period-based analysis conventions.
@@ -18,6 +17,20 @@ metadata:
 7. Record `MappingSource` and `MappingConfidence` for each row.
 8. Write one row per symbol to `HoldingsMap.csv`.
 9. Route to `holdings-map-confirmation` before quantification.
+
+## Scripts
+
+Run from this skill directory. Paths are relative to the skill root per [agentskills.io](https://agentskills.io/specification).
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/run.py` | Execute skill logic; writes workspace artifacts and `skill-result.json` |
+
+```bash
+python scripts/run.py --datastore "$USER_DATASTORE" --workspace "$AGENT_WORKSPACE"
+```
+
+Set `compatibility: Requires Python 3.11+` when the runtime must execute bundled scripts.
 
 ## Outputs
 

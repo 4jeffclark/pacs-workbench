@@ -108,7 +108,7 @@ Initial kinds:
 - `overlay`
 - `contract`
 
-APP should not need a `skill` manifest kind if it adopts Agent Skills directly. APP references skills rather than redefining them.
+APP should not need a `skill` manifest kind. APP references agentskills.io skill directories under `layer1-skills/` — see [`docs/app-skills.md`](../docs/app-skills.md).
 
 ## Composition Verbs
 

@@ -2,7 +2,9 @@
 
 ## Positioning
 
-APP should treat Agent Skills as the default format for granular capabilities.
+APP **layer1-skills** are [agentskills.io](https://agentskills.io/specification) Agent Skills. APP composes them into playbooks; it does not define an alternate skill format or scripting mode.
+
+Normative skill shape and scripting baseline: [`app-skills.md`](app-skills.md).
 
 Agent Skills answer:
 
@@ -14,30 +16,30 @@ APP answers:
 
 ## Compatibility Principle
 
-APP should not define a competing skill file format.
+APP must not define a competing skill file format.
 
 When a pack needs a reusable capability, it should prefer one of these forms:
 
-1. Local Agent Skill directory
+1. Local Agent Skill directory under `layer1-skills/`
 2. External Agent Skill reference
-3. Literal skill definition for lightweight or embedded use
+3. Literal skill definition for lightweight or embedded use (extract to full skills when they grow)
 
 ## Local Skills
 
-Local skills use the agentskills.io structure. In a materialized APP pack, skills live under the canonical folder `layer1-skills/` (fixed by convention — see [`app-execution.md`](app-execution.md)):
+Local skills use the agentskills.io directory structure under `layer1-skills/` (see [`app-execution.md`](app-execution.md)):
 
 ```text
 layer1-skills/
   skill-name/
-    SKILL.md
-    references/
-    scripts/
-    assets/
+    SKILL.md          # required
+    scripts/          # required directory; bundled code when present
+    references/       # optional
+    assets/           # optional
 ```
 
-The `SKILL.md` file remains the source of truth for skill activation and procedure.
+`SKILL.md` is the source of truth for activation, procedure, and when to run bundled scripts.
 
-APP manifests may reference the skill by path:
+APP manifests reference skills by path:
 
 ```yaml
 uses:
@@ -81,21 +83,20 @@ uses:
         Return the intent and a short rationale.
 ```
 
-Literal skills should be easy to extract into full Agent Skills later.
+Literal skills should be extracted into full Agent Skills directories (with `scripts/` baseline) when they grow.
 
 ## Progressive Disclosure
 
-APP should preserve the Agent Skills progressive disclosure pattern:
+APP preserves the Agent Skills progressive disclosure pattern:
 
 1. Pack catalog loads minimal pack and playbook metadata.
 2. Playbook activation loads the selected playbook manifest and instructions.
 3. Skill activation loads only the skills required by that playbook and resolved lenses.
-4. References, assets, and scripts load only when needed.
+4. `references/`, `assets/`, and `scripts/` load only when needed.
 
 ## Open Questions
 
-- Should APP require local skills to be valid Agent Skills, or merely recommend it?
 - Should APP define a lockfile for external skill references?
 - Should APP allow skill version ranges, or only pinned versions?
 - Should literal skills be allowed in published packs?
-- How should Pack Store trust metadata interact with Agent Skills licenses and compatibility fields?
+- How should Pack Store trust metadata interact with Agent Skills licenses and `compatibility` fields?

@@ -50,4 +50,4 @@ Inside each instance, layer-prefixed folders:
 - `contracts/` and `gates/` at instance root without layer prefix
 - `layer1-skills/` contains referenced skills in agentskills.io format
 
-See [`app-execution.md`](app-execution.md) for the full layout convention and [`README.md`](README.md) for the standards index.
+See [`app-skills.md`](app-skills.md) for the full layout convention and [`README.md`](README.md) for the standards index.

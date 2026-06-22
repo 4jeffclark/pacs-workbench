@@ -13,6 +13,7 @@ Related APP standards:
 | Topic | Location |
 | --- | --- |
 | Pack shape and layers | [`../docs/framework.md`](../docs/framework.md) |
+| Skill directories and scripts | [`../docs/app-skills.md`](../docs/app-skills.md) |
 | Instance layout | [`../docs/app-execution.md`](../docs/app-execution.md) |
 | Manifest fields | [`../schema/app-manifest-v0.1.md`](../schema/app-manifest-v0.1.md) |
 | Reference distribution repo | [`../examples/`](../examples/) |
