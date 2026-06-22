@@ -1,0 +1,29 @@
+appVersion: '0.1'
+kind: pack
+packId: trading-coach
+name: TradingCoach
+version: 3.1.0
+description: Structured trading performance reviews and portfolio analysis playbooks.
+license: TBD
+compatibility:
+  agentSkills: '>=1.0'
+inputs:
+  userDatastore:
+    type: datastore
+    required: true
+    description: User-controlled storage per contracts/user-datastore-layout.md
+    layoutContract: contracts/user-datastore-layout.md
+  agentWorkspace:
+    type: workspace
+    required: true
+    description: Agent-controlled temp and intermediate execution artifacts
+playbooks:
+  - aggregate-state-review
+  - environment-review
+  - unit-decision-review
+  - activity-period-review
+  - source-profile
+sourceCorpus:
+  repository: trading-coach
+  readOnly: true
+  migratedFrom: AgenticSkillPack v3.1

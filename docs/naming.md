@@ -37,3 +37,17 @@ Mitigations:
 Use AgentPlaybookPack for the framework baseline and describe it as:
 
 > A domain workflow package that composes Agent Skills, tools, workflows, contracts, overlays, and outputs into complete agent-run playbooks.
+
+## Pack Folder Naming
+
+**APP distribution repo** (what clients pull): only `README.md` (pack index) and `*.app/` instance folders at repo root.
+
+**APP instance**: `{packId}.app/` — self-contained pack (e.g. `trading-coach.app/`).
+
+Inside each instance, layer-prefixed folders:
+
+- `layer0-workflows/`, `layer1-skills/`, `layer2-overlays/`, `layer3-playbooks/`
+- `contracts/` and `gates/` at instance root without layer prefix
+- `layer1-skills/` contains referenced skills in agentskills.io format
+
+See [`app-execution.md`](app-execution.md) for the full layout convention and [`README.md`](README.md) for the standards index.

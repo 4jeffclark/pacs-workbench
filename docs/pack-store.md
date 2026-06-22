@@ -1,5 +1,7 @@
 # Future Pack Store
 
+Store design home in this repo: [`../store/README.md`](../store/README.md).
+
 ## Purpose
 
 A Pack Store would help agents and humans discover, evaluate, install, and trust AgentPlaybookPacks.

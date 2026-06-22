@@ -54,12 +54,14 @@ Use these entry points when reading `teamfoundry.ai`:
 
 | Path | Use for |
 | --- | --- |
+| `docs/app-execution.md` | Execution agent guide (framework baseline) |
 | `docs/framework.md` | Core APP concepts and layer model |
 | `docs/agent-skills-integration.md` | Agent Skills compatibility |
 | `docs/naming.md` | APP naming and ASP pivot context |
 | `schema/app-manifest-v0.1.md` | Draft manifest shape |
-| `examples/trading-coach-mini/` | Miniature APP pack example |
-| `examples/teamfoundry-employee-base/` | TFY realignment pilot example and design sketch |
+| `examples/` | APP distribution repo root (POC); `trading-coach.app/` |
+| `examples/trading-coach.app/` | TradingCoach APP instance (full legacy translation) |
+| `sketches/teamfoundry-employee-base/` | Deferred TFY pilot design sketch |
 
 Example READMEs describe pack intent and design. They are not status trackers. Check the plan document for what exists on disk and what to do next.
 

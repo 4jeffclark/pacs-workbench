@@ -1,0 +1,29 @@
+appVersion: '0.1'
+kind: playbook
+id: source-profile
+packId: trading-coach
+version: 1.1.0
+description: Datastore inventory and quality profile for a confirmed scope
+playbookReportId: SourceProfile
+inputs:
+  evaluation:
+    type: boolean
+    default: true
+requires:
+- workflow: ../../layer0-workflows/datastore-merge-and-validate
+- workflow: ../../layer0-workflows/structured-input-discovery
+uses:
+- skill: ../../layer1-skills/datastore-inventory
+overlays:
+- id: source-profile-evaluation
+  path: overlays/source-profile-evaluation.md
+  kind: evaluation
+  when: evaluation
+outputs:
+  primary:
+    type: report
+    pathTemplate: '{userDatastore}/reports/{timestamp}-SourceProfile-{{analysisPeriodStart}}-{{analysisPeriodEnd}}/Report.md'
+    contract: contracts/report-artifact-contract.md
+  runManifest:
+    type: run-record
+    pathTemplate: '{userDatastore}/reports/{timestamp}-SourceProfile-{{analysisPeriodStart}}-{{analysisPeriodEnd}}/run-manifest.yaml'

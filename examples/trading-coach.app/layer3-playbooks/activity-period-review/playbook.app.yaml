@@ -1,0 +1,32 @@
+appVersion: '0.1'
+kind: playbook
+id: activity-period-review
+packId: trading-coach
+version: 1.1.0
+description: Evaluate trading activity over a confirmed day or multi-day period
+playbookReportId: ActivityPeriodReview
+inputs:
+  evaluation:
+    type: boolean
+    default: true
+requires:
+- workflow: ../../layer0-workflows/datastore-merge-and-validate
+- workflow: ../../layer0-workflows/structured-input-discovery
+- workflow: ../../layer0-workflows/period-scope-confirmation
+uses:
+- skill: ../../layer1-skills/trading-activity-analysis
+embeds:
+- skill: ../../layer1-skills/market-environment
+overlays:
+- id: activity-evaluation
+  path: overlays/activity-evaluation.md
+  kind: evaluation
+  when: evaluation
+outputs:
+  primary:
+    type: report
+    pathTemplate: '{userDatastore}/reports/{timestamp}-ActivityPeriodReview-{{analysisPeriodStart}}-{{analysisPeriodEnd}}/Report.md'
+    contract: contracts/report-artifact-contract.md
+  runManifest:
+    type: run-record
+    pathTemplate: '{userDatastore}/reports/{timestamp}-ActivityPeriodReview-{{analysisPeriodStart}}-{{analysisPeriodEnd}}/run-manifest.yaml'

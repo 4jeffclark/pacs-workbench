@@ -4,9 +4,11 @@ This is a sketch of the first AgentPlaybookPack manifest shape.
 
 The goal is to describe pack-level identity, playbook composition, skill dependencies, overlays, contracts, outputs, and compatibility without replacing Agent Skills metadata.
 
+Execution agents resolve layout from `docs/app-execution.md` (framework) and each pack's `APP-EXECUTION.md` (instance copy). Manifests do not repeat path roots when using the canonical layout.
+
 ## Pack Manifest
 
-Recommended filename:
+Recommended filename (inside `{packId}.app/`):
 
 ```text
 pack.app.yaml
@@ -29,16 +31,10 @@ compatibility:
     - cursor
     - openclaw
 
-paths:
-  playbooks: playbooks/
-  skills: skills/
-  workflows: workflows/
-  overlays: overlays/
-  contracts: contracts/
-
+# Canonical layout is convention (see docs/app-execution.md). Omit paths when standard.
 playbooks:
-  - id: aggregate-state-review
-    path: playbooks/aggregate-state-review/playbook.app.yaml
+  - aggregate-state-review
+  - environment-review
 ```
 
 ## Playbook Manifest
@@ -69,11 +65,11 @@ inputs:
     type: date
 
 requires:
-  - workflow: workflows/input-discovery
-  - workflow: workflows/scope-confirmation
+  - workflow: layer0-workflows/input-discovery
+  - workflow: layer0-workflows/scope-confirmation
 
 uses:
-  - skill: ../../skills/normalize-broker-csv
+  - skill: ../../layer1-skills/normalize-broker-csv
   - skillRef:
       type: git
       uri: https://github.com/example/finance-agent-skills.git
@@ -97,9 +93,9 @@ gates:
 outputs:
   primary:
     type: report
-    pathTemplate: reports/{timestamp}-{playbookId}-{scope}/Report.md
-  manifest:
-    pathTemplate: reports/{timestamp}-{playbookId}-{scope}/Manifest.md
+    pathTemplate: "{userDatastore}/reports/{timestamp}-{playbookId}-{scope}/Report.md"
+  runManifest:
+    pathTemplate: "{userDatastore}/reports/{timestamp}-{playbookId}-{scope}/run-manifest.yaml"
 ```
 
 ## Manifest Kinds

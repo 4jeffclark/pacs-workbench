@@ -24,10 +24,10 @@ When a pack needs a reusable capability, it should prefer one of these forms:
 
 ## Local Skills
 
-Local skills use the agentskills.io structure:
+Local skills use the agentskills.io structure. In a materialized APP pack, skills live under the canonical folder `layer1-skills/` (fixed by convention — see [`app-execution.md`](app-execution.md)):
 
 ```text
-skills/
+layer1-skills/
   skill-name/
     SKILL.md
     references/
@@ -41,7 +41,7 @@ APP manifests may reference the skill by path:
 
 ```yaml
 uses:
-  - skill: ./skills/normalize-broker-csv
+  - skill: ../../layer1-skills/normalize-broker-csv
     role: normalize source data
 ```
 

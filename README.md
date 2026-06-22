@@ -1,18 +1,21 @@
 # AgentPlaybookPack
 
-AgentPlaybookPack, abbreviated APP, is an open framework for packaging complete agent-run domain workflows.
+AgentPlaybookPack, abbreviated **APP**, is an open framework for packaging complete agent-run domain workflows.
 
-APP is intentionally positioned above the Agent Skills layer. Agent Skills define portable capability units. APP defines how domain playbooks compose skills, tools, workflows, contracts, gates, overlays, and outputs into repeatable user-intent jobs.
+APP sits above the [Agent Skills](https://agentskills.io) layer. Skills define portable capability units. APP defines how domain playbooks compose skills, tools, workflows, contracts, gates, overlays, and outputs into repeatable user-intent jobs.
 
-## Active Program
+This repository is the **APP standards storefront**: framework docs, manifest schema, reference distribution examples, and Pack Store design.
 
-The current active work in this repository is the TeamFoundry stack realignment program:
+## Start Here
 
-- Start here: [`docs/tfy-stack-realignment/README.md`](docs/tfy-stack-realignment/README.md)
-- Vision: [`docs/tfy-stack-realignment/teamfoundry-stack-realignment-vision.md`](docs/tfy-stack-realignment/teamfoundry-stack-realignment-vision.md)
-- Plan: [`docs/tfy-stack-realignment/teamfoundry-stack-realignment-plan.md`](docs/tfy-stack-realignment/teamfoundry-stack-realignment-plan.md)
-
-During this phase, `agent-playbook-pack` is the temporary architecture workbench for APP and TeamFoundry alignment. `teamfoundry.ai` should remain a read-only reference repo on adjacent workstations unless explicitly moving into the later integration phase.
+| Audience | Read |
+| --- | --- |
+| Authors and integrators | [`docs/framework.md`](docs/framework.md) |
+| Execution agents | [`docs/app-execution.md`](docs/app-execution.md) |
+| Full standards index | [`docs/README.md`](docs/README.md) |
+| Manifest shape | [`schema/app-manifest-v0.1.md`](schema/app-manifest-v0.1.md) |
+| Reference packs | [`examples/`](examples/) — APP distribution repo shape (`README.md` + `*.app/`) |
+| Pack Store | [`store/README.md`](store/README.md) |
 
 ## Why This Exists
 
@@ -23,7 +26,7 @@ Agent ecosystems already have strong primitives:
 - OpenAPI and JSON Schema describe external APIs and structured data.
 - Agent runtimes provide orchestration, memory, delegation, and execution.
 
-APP is not a replacement for those layers. It is a product and workflow packaging layer that helps agents answer a larger question:
+APP is not a replacement for those layers. It answers a larger question:
 
 > What should happen end to end when a user asks for a domain outcome?
 
@@ -31,62 +34,73 @@ APP is not a replacement for those layers. It is a product and workflow packagin
 
 An AgentPlaybookPack is a runtime-neutral domain package containing:
 
-- Playbooks: user-intent workflows
-- Skills: granular Agent Skills-compatible capabilities
-- Workflows: shared lifecycle steps such as input discovery and scope confirmation
-- Overlays: optional augmentations such as evaluation, advisory, policy, or presentation variants
-- Contracts: data, output, persistence, and governance rules
-- Manifests: structured metadata for discovery, composition, and run records
-- Examples: reference packs and expected outputs
+- **Playbooks** — user-intent workflows
+- **Skills** — granular Agent Skills-compatible capabilities (`layer1-skills/`)
+- **Workflows** — shared lifecycle steps such as input discovery and scope confirmation
+- **Overlays** — optional augmentations such as evaluation, advisory, or presentation variants
+- **Contracts** — data, output, persistence, and governance rules
+- **Manifests** — structured metadata for discovery, composition, and run records
 
 ## Relationship To Agent Skills
 
-APP uses the agentskills.io structure explicitly for its granular skill layer.
-
-Local skills can be stored as Agent Skills directories:
+APP uses agentskills.io explicitly for its skill layer. Inside a materialized pack instance:
 
 ```text
-skills/
-  normalize-broker-csv/
-    SKILL.md
-    references/
-    scripts/
-    assets/
+trading-coach.app/
+  layer1-skills/
+    normalize-broker-csv/
+      SKILL.md
+      references/
+      scripts/
+      assets/
 ```
 
-Packs can also reference skills from public repositories, private registries, or literal inline definitions when a full local skill directory is not needed.
+Packs may also reference external skills from public hubs, private registries, or literal inline definitions.
 
-## Proposed Layering
+## Layer Model
 
 ```text
 Layer 4  Pack Store      discovery, trust, versioning, distribution
-Layer 3  Playbooks       user-intent workflows
-Layer 2  Overlays        optional augmentations
-Layer 1  Skills          agentskills.io-compatible capability units
-Layer 0  Workflows       lifecycle infrastructure and gates
-Runtime  Tools           MCP, APIs, shell, browser, databases
+Layer 3  Playbooks       user-intent workflows       layer3-playbooks/
+Layer 2  Overlays        optional augmentations        layer2-overlays/; playbook overlays/
+Layer 1  Skills          agentskills.io capability     layer1-skills/
+Layer 0  Workflows       lifecycle infrastructure      layer0-workflows/
+Runtime  Tools           MCP, APIs, shell, browser
 ```
+
+Cross-cutting `contracts/` and `gates/` live at the pack instance root. Canonical layout is fixed by convention — see [`docs/app-execution.md`](docs/app-execution.md).
 
 ## Repository Shape
 
 ```text
 README.md
-docs/
+docs/                     # APP standards (see docs/README.md)
   framework.md
+  app-execution.md
   agent-skills-integration.md
-  pack-store.md
   naming.md
-  tfy-stack-realignment/
+  pack-store.md
+  tfy-stack-realignment/  # temporary workbench program (outlier)
 schema/
   app-manifest-v0.1.md
-examples/
-  trading-coach-mini/
+examples/                 # reference APP distribution repo: README.md + *.app/
+  trading-coach.app/
+sketches/                 # non-published design sketches
+store/                    # Pack Store design home
 tools/
-  tfy-simulator/
-store/
-  README.md
+  migrate-trading-coach.py
+  tfy-simulator/          # TFY workbench tool (outlier)
 ```
+
+## Active Workbench Program
+
+TeamFoundry stack realignment is in progress in this repo as a **temporary architecture workbench**:
+
+- [`docs/tfy-stack-realignment/README.md`](docs/tfy-stack-realignment/README.md)
+- Plan: [`docs/tfy-stack-realignment/teamfoundry-stack-realignment-plan.md`](docs/tfy-stack-realignment/teamfoundry-stack-realignment-plan.md)
+
+During this phase, `teamfoundry.ai` remains read-only on adjacent workstations. Accepted APP standards belong in `docs/`, `schema/`, and `examples/` — not only in the realignment folder.
 
 ## Status
 
-APP is an active framework repository. General framework docs and examples exist, and the TeamFoundry stack realignment program is the current priority for architecture and pilot work.
+APP standards baseline and a full reference pack (`examples/trading-coach.app/`) exist. Pack Store listing format and a reference executor are next. See the realignment plan for program status.

@@ -1,0 +1,37 @@
+appVersion: '0.1'
+kind: playbook
+id: environment-review
+packId: trading-coach
+version: 1.0.0
+description: Market regime analyst for a confirmed period and optional portfolio linkage
+playbookReportId: EnvironmentReview
+inputs:
+  evaluation:
+    type: boolean
+    default: true
+  marketDepth:
+    type: enum
+    values:
+    - summary
+    - full
+    default: full
+requires:
+- workflow: ../../layer0-workflows/datastore-merge-and-validate
+- workflow: ../../layer0-workflows/structured-input-discovery
+- workflow: ../../layer0-workflows/period-scope-confirmation
+uses:
+- skill: ../../layer1-skills/market-environment
+outputs:
+  primary:
+    type: report
+    pathTemplate: '{userDatastore}/reports/{timestamp}-EnvironmentReview-{{analysisPeriodStart}}-{{analysisPeriodEnd}}/Report.md'
+    contract: contracts/report-artifact-contract.md
+  runManifest:
+    type: run-record
+    pathTemplate: '{userDatastore}/reports/{timestamp}-EnvironmentReview-{{analysisPeriodStart}}-{{analysisPeriodEnd}}/run-manifest.yaml'
+  artifacts:
+  - Manifest.md
+  - Report.md
+  - MarketResearch.md
+  - InputSummary.md
+  - Metrics.csv

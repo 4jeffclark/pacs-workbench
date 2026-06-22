@@ -1,21 +1,23 @@
-# Pack Store Placeholder
+# APP Pack Store
 
-This folder is a placeholder for future Pack Store design material.
+Home for Pack Store design in the [AgentPlaybookPack](https://github.com/4jeffclark/agent-playbook-pack) standards repo.
 
-Possible future contents:
+A Pack Store indexes AgentPlaybookPacks and helps runtimes and humans discover, evaluate, install, and trust domain workflow packages.
 
-```text
-store/
-  listing.schema.json
-  trust-model.md
-  validation-rules.md
-  examples/
-    trading-coach.listing.yaml
-```
+## Standards
 
-## Initial Store Concept
+Full store design: [`../docs/pack-store.md`](../docs/pack-store.md)
 
-A Pack Store indexes AgentPlaybookPacks and helps runtimes answer:
+Related APP standards:
+
+| Topic | Location |
+| --- | --- |
+| Pack shape and layers | [`../docs/framework.md`](../docs/framework.md) |
+| Instance layout | [`../docs/app-execution.md`](../docs/app-execution.md) |
+| Manifest fields | [`../schema/app-manifest-v0.1.md`](../schema/app-manifest-v0.1.md) |
+| Reference distribution repo | [`../examples/`](../examples/) |
+
+## What A Store Answers
 
 - What packs are available?
 - Which playbooks do they provide?
@@ -25,4 +27,22 @@ A Pack Store indexes AgentPlaybookPacks and helps runtimes answer:
 - Which versions are trusted or validated?
 - Are they compatible with this runtime?
 
-The store should complement existing Agent Skills hubs by indexing higher-level playbook packs and their dependencies.
+The store complements Agent Skills hubs by indexing higher-level playbook packs and their dependencies.
+
+## Planned Contents
+
+```text
+store/
+  README.md                 # this file
+  examples/
+    trading-coach.listing.yaml   # future: derived from pack manifest
+  listing.schema.json       # future
+  trust-model.md            # future
+  validation-rules.md       # future
+```
+
+Listings should be derivable from `pack.app.yaml` plus publisher metadata. See [`pack-store.md`](../docs/pack-store.md) for draft listing fields.
+
+## Status
+
+Design draft only. No registry, validator, or hosted listings yet. Reference pack: [`../examples/trading-coach.app/`](../examples/trading-coach.app/).

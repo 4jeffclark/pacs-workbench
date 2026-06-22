@@ -58,22 +58,30 @@ APP is not:
 ```text
 Layer 3  Playbooks
   User-intent workflows. They compose skills, workflows, contracts, and overlays.
+  Pack folder: layer3-playbooks/
 
 Layer 2  Overlays
   Optional augmentations. They modify output or process without changing the core intent.
+  Pack folder: layer2-overlays/ (pack-level); layer3-playbooks/<id>/overlays/ (playbook-scoped)
 
 Layer 1  Skills
   Granular capability units. APP should prefer agentskills.io-compatible directories.
+  Pack folder: layer1-skills/
 
 Layer 0  Workflows
   Reusable execution infrastructure: discovery, input resolution, gates, validation, scope.
+  Pack folder: layer0-workflows/
 ```
+
+Cross-cutting pack folders `contracts/` and `gates/` are not layer-numbered. Each pack lives in a self-contained `{packId}.app/` folder. APP distribution repos contain only `README.md` and `*.app/` at repo root.
+
+**Execution agents:** read [`app-execution.md`](app-execution.md) (framework) and each pack's `APP-EXECUTION.md` (instance copy). Layout and discovery rules are normative in those guides. See [`README.md`](README.md) for the full standards index.
 
 The pack may also describe tool requirements, but tool implementations belong to runtimes or tool protocols such as MCP.
 
 ## Invocation Model
 
-Users invoke playbooks in natural language.
+Users invoke playbooks in natural language. At the platform boundary, execution requires an APP repo address, a directive (pack + playbook or intent), and optional partial inputs; the executing agent mediates missing parameters.
 
 The agent or runtime should:
 

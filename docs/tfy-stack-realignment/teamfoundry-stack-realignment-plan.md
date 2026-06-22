@@ -6,54 +6,21 @@ Program bootstrap and read order live in `README.md`.
 
 ## Current Focus
 
-**Phase:** First pilot materialization and simulator validation.
+**Phase:** Pillar 1 POC — TradingCoach APP prototype.
 
-**Accepted pilot:** `examples/teamfoundry-employee-base/` derived from TFY `teamfoundry-employee` cast v1.0.5.
+**Process:** Iterate the prototype in the repo. Do not update this plan, design docs, or decision logs during exploratory POC work. When the POC is complete, update pillar 1 here with design lessons learned.
 
-**Now:**
+**Active work:** See **POC** under pillar 1 below.
 
-- Treat `examples/teamfoundry-employee-base/` as the active pilot example.
-- Use only pilot files listed under **Pilot Materialization Status** below unless a task explicitly adds more.
-- Keep `teamfoundry.ai` read-only.
-- Extend simulator design in `tfy-design.md`; implement automated simulator only when a bounded task is assigned.
-
-**Next:**
-
-- Materialize `contracts/backup-artifact-contract.md` for the accepted pilot.
-- Re-run or refresh the hand preview after new pilot files land.
-- Record Accepted schema decisions only after pilot pressure justifies them.
-
-**Not Yet:**
-
-- TFY repo integration or importer implementation
-- Production OpenClaw adapter implementation
-- Broad APP schema changes without pilot pressure
-- Rewriting the vision document
+**Deferred:** `sketches/teamfoundry-employee-base/` and `tools/tfy-simulator/` until after the Pillar 1 POC.
 
 ## Pilot Materialization Status
 
-Track example and preview file status here, not in README files.
+**APP distribution repo (workbench):** `examples/` — `README.md` + `trading-coach.app/` only.
 
-**Accepted pilot:** `examples/teamfoundry-employee-base/`
+**TradingCoach:** Full legacy translation materialized (5 playbooks, 23 skills, 3 workflows, 6 overlays, contracts, gates). Regenerate with `tools/migrate-trading-coach.py` (read-only source: `C:\code\trading-coach`).
 
-| Path | Status |
-| --- | --- |
-| `pack.app.yaml` | Materialized |
-| `playbooks/daily-backup/playbook.app.yaml` | Materialized |
-| `skills/backup-to-hq-zip/SKILL.md` | Materialized |
-| Other playbooks, skills, workflows, contracts, overlays | Sketch only in example README |
-
-**Simulator preview:**
-
-| Path | Status |
-| --- | --- |
-| `tools/tfy-simulator/input/daily-backup-preview.yaml` | Hand-authored input spec |
-| `tools/tfy-simulator/output/` | Hand-authored preview artifacts |
-| Automated simulator implementation | Not started |
-
-**Suggested next materialization:** `contracts/backup-artifact-contract.md`
-
-Do not assume pilot files exist unless listed as materialized above or verified on disk.
+**Deferred pilot sketch:** `sketches/teamfoundry-employee-base/`
 
 ## Working Assumptions
 
@@ -204,9 +171,8 @@ Do not record program coordination, documentation process, or pilot selection he
 **Pattern:**
 
 1. Pilot examples may use provisional manifest fields.
-2. Log new field ideas as **Proposed** rows in the APP Design Decision Log until a pilot validates them.
-3. Promote fields to **Accepted** only when the pilot exposes a real gap that the baseline schema cannot express.
-4. Update `schema/app-manifest-v0.1.md` and `app-design.md` only after acceptance.
+2. Record **Accepted** rows in the APP Design Decision Log only after a pilot validates a field or pattern.
+3. Update `schema/app-manifest-v0.1.md` and `app-design.md` only after acceptance.
 
 **Guardrails:**
 
@@ -286,7 +252,7 @@ Create or update a design document when a concept becomes too detailed for this 
 
 ## Design Decision Log
 
-Record **product and architecture design** decisions here by primary ownership. Status values: `Proposed`, `Accepted`, `Superseded`.
+Record **accepted** product and architecture design decisions here by primary ownership. Only `Accepted` rows belong in these tables; open questions resolve in POC work or graduate here when accepted.
 
 Do not use this section for program process (status tracking, README rules, pilot selection, or documentation layout). Those live in **Current Focus**, accepted work patterns, and pillar planning notes.
 
@@ -294,17 +260,42 @@ Do not use this section for program process (status tracking, README rules, pilo
 
 | Date | Status | Decision | Impact |
 | --- | --- | --- | --- |
-| 2026-06-20 | Proposed | Allow `schedule` on playbook manifests during the pilot. | Do not generalize into `schema/app-manifest-v0.1.md` until preview validates. |
-| 2026-06-20 | Proposed | Playbook inputs may declare `resolveFrom` assembly-context references. | Document in pilot and `app-design.md` if accepted after simulator validation. |
-| 2026-06-20 | Proposed | Allow pack `compatibility.consumptionProfile` during the pilot. | No global schema until simulator preview and Forge composition review. |
-| 2026-06-20 | Proposed | Undecided: `identity-context-loaded` in APP gates vs TFY-only precondition. | Resolve at `session-readiness` materialization or simulator preview. |
-| 2026-06-20 | Proposed | Skills describe backup scope as engine-neutral categories, not paths or scripts. | Adapters map categories; may update skill guidance after preview. |
-| 2026-06-20 | Proposed | Undecided: retention tiers in skill, output contract, or both. | Resolve when materializing `contracts/backup-artifact-contract.md`. |
+| 2026-06-21 | Accepted | APP repo holds **behavior only**: no user datastore contents, run archives, or broker data committed as part of normal pack operation. Local APP install is a read-only working copy of published behavior. | Separates behavior contract from user state; replaces git-as-live-workspace model. |
+| 2026-06-21 | Accepted | All persistent and working paths use **logical roles** (`userDatastore`, `agentWorkspace`) in contracts, skills, and output templates—not repo-relative paths or engine adapters like `trading-coach/reports`. | Executing agent binds roles from pack-level inputs at runtime. |
+| 2026-06-21 | Accepted | APP packs are **user-agnostic**; user-specific history, inputs, and saved reports live only in the bound user datastore. | Replaces single-user product-repo conflation. |
+| 2026-06-21 | Accepted | Granular procedures use **Agent Skills** (`skills/<name>/SKILL.md`); ASP `capabilities/` + `capabilityKind` are not an APP standard. | Migration converts capabilities to skills; APP manifests reference skills only. |
+| 2026-06-21 | Accepted | **`pack.app.yaml` is the primary manifest**; playbooks use `playbook.app.yaml`. Retire `.asp.yaml`, per-artifact `productId`, and scattered product identity. | Centralizes pack identity, inputs, paths, and playbook index. |
+| 2026-06-21 | Accepted | **Framework docs live in `agent-playbook-pack`**; domain packs ship as `{packId}.app/` instances in APP distribution repos, not as framework hosts. | Replaces `AgenticSkillPackREADME.md` co-located in product repo. |
+| 2026-06-21 | Accepted | **Git is not an APP execution requirement.** Version control may back a user datastore if the user chooses; APP does not require commit-on-run, inventory files, or git transactions. | Decouples execution from git workflow. |
+| 2026-06-21 | Accepted | **Manifest-first bootstrap**: `pack.app.yaml` + minimal pack README + referenced manifests/contracts are sufficient entry; large execution constitutions decompose into `workflows/`, `gates/`, and `contracts/`. | Replaces multi-doc read chain (`PROJECT.md`, git protocol, etc.) as mandatory bootstrap. |
+| 2026-06-21 | Accepted | **No engine-specific wiring in APP repos** (e.g. `.cursor/rules`, engine-named adapters in manifests). Consumer platforms own runtime integration. | Keeps APP runtime-neutral; integration lives in TFY/Cursor/OpenClaw consumer. |
+| 2026-06-21 | Accepted | **Durable rules live under `contracts/`**; playbooks and skills reference contract files by path. Root-level ad hoc contract docs are not the APP pattern. | Consolidates `DATASTORE_CONTRACT.md`, report rules, taxonomy, etc. into `contracts/`. |
+| 2026-06-21 | Accepted | **Prompt-first execution with optional workspace artifacts**: default path is skill procedures in markdown; agent workspace may hold intermediate files and ephemeral scripts; durable outputs go to user datastore. | Supersedes strict no-script-during-runs rule where workspace intermediates are needed. |
+| 2026-06-21 | Accepted | **Structured run manifest** (YAML/JSON per APP schema) is the canonical run record; human-readable `Manifest.md` in report folders is an optional derivative. | Enables reference executor and programmatic consumption. |
+| 2026-06-21 | Accepted | **Playbook-scoped overlays are allowed** (`layer3-playbooks/<id>/overlays/`); legacy `treatments/` redirect layer is dropped; canonical playbook ids from legacy (e.g. `aggregate-state-review`) are preserved. | Aligns overlay placement with APP while keeping legacy intent names. |
+| 2026-06-21 | Accepted | Execution uses two data locations arbitrated by the executing agent: **agent workspace** (agent-controlled temp/intermediate artifacts) and **user datastore** (user-controlled persistent APP data). Neither belongs in the APP repo. | Fixes TradingCoach-style conflation of persistent data with repo contents; contracts reference logical roles, not repo paths. |
+| 2026-06-21 | Accepted | High-level APP dependencies (including datastore and workspace bindings) are declared as **pack-level inputs** in top-level APP metadata (`pack.app.yaml`). | Executing agent resolves concrete paths/locations before playbook execution; playbook inputs remain workflow-specific. |
+| 2026-06-21 | Accepted | APP repos are public distribution units; client agent platforms pull read-only copies on their own schedule into a local APP install (no live repo tracking or dev-time coupling). | Consumers own update cadence and local layout; APP repo is the authoritative published source. |
+| 2026-06-21 | Accepted | An APP repo must be self-sufficient: repo `README.md` indexes `*.app/` packs; each instance provides bootstrapping context for pack discovery and playbook use. | Instance layout and entry guidance must not depend on external TFY or consumer-specific docs for routine operation. |
+| 2026-06-21 | Accepted | Playbook inputs may declare `resolveFrom` referencing **pack-level input ids** or named logical roles (e.g. `userDatastore`). Consumer-specific assembly paths are not APP manifest vocabulary. | Executing agent or consumer adapter binds values; TFY deployment context stays outside APP. |
+| 2026-06-21 | Accepted | Skills describe **engine-neutral scope and intent** (categories, artifact shapes, procedures)—not concrete paths, scripts, or engine inventory locations. | Adapters and executing agents map scope to runtime surfaces; aligns with logical-role data locations. |
+| 2026-06-21 | Accepted | Pack implementation folders use **layer-prefixed names**: `layer0-workflows/`, `layer1-skills/`, `layer2-overlays/`, `layer3-playbooks/`. Cross-cutting `contracts/` and `gates/` stay unprefixed at pack root. Playbook-scoped overlays live under `layer3-playbooks/<id>/overlays/`. | `pack.app.yaml` `paths` block declares roots; sort order matches framework layers 0–3. |
+| 2026-06-21 | Accepted | Each APP instance is **self-contained** in `{packId}.app/` (e.g. `trading-coach.app/`). All pack behavior, layer folders, and `pack.app.yaml` live inside that directory. | Consumers address one folder per pack; supports multi-pack APP repos. |
+| 2026-06-21 | Accepted | **`layer1-skills/` holds referenced skills in agentskills.io format** (`<skill-name>/SKILL.md`, optional `references/`, `scripts/`, `assets/`). | APP composes skills; does not redefine skill packaging. |
+| 2026-06-21 | Accepted | **APP distribution repos** contain only `README.md` (pack index) and one or more `*.app/` instance folders at repo root—no other top-level files. | Clean pull target for client platforms; repo README indexes available packs. |
+| 2026-06-21 | Accepted | **Execution interface** is three inputs: APP repo address, execution directive (target pack and playbook), and optional partial input params. The executing agent mediates all missing pack-level, playbook-level, and infrastructure bindings during the run. | No multi-doc bootstrap or consumer-specific wiring required at invoke time; aligns with manifest-first packs and input-discovery workflows. |
+| 2026-06-21 | Accepted | Each APP instance **owns its user datastore layout** via pack contracts (e.g. `contracts/user-datastore-layout.md`); TradingCoach preserves legacy `data/` and `reports/` structure under `{userDatastore}/`. | Pack-specific persistence conventions stay with the pack, not the framework. |
+| 2026-06-21 | Accepted | Workbench path `examples/` models an APP distribution repo root (`README.md` + `*.app/` only) for the TradingCoach POC. | Aligns execution interface testing with published repo shape. |
+
+| 2026-06-21 | Accepted | **Canonical instance layout is convention, not manifest.** Only `pack.app.yaml` and `playbook.app.yaml` are APP manifests; layer folders, contracts, gates, and workflows use markdown only; skills use `SKILL.md`. Omit `paths:` and playbook paths when using standard layout. | Executors resolve fixed folder names; playbook index is id list only. |
+| 2026-06-21 | Accepted | **`docs/app-execution.md`** is the framework execution-agent guide; each `{packId}.app/` instance includes **`APP-EXECUTION.md`** so pulled APP repos are self-sufficient without the workbench. | Separates runtime instructions from `app-design.md` development design. |
 
 ### TFY Design Decision Log
 
 | Date | Status | Decision | Impact |
 | --- | --- | --- | --- |
+| 2026-06-21 | Accepted | Identity, persona, and deployment-context preconditions (e.g. `identity-context-loaded`) are **TFY assembly scope**, not APP pack gates. | APP gates cover behavior-contract preconditions only; TFY resolves identity before playbook execution. |
+| 2026-06-21 | Accepted | Pack `consumptionProfile` (composition role, compose order, required assembly context) is **TFY consumer metadata** for Forge/HQ ingestion—not core APP schema. | APP stays runtime-neutral; TFY ingestion layer owns composition metadata. |
 | 2026-06-20 | Accepted | Translation is TFY-owned via assistant assembly; OpenClaw is first adapter target. | Design in `tfy-design.md`; APP stays runtime-neutral. |
 
 ## Status Legend
@@ -322,21 +313,27 @@ Do not use this section for program process (status tracking, README rules, pilo
 
 **Objective:** Define APP as the neutral behavior contract between granular Agent Skills and assistant systems.
 
+**POC:**
+
+Baseline pillar 1 by completing a rapid but complete TradingCoach APP prototype in this repo:
+
+1. ~~Translate the TradingCoach legacy project into a materialized `trading-coach.app/` instance~~ **Done** — `examples/trading-coach.app/` (regenerate: `tools/migrate-trading-coach.py`).
+2. Build a reference execution implementation in this repo (not the TFY simulator) that can drive a playbook end-to-end.
+3. Point an existing TFY agent at the repo and execute one TradingCoach playbook as the initial consumption pilot.
+
 **Planning Notes:**
 
 - Current baseline lives in `app-design.md`.
-- The shared behavior contract includes pack identity, playbook intent, inputs, skill references, workflows, gates, overlays, contracts, outputs, run manifest, and consumption profile expectations.
 - General APP framework references remain in `docs/framework.md`, `docs/agent-skills-integration.md`, and `schema/app-manifest-v0.1.md` until design content graduates.
-- APP must be complete enough for TeamFoundry to ingest without requiring TFY persona or deployment context inside the pack definition.
+- Capture design lessons learned in this pillar after POC completion; defer schema promotion and decision-log updates until then.
 
 **Decisions:**
 
-- See **APP Design Decision Log**.
+- See **APP Design Decision Log** (updates deferred until POC completion).
 
 **Next Actions:**
 
-- Validate which pilot fields beyond the current baseline are required for `daily-backup`.
-- Promote Proposed schema decisions to Accepted only after simulator preview.
+- Complete the POC above. Update this pillar with outcomes when done.
 
 ## 2. TFY Skills Migration To APP-Compatible Skills
 
@@ -358,25 +355,22 @@ Do not use this section for program process (status tracking, README rules, pilo
 
 ## 3. Base Persona And Employee Behavior Realignment
 
-**Status:** Drafting
+**Status:** Deferred
 
 **Objective:** Separate foundational TeamFoundry constructs such as TeamFoundry Employee into identity, reusable behavior, runtime activation, and operational governance units.
 
 **Planning Notes:**
 
-- Active pilot: `examples/teamfoundry-employee-base/`.
-- APP owns portable operating workflows such as backup, routing, signing, and session readiness intent.
-- TFY owns identity placeholders, handbook, memories, deployment config, and runtime activation artifacts.
-- See the pilot README boundary table as the working artifact for this pillar.
+- Deferred until after Pillar 1 POC.
+- Working sketch: `sketches/teamfoundry-employee-base/README.md`.
 
 **Decisions:**
 
-- Accepted pilot: **Current Focus** and pillar 7.
+- TBD
 
 **Next Actions:**
 
-- Use the pilot boundary table to refine what remains TFY-owned during materialization.
-- Defer role-specific cast behavior to later pilots or separate APP packs.
+- TBD
 
 ## 4. APP-To-Engine Translation Layer
 
@@ -397,8 +391,7 @@ Do not use this section for program process (status tracking, README rules, pilo
 
 **Next Actions:**
 
-- Produce simulator input spec for `examples/teamfoundry-employee-base/pack.app.yaml` and `playbooks/daily-backup/playbook.app.yaml`.
-- Run one preview through ingest, resolve, assemble, translate, and report.
+- Deferred until after Pillar 1 POC.
 
 ## 5. TFY Assistant Construction Model
 
@@ -438,35 +431,22 @@ Do not use this section for program process (status tracking, README rules, pilo
 
 ## 7. Pilot Migration
 
-**Status:** Ready For Pilot
+**Status:** Deferred
 
 **Objective:** Select one concrete TeamFoundry behavior to test whether APP can represent reusable assistant behavior and whether TeamFoundry can translate it into an engine-specific assistant instance.
 
-**Accepted Pilot:**
-
-- `examples/teamfoundry-employee-base/` from TFY `teamfoundry-employee` cast v1.0.5
-
-**Deferred Candidates:**
-
-- Warren or another investment-advisor assistant behavior
-- Portfolio analysis or market report behavior
-- HQ request intake behavior
-
 **Planning Notes:**
 
-- Full pilot design sketch lives in `examples/teamfoundry-employee-base/README.md`.
-- Materialization and simulator preview status live in **Pilot Materialization Status**.
-- Hypothesis remains partially validated; self-contained APP preview still blocked by missing contracts and skills.
+- Initial consumption pilot is folded into Pillar 1 POC (TradingCoach playbook execution via existing TFY agent).
+- TFY employee-base migration deferred; sketch at `sketches/teamfoundry-employee-base/`.
 
 **Decisions:**
 
-- Accepted pilot: **Current Focus** and pillar 7.
+- TBD
 
 **Next Actions:**
 
-- Materialize `contracts/backup-artifact-contract.md`.
-- Refresh hand preview after new pilot files land.
-- Materialize the next pilot unit only after reviewing preview results.
+- TBD
 
 ## 8. Wind-Down Of Multi-Repo Mode
 

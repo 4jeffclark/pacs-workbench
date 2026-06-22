@@ -1,0 +1,84 @@
+appVersion: '0.1'
+kind: playbook
+id: aggregate-state-review
+packId: trading-coach
+version: 2.0.0
+description: Portfolio aggregate state, change, and optional overlays
+playbookReportId: AggregateStateReview
+inputs:
+  evaluation:
+    type: boolean
+    default: true
+  rollupLens:
+    type: enum
+    values:
+    - standards
+    - theme
+    - thesis
+    default: theme
+  compositionReview:
+    type: boolean
+    default: true
+  rebalancingReview:
+    type: boolean
+    default: false
+  riskReview:
+    type: boolean
+    default: false
+requires:
+- workflow: ../../layer0-workflows/datastore-merge-and-validate
+- workflow: ../../layer0-workflows/structured-input-discovery
+- workflow: ../../layer0-workflows/period-scope-confirmation
+uses:
+- skill: ../../layer1-skills/holdings-standards-map
+- skill: ../../layer1-skills/holdings-map-confirmation
+- when: rollupLens in [theme, thesis]
+  skill: ../../layer1-skills/theme-map-inference
+- when: rollupLens in [theme, thesis]
+  skill: ../../layer1-skills/theme-map-confirmation
+- when: rollupLens == thesis
+  skill: ../../layer1-skills/thesis-registry-inference
+- when: rollupLens == thesis
+  skill: ../../layer1-skills/thesis-registry-confirmation
+- skill: ../../layer1-skills/portfolio-holdings-state
+- skill: ../../layer1-skills/period-weight-reconstruction
+- skill: ../../layer1-skills/portfolio-weights-table
+- skill: ../../layer1-skills/thesis-health
+- skill: ../../layer1-skills/portfolio-period-flows
+- skill: ../../layer1-skills/portfolio-evolution
+- skill: ../../layer1-skills/portfolio-liquidity-analysis
+- skill: ../../layer1-skills/portfolio-concentration-resilience
+embeds:
+- skill: ../../layer1-skills/market-environment
+references:
+- playbook: environment-review
+  when: full market depth
+overlays:
+- id: portfolio-evaluation
+  path: overlays/portfolio-evaluation.md
+  kind: evaluation
+  when: evaluation
+- id: rebalancing-review
+  path: overlays/rebalancing-review.md
+  kind: enrichment
+  when: rebalancingReview
+- id: risk-review
+  path: overlays/risk-review.md
+  kind: enrichment
+  when: riskReview
+gates:
+- datastore-merge-complete
+- inputs-resolved
+- period-confirmed
+- holdings-map-confirmed
+- theme-map-confirmed when rollupLens in [theme, thesis]
+- thesis-registry-confirmed when rollupLens == thesis
+- entry-interview when evaluation
+outputs:
+  primary:
+    type: report
+    pathTemplate: '{userDatastore}/reports/{timestamp}-AggregateStateReview-{{analysisPeriodStart}}-{{analysisPeriodEnd}}/Report.md'
+    contract: contracts/report-artifact-contract.md
+  runManifest:
+    type: run-record
+    pathTemplate: '{userDatastore}/reports/{timestamp}-AggregateStateReview-{{analysisPeriodStart}}-{{analysisPeriodEnd}}/run-manifest.yaml'
