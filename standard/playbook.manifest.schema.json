@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://agentplaybookpack.dev/schema/v0.1/playbook.manifest.schema.json",
   "title": "APP Playbook Manifest",
-  "description": "Schema for playbook.app.yaml. On-disk format is YAML; parse to JSON before validation.",
+  "description": "Schema for <playbook-id>.app.yaml playbook manifests. On-disk format is YAML; parse to JSON before validation.",
   "type": "object",
   "additionalProperties": false,
   "required": [

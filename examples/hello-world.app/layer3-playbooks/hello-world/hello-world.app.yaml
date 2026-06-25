@@ -1,0 +1,45 @@
+appVersion: '0.1'
+kind: playbook
+id: hello-world
+packId: hello-world
+version: '1.0.0'
+description: Produce a greeting report for a named recipient.
+playbookReportId: HelloWorld
+inputs:
+  recipient:
+    type: string
+    default: World
+    description: Name to greet
+  friendly:
+    type: boolean
+    default: false
+    description: Include friendly sign-off overlay
+  banner:
+    type: boolean
+    default: false
+    description: Include welcome banner overlay
+requires:
+  - workflow: ../../layer0-workflows/input-discovery
+uses:
+  - skill: ../../layer1-skills/compose-greeting
+overlays:
+  - id: welcome-banner
+    path: ../../layer2-overlays/welcome-banner.md
+    kind: presentation
+    when: banner == true
+  - id: friendly-sign-off
+    path: ../../layer2-overlays/friendly-sign-off.md
+    kind: enrichment
+    when: friendly == true
+gates:
+  - id: inputs-resolved
+    after: input-discovery
+    description: Playbook inputs resolved or confirmed with defaults
+  - id: output-written
+    after: outputs
+    description: Primary report written per output contract
+outputs:
+  primary:
+    type: report
+    pathTemplate: '{userDatastore}/reports/{timestamp}-HelloWorld/Report.md'
+    contract: contracts/output-artifact-contract.md

@@ -28,8 +28,8 @@ Example:
 Minimum sections:
 
 1. **Greeting** — core output from `compose-greeting` skill
-2. **Welcome banner** — present only when `banner: true` (pack-level overlay)
-3. **Sign-off** — present only when `friendly: true` (playbook-scoped overlay)
+2. **Welcome banner** — present only when `banner: true` (overlay)
+3. **Sign-off** — present only when `friendly: true` (overlay)
 4. **Appendix: Inputs Resolved** — final resolved playbook inputs
 
 ## Timestamp rules

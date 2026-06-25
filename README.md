@@ -21,7 +21,7 @@ Distribution repo (published product)     Pack instance ({packId}.app/)
 my-product-app/                           pack.app.yaml
   README.md                               README.md
   hello-world.app/                        layer0-workflows/
-  trading-coach.app/                      layer1-skills/
+  portfolio-coach.app/                    layer1-skills/
                                           layer2-overlays/
                                           layer3-playbooks/
                                           contracts/
@@ -43,7 +43,7 @@ my-product-app/                           pack.app.yaml
 | [`README.md`](README.md) | Workbench identity, layout, vocabulary (this file) |
 | [`standard/app-authoring.md`](standard/app-authoring.md) | Authoring standard — layout, layers, execution outcomes |
 | [`standard/pack.manifest.schema.json`](standard/pack.manifest.schema.json) | JSON Schema for `pack.app.yaml` |
-| [`standard/playbook.manifest.schema.json`](standard/playbook.manifest.schema.json) | JSON Schema for `playbook.app.yaml` |
+| [`standard/playbook.manifest.schema.json`](standard/playbook.manifest.schema.json) | JSON Schema for `<playbook-id>.app.yaml` |
 | [`standard/README.md`](standard/README.md) | Standard folder label |
 | [`examples/`](examples/) | Reference pack instances |
 | [`documentation/app-workbench-guide.md`](documentation/app-workbench-guide.md) | Workbench product guide for users, contributors, and authors |

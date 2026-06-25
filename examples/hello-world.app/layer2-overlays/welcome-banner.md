@@ -6,7 +6,7 @@
 
 ## Layer
 
-2 — pack-level (`layer2-overlays/`)
+2 — `layer2-overlays/`
 
 ## Purpose
 

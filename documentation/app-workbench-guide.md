@@ -59,7 +59,7 @@ When `standard/` and an example disagree, **update the example** to match the st
 my-product.app/
   README.md              pack index (user welcome)
   hello-world.app/
-  trading-coach.app/
+  portfolio-coach.app/
 ```
 
 Only `README.md` and `*.app/` folders at repo root.
@@ -73,7 +73,7 @@ Only `README.md` and `*.app/` folders at repo root.
   layer0-workflows/
   layer1-skills/
   layer2-overlays/
-  layer3-playbooks/
+  layer3-playbooks/<id>/          playbook manifests only (<id>.app.yaml)
   contracts/
 ```
 
@@ -89,9 +89,9 @@ Same shape in `examples/` and in a distribution repo.
 | Playbook | User-intent workflow (layer 3) |
 | Skill | Granular capability — [agentskills.io](https://agentskills.io) directory under `layer1-skills/` |
 | Workflow | Shared lifecycle step — markdown under `layer0-workflows/` |
-| Overlay | Optional augmentation — pack-level (`layer2-overlays/`) or playbook-scoped (`layer3-playbooks/<id>/overlays/`) |
+| Overlay | Optional augmentation — markdown under `layer2-overlays/`; referenced from playbook manifest `overlays:` |
 | Contract | Durable data, artifact, or naming rule — markdown under `contracts/` |
-| Gate | Playbook precondition — declared on `playbook.app.yaml`; cleared by workflows |
+| Gate | Playbook precondition — declared on `<playbook-id>.app.yaml`; cleared by workflows |
 | `{userDatastore}` | User persistent data; bound at execution; never in APP repos |
 | `{agentWorkspace}` | Agent working area; bound at execution; never in APP repos |
 
@@ -124,8 +124,9 @@ Every playbook defines **core output** that runs without optional overlays. Over
 | Product name | AgentPlaybookPack; shorthand **APP** |
 | Pack folder | `{packId}.app/` (kebab-case `packId`) |
 | Pack manifest | `pack.app.yaml` |
-| Playbook manifest | `layer3-playbooks/<playbook-id>/playbook.app.yaml` |
+| Playbook manifest | `layer3-playbooks/<playbook-id>/<playbook-id>.app.yaml` |
 | Skill directory | `layer1-skills/<skill-id>/` matching `SKILL.md` frontmatter `name` |
+| Overlay file | `layer2-overlays/<overlay-id>.md` (kebab-case; referenced from playbook manifest `overlays:`) |
 | Playbook / gate ids | kebab-case |
 
 ---
@@ -141,7 +142,7 @@ Every playbook defines **core output** that runs without optional overlays. Over
 
 ```bash
 pip install -r standard/requirements.txt
-python standard/validate-manifests.py path/to/pack.app.yaml path/to/playbook.app.yaml
+python standard/validate-manifests.py path/to/pack.app.yaml path/to/source-profile.app.yaml
 ```
 
 7. Publish as a distribution repo (`README.md` + `*.app/` only).
@@ -152,7 +153,7 @@ python standard/validate-manifests.py path/to/pack.app.yaml path/to/playbook.app
 
 - Propose standard changes in [`../standard/app-authoring.md`](../standard/app-authoring.md) and JSON Schemas together.
 - Add or update reference instances under [`../examples/`](../examples/) to exercise standard features.
-- Run `python standard/validate-manifests.py` with no arguments to validate all example manifests.
+- Run `python standard/validate-manifests.py` with no arguments to validate all example manifests and layout rules.
 - Do not duplicate normative rules in this folder — keep product prose here, standard prose in `standard/`.
 
 ---

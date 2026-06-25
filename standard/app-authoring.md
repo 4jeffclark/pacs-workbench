@@ -14,7 +14,7 @@ Pack `README.md` is lightweight user documentation. It is not authoritative for 
 Standards Workbench                 Distribution repo (published product)
 agent-playbook-pack/                  my-product-app/
   standard/                             README.md
-  examples/                             trading-coach.app/
+  examples/                             portfolio-coach.app/
   documentation/
 ```
 
@@ -27,7 +27,7 @@ A **pack instance** (`{packId}.app/`) has the same shape in `examples/` and in a
   layer0-workflows/
   layer1-skills/<id>/SKILL.md
   layer2-overlays/
-  layer3-playbooks/<id>/playbook.app.yaml
+  layer3-playbooks/<id>/<id>.app.yaml
   contracts/
 ```
 
@@ -41,15 +41,15 @@ Distribution repos contain only `README.md` and `*.app/` at repo root.
 | --- | --- | --- |
 | 0 | `layer0-workflows/` | Shared lifecycle infrastructure (input discovery, scope confirmation, validation) |
 | 1 | `layer1-skills/` | agentskills.io skill directories |
-| 2 | `layer2-overlays/` | Pack-level optional augmentations |
-| 3 | `layer3-playbooks/<id>/` | Playbook manifests, playbook-scoped overlays |
+| 2 | `layer2-overlays/` | Optional augmentations |
+| 3 | `layer3-playbooks/<id>/` | Playbook manifests |
 
 | Cross-cutting | Folder | Contents |
 | --- | --- | --- |
 | Contracts | `contracts/` | Durable data, artifact, persistence, and naming rules |
-| Gates | `playbook.app.yaml` | Gate metadata (`id`, `description`, optional `after`, `when`) |
+| Gates | `<playbook-id>.app.yaml` | Gate metadata (`id`, `description`, optional `after`, `when`) |
 
-Playbook-scoped overlays: `layer3-playbooks/<id>/overlays/`.
+All overlays live under `layer2-overlays/`. Playbooks reference them from manifest `overlays:` with `when:` conditions.
 
 ---
 
@@ -57,7 +57,7 @@ Playbook-scoped overlays: `layer3-playbooks/<id>/overlays/`.
 
 Given a pack instance address and a resolved playbook, execution must:
 
-1. Read `pack.app.yaml`, then the selected `playbook.app.yaml`, then manifest-referenced artifacts only.
+1. Read `pack.app.yaml`, then `layer3-playbooks/<id>/<id>.app.yaml`, then manifest-referenced artifacts only.
 2. Bind `userDatastore` and `agentWorkspace` from pack-level inputs (mediate if not supplied).
 3. Run required workflows; clear gates per playbook manifest.
 4. Execute referenced skills per each skill's `SKILL.md`.
@@ -138,7 +138,9 @@ Canonical layout is convention. Omit path roots when using the standard tree.
 
 ## Playbook manifest
 
-File: `layer3-playbooks/<id>/playbook.app.yaml` (YAML on disk)
+File: `layer3-playbooks/<id>/<id>.app.yaml` (YAML on disk)
+
+The manifest filename must match the playbook `id` and parent folder name.
 
 Machine contract: [`playbook.manifest.schema.json`](playbook.manifest.schema.json)
 
@@ -163,7 +165,7 @@ inputs:
   banner:
     type: boolean
     default: false
-    description: Include pack-level welcome banner overlay
+    description: Include welcome banner overlay
 
 requires:
   - workflow: ../../layer0-workflows/input-discovery
@@ -177,7 +179,7 @@ overlays:
     kind: presentation
     when: banner == true
   - id: friendly-sign-off
-    path: overlays/friendly-sign-off.md
+    path: ../../layer2-overlays/friendly-sign-off.md
     kind: enrichment
     when: friendly == true
 
@@ -301,7 +303,7 @@ Each workflow declares its id, layer, purpose, and procedure. Workflows clear ga
 
 ## Layer 2 — Overlays
 
-Markdown files under `layer2-overlays/` (pack-level) or `layer3-playbooks/<id>/overlays/` (playbook-scoped).
+Markdown files under `layer2-overlays/`.
 
 Referenced from playbook manifest `overlays:` with `when:` conditions. Core output must be defined so a playbook can run without optional overlays.
 
@@ -322,13 +324,13 @@ Primary report outputs use timestamped folders under `{userDatastore}/reports/` 
 | Kind | File | Schema |
 | --- | --- | --- |
 | `pack` | `pack.app.yaml` | [`pack.manifest.schema.json`](pack.manifest.schema.json) |
-| `playbook` | `playbook.app.yaml` | [`playbook.manifest.schema.json`](playbook.manifest.schema.json) |
+| `playbook` | `<playbook-id>.app.yaml` | [`playbook.manifest.schema.json`](playbook.manifest.schema.json) |
 
 APP does not use a `skill` manifest kind. Skills use agentskills.io `SKILL.md`.
 
 ### Manifest format and validation
 
-- **On-disk format:** YAML (`pack.app.yaml`, `playbook.app.yaml`).
+- **On-disk format:** YAML (`pack.app.yaml`, `<playbook-id>.app.yaml`).
 - **Schema format:** JSON Schema in this folder (industry-standard machine contract).
 - **Validation:** Parse YAML to a JSON data model, then validate against the schema.
 
@@ -337,7 +339,7 @@ pip install pyyaml jsonschema
 python standard/validate-manifests.py
 ```
 
-Validate specific files by passing paths. With no arguments, validates all manifests under `examples/`.
+Validate specific files by passing paths. With no arguments, validates all manifests under `examples/` and checks layout rules (overlay paths under `layer2-overlays/`, playbook index, forbidden legacy artifacts).
 
 JSON may be used at tool or API boundaries later; YAML remains the canonical format in distribution repos and examples.
 

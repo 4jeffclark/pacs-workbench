@@ -17,8 +17,8 @@ Execution agents learn APP from `standard/app-authoring.md`, then consume pack m
 ## Work Rules
 
 - Treat `standard/` as normative; when `standard/` and an example disagree, update the example.
-- Manifests are YAML on disk; validate with `python standard/validate-manifests.py`.
-- Gate metadata lives on `playbook.app.yaml` only (no `gates/` folder).
+- Validate manifests and layout: `python standard/validate-manifests.py` (schema + overlay paths, playbook index, forbidden legacy artifacts).
+- Gate metadata lives on `<playbook-id>.app.yaml` only (no `gates/` folder).
 - Pack shell entry is `pack.app.yaml` (no `APP-EXECUTION.md`).
 - APP is fire-and-forget: behavioral instructions only; no run manifests or execution tracking.
 - Use Sketch-Then-Materialize: do not create whole example trees unless explicitly requested.
@@ -29,4 +29,4 @@ Execution agents learn APP from `standard/app-authoring.md`, then consume pack m
 - Authoring standard: [`standard/app-authoring.md`](standard/app-authoring.md)
 - Workbench guide: [`documentation/app-workbench-guide.md`](documentation/app-workbench-guide.md)
 - hello-world reference: [`examples/hello-world.app/`](examples/hello-world.app/)
-- trading-coach reference: [`examples/trading-coach.app/`](examples/trading-coach.app/)
+- portfolio-coach reference: [`examples/portfolio-coach.app/`](examples/portfolio-coach.app/)
