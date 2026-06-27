@@ -5,6 +5,5 @@ Reference `{packId}.app/` folders — side-by-side helpers for understanding [`.
 | Instance | Scope |
 | --- | --- |
 | [hello-world.app/](hello-world.app/) | Minimal instance exercising standard layer shapes |
-| [portfolio-coach.app/](portfolio-coach.app/) | Domain reference — source-profile playbook |
 
 Instance entry: `pack.app.yaml`.

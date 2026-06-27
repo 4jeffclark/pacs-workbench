@@ -20,8 +20,8 @@ agent-playbook-pack/
 Distribution repo (published product)     Pack instance ({packId}.app/)
 my-product-app/                           pack.app.yaml
   README.md                               README.md
-  hello-world.app/                        layer0-workflows/
-  portfolio-coach.app/                    layer1-skills/
+  {packId}.app/                           layer0-workflows/
+                                          layer1-skills/
                                           layer2-overlays/
                                           layer3-playbooks/
                                           contracts/
@@ -81,4 +81,3 @@ Execution agents learn APP from `standard/app-authoring.md`, then consume pack m
 | Instance | Role |
 | --- | --- |
 | [`examples/hello-world.app/`](examples/hello-world.app/) | Minimal layer coverage |
-| [`examples/portfolio-coach.app/`](examples/portfolio-coach.app/) | Domain reference — source-profile playbook |

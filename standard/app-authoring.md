@@ -14,7 +14,7 @@ Pack `README.md` is lightweight user documentation. It is not authoritative for 
 Standards Workbench                 Distribution repo (published product)
 agent-playbook-pack/                  my-product-app/
   standard/                             README.md
-  examples/                             portfolio-coach.app/
+  examples/                             {packId}.app/
   documentation/
 ```
 

@@ -56,10 +56,9 @@ When `standard/` and an example disagree, **update the example** to match the st
 **Distribution repo** (published product):
 
 ```text
-my-product.app/
+my-product-app/
   README.md              pack index (user welcome)
-  hello-world.app/
-  portfolio-coach.app/
+  {packId}.app/
 ```
 
 Only `README.md` and `*.app/` folders at repo root.
@@ -142,7 +141,7 @@ Every playbook defines **core output** that runs without optional overlays. Over
 
 ```bash
 pip install -r standard/requirements.txt
-python standard/validate-manifests.py path/to/pack.app.yaml path/to/source-profile.app.yaml
+python standard/validate-manifests.py path/to/pack.app.yaml path/to/hello-world.app.yaml
 ```
 
 7. Publish as a distribution repo (`README.md` + `*.app/` only).
