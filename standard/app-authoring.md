@@ -58,21 +58,13 @@ All overlays live under `layer2-overlays/`. Playbooks reference them from manife
 Given a pack instance address and a resolved playbook, execution must:
 
 1. Read `pack.app.yaml`, then `layer3-playbooks/<id>/<id>.app.yaml`, then manifest-referenced artifacts only.
-2. Bind `userDatastore` and `agentWorkspace` from pack-level inputs (mediate if not supplied).
+2. Bind required pack-level inputs (`userDatastore`, `agentWorkspace`) and resolve playbook inputs before core output.
 3. Run required workflows; clear gates per playbook manifest.
 4. Execute referenced skills per each skill's `SKILL.md`.
 5. Apply overlays when manifest conditions match.
 6. Write primary outputs per playbook manifest and referenced output contracts.
 
-### Execution interface
-
-| Input | Description |
-| --- | --- |
-| `appRepo` | Path to an APP distribution repo (`README.md` + `*.app/` only) |
-| `directive` | Pack and playbook, natural-language intent, or `mode: discovery` |
-| `inputs` | Optional partial pack-level and playbook-level parameters |
-
-The executing agent mediates omitted inputs: `userDatastore`, `agentWorkspace`, and remaining manifest inputs.
+Pack instances are consumed from **distribution repos** (`README.md` + `{packId}.app/` at repo root). See [Repo shapes](#repo-shapes).
 
 ### Data locations
 

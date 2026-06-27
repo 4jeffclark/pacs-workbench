@@ -55,16 +55,25 @@ my-product-app/                           pack.app.yaml
 
 For AI agents working in this repo. Human contributors may also use [`documentation/app-workbench-guide.md`](documentation/app-workbench-guide.md).
 
-### Read order
+### Agent roles
+
+| Role | Context | Purpose |
+| --- | --- | --- |
+| **Workbench agent** | This repo | Learn the standard; study reference instances; author or validate packs |
+| **Execution agent** | A distribution repo | Learn APP from `standard/app-authoring.md`; consume `{packId}.app/` manifests and referenced layer artifacts |
+
+`examples/` is format reference only — **not** an execution target. Published packs live in distribution repos.
+
+### Read order (workbench agents)
 
 | Need | Read |
 | --- | --- |
-| Authoring standard (execution agents) | [`standard/app-authoring.md`](standard/app-authoring.md) |
+| Authoring standard | [`standard/app-authoring.md`](standard/app-authoring.md) |
 | JSON Schemas and validator | [`standard/`](standard/) |
 | Human product guide | [`documentation/app-workbench-guide.md`](documentation/app-workbench-guide.md) |
-| Reference pack instances | [`examples/`](examples/) |
+| Reference pack instances (study) | [`examples/`](examples/) |
 
-Execution agents learn APP from `standard/app-authoring.md`, then consume pack manifests and referenced layer artifacts. Pack `README.md` files in `examples/` are user welcome only — not execution authority.
+Pack `README.md` files in `examples/` are user welcome only — not execution authority.
 
 ### Work rules
 
@@ -78,6 +87,6 @@ Execution agents learn APP from `standard/app-authoring.md`, then consume pack m
 
 ### Reference instances
 
-| Instance | Role |
-| --- | --- |
-| [`examples/hello-world.app/`](examples/hello-world.app/) | Minimal layer coverage |
+| Instance | Workbench role | Published distribution |
+| --- | --- | --- |
+| [`examples/hello-world.app/`](examples/hello-world.app/) | Minimal layer coverage | [hello-world-app](https://github.com/4jeffclark/hello-world-app) |

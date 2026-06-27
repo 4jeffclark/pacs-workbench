@@ -2,9 +2,11 @@
 
 A minimal **AgentPlaybookPack** reference instance — every standard layer shape in one pack.
 
-Use this pack to validate APP format and execution plumbing. It produces a simple greeting report for a named recipient.
+Use this instance to study APP format and layer composition. It describes a greeting report for a named recipient.
 
-## Try it
+## Example intents
+
+Illustrative user requests the pack is designed for:
 
 - *Run hello world for Alice.*
 - *Run hello world for Bob with a friendly sign-off and welcome banner.*
@@ -13,4 +15,5 @@ Use this pack to validate APP format and execution plumbing. It produces a simpl
 
 - **Version:** 1.0.0 (see [`pack.app.yaml`](pack.app.yaml))
 - **License:** MIT
-- Reference instance in the APP Standards Workbench (`examples/hello-world.app/`).
+- **Workbench reference:** `examples/hello-world.app/` in [agent-playbook-pack](https://github.com/4jeffclark/agent-playbook-pack)
+- **Published for execution:** [hello-world-app](https://github.com/4jeffclark/hello-world-app)

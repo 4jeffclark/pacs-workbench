@@ -8,7 +8,7 @@ Human-facing guide for users, contributors, and pack authors. **Not** the APP ex
 | See working instances | [`../examples/`](../examples/) |
 | Workbench map | [`../README.md`](../README.md) |
 
-Execution agents learn APP from [`../standard/app-authoring.md`](../standard/app-authoring.md), then consume pack instances under [`../examples/`](../examples/) or a distribution repo. This document does not define runtime bootstrap or engine integration.
+Execution agents learn APP from [`../standard/app-authoring.md`](../standard/app-authoring.md), then consume pack instances from a **distribution repo** (`README.md` + `{packId}.app/` at repo root). Reference instances under [`../examples/`](../examples/) illustrate the format only — they are not execution targets. This document does not define runtime bootstrap or engine integration.
 
 ---
 
@@ -44,7 +44,7 @@ agent-playbook-pack/
 | Folder | Role |
 | --- | --- |
 | [`standard/`](../standard/) | Authoritative standard. Manifests are YAML; validity is defined by JSON Schema. |
-| [`examples/`](../examples/) | Side-by-side reference instances. Must conform to `standard/`. |
+| [`examples/`](../examples/) | Side-by-side reference instances (format study only; not execution targets). Must conform to `standard/`. |
 | [`documentation/`](../documentation/) | Product context for humans only. |
 
 When `standard/` and an example disagree, **update the example** to match the standard.
@@ -144,7 +144,7 @@ pip install -r standard/requirements.txt
 python standard/validate-manifests.py path/to/pack.app.yaml path/to/hello-world.app.yaml
 ```
 
-7. Publish as a distribution repo (`README.md` + `*.app/` only).
+7. Publish as a distribution repo (`README.md` + `*.app/` only). Example: [hello-world-app](https://github.com/4jeffclark/hello-world-app) from [`hello-world.app`](../examples/hello-world.app/).
 
 ---
 
