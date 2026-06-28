@@ -16,5 +16,4 @@ Execution agents: workbench root [`README.md`](../README.md) → [`../standard/a
 
 | Path | Purpose |
 | --- | --- |
-| [`validation/`](validation/) | Smoke-test and integration records |
-| [`archive/`](archive/) | Historical session exports (superseded designs) |
+| [`dev-archive/`](dev-archive/) | Historical session exports and superseded material (not normative; excluded from Cursor indexing) |

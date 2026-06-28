@@ -48,8 +48,7 @@ my-product-app/                           pack.app.yaml
 | [`examples/`](examples/) | Reference pack instances |
 | [`documentation/app-workbench-guide.md`](documentation/app-workbench-guide.md) | Workbench product guide for users, contributors, and authors |
 | [`documentation/README.md`](documentation/README.md) | Documentation folder index |
-| [`documentation/archive/`](documentation/archive/) | Historical session exports (not normative) |
-| [`documentation/validation/`](documentation/validation/) | Smoke-test records (not normative) |
+| [`documentation/dev-archive/`](documentation/dev-archive/) | Historical session exports and superseded material (not normative; excluded from Cursor indexing) |
 
 ---
 
@@ -86,7 +85,7 @@ Pack `README.md` files in `examples/` are user welcome only — not execution au
 - Pack shell entry is `pack.app.yaml` (no `APP-EXECUTION.md`).
 - APP is fire-and-forget: behavioral instructions only; no run manifests or execution tracking.
 - Use Sketch-Then-Materialize: do not create whole example trees unless explicitly requested.
-- Treat `documentation/archive/` as historical only; normative source is `standard/`.
+- Treat `documentation/dev-archive/` as historical only; normative source is `standard/`.
 
 ### Reference instances
 
