@@ -8,6 +8,10 @@
 
 0 — infrastructure
 
+## Workflow kind
+
+**Agent-only procedure** — no companion script. Minimum gate evidence: Procedure completed; **Inputs Resolved** block embedded in `Report.md` per output contract.
+
 ## Purpose
 
 Resolve playbook inputs from natural language before core execution.
@@ -31,5 +35,5 @@ Users do not need fixed parameter syntax (for example `friendly: true`).
 
 ## Outputs
 
-- Final **Inputs Resolved** block (embed in report Appendix)
-- Cleared `inputs-resolved` gate
+- Final **Inputs Resolved** block (embed in report Appendix; see output contract template)
+- Cleared `inputs-resolved` gate (self-attested)
