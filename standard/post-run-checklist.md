@@ -63,7 +63,8 @@ Operational context: [`app-execution.md`](app-execution.md).
 
 | # | Check | Source |
 | --- | --- | --- |
-| W1 | Intermediate skill outputs written under `{agentWorkspace}` (prefer per-run subdirectory) | [`app-execution.md`](app-execution.md) |
+| W1 | Intermediate skill outputs written under ephemeral `{agentWorkspace}`, not mixed into `{userDatastore}` except contract-required deliverables | [`app-execution.md`](app-execution.md) |
+| W2 | Ephemeral workspace for this run removed after verification passes (unless user requested retention or run failed) | [`app-execution.md`](app-execution.md) |
 
 ---
 

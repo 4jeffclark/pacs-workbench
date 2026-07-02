@@ -59,24 +59,27 @@ Before core execution:
 | Input | Role |
 | --- | --- |
 | `{userDatastore}` | User persistent storage (reports, raw data, inputs) |
-| `{agentWorkspace}` | Agent temp and intermediate artifacts for this run |
+| `{agentWorkspace}` | Ephemeral temp and intermediate artifacts for this run |
 
-Both are bound at execution. Neither lives in the APP behavior repo.
+`{userDatastore}` is always bound when a playbook reads or writes user data. Neither binding lives in the APP behavior repo.
 
-### `{agentWorkspace}` layout (recommended)
+### `{agentWorkspace}` — when the user is silent
 
-Use a per-run subdirectory to avoid collisions across repeated or concurrent runs:
+`agentWorkspace` is an **optional** pack input (see [`app-authoring.md`](app-authoring.md)). When the user or platform does not supply it, the execution agent **chooses** an ephemeral workspace for the run.
 
-```text
-{agentWorkspace}/
-  runs/
-    <GenerationTimestamp>-<playbookReportId>/
-      skill outputs, intermediate files, gate evidence
-```
+Outcomes:
 
-`<GenerationTimestamp>` uses the same `YYYYMMDD-HHMMSS` convention as report folders. Skill scripts should write under the active run directory when the platform provides one.
+- Intermediates stay out of `{userDatastore}` except contract-required deliverables.
+- The user-facing experience is deliverables under `{userDatastore}` — not scratch files left in visible project roots.
+- After post-run verification passes, **remove the ephemeral workspace** for that run (or its run-scoped subdirectory). Retain only when debugging a failed run or when the user asked to keep artifacts.
 
-Cleanup between runs is platform scope. APP recommends isolating each run under `runs/<timestamp>-<playbookReportId>/`.
+Platform hosts with project-scoped guardrails (e.g. Cursor) may use a hidden project folder such as `.tmp/` for ephemeral workspace and pack provisioning. That choice is platform scope; APP does not mandate a folder name.
+
+When the user **does** supply `{agentWorkspace}`, use that path — typically because storage must be coordinated with the user or host policy.
+
+### Run isolation (platform scope)
+
+Hosts may isolate concurrent runs with per-run subdirectories (e.g. `<workspace>/<timestamp>-<playbookReportId>/`). APP does not prescribe internal layout; pass the active directory as `--workspace` to skill scripts.
 
 ---
 
@@ -86,7 +89,7 @@ Given a pack instance address and resolved playbook:
 
 1. **Provision** — obtain the distribution repo (see [Pack provisioning](#pack-provisioning-recommended)).
 2. **Read manifests** — `pack.app.yaml` → `<playbook-id>.app.yaml` → referenced artifacts only.
-3. **Bind** — set `{userDatastore}` and `{agentWorkspace}`; create the recommended run subdirectory.
+3. **Bind** — set `{userDatastore}`; set or select ephemeral `{agentWorkspace}` (see above).
 4. **Resolve inputs** — run required layer 0 workflows (typically `input-discovery`). Apply manifest `default` values and playbook `defaultResolution` policies when the user did not specify a value (see [`app-authoring.md`](app-authoring.md#default-resolution-policies)).
 5. **Clear gates** — complete workflows and skills; record minimum evidence per gate (see [`app-authoring.md`](app-authoring.md#gates-and-evidence)).
 6. **Run skills** — execute per each `SKILL.md` Procedure; run bundled scripts only when instructed.

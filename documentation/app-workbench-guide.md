@@ -93,7 +93,7 @@ Same shape in `examples/` and in a distribution repo.
 | Contract | Durable data, artifact, or naming rule — markdown under `contracts/` |
 | Gate | Playbook precondition — declared on `<playbook-id>.app.yaml`; cleared by workflows |
 | `{userDatastore}` | User persistent data; bound at execution; never in APP repos |
-| `{agentWorkspace}` | Agent working area; bound at execution; never in APP repos |
+| `{agentWorkspace}` | Optional ephemeral working area; execution agent chooses when not supplied; cleaned up after the run |
 
 Layer numbering (0–3), manifest fields, and execution outcomes are defined in [`../standard/app-authoring.md`](../standard/app-authoring.md).
 

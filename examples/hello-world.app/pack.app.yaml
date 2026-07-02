@@ -15,7 +15,7 @@ inputs:
     layoutContract: contracts/user-datastore-layout.md
   agentWorkspace:
     type: workspace
-    required: true
-    description: Agent-controlled temp and intermediate execution artifacts
+    required: false
+    description: Optional ephemeral workspace; execution agent chooses when omitted
 playbooks:
   - hello-world

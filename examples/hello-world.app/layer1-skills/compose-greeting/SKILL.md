@@ -11,7 +11,7 @@ metadata:
 ## Procedure
 
 1. Read resolved playbook input `recipient` (default `World`)
-2. Run `scripts/run.py` with `--recipient` and `--workspace` bound to the active run subdirectory under `{agentWorkspace}` (see APP `app-execution.md` workspace layout)
+2. Run `scripts/run.py` with `--recipient` and `--workspace` pointing at the active ephemeral workspace for this run (see APP `app-execution.md`)
 3. Read `greeting.txt` and `skill-result.json` from the workspace run directory
 4. Use the greeting text as the core **Greeting** section in `Report.md` (report assembly is agent responsibility)
 
@@ -29,7 +29,7 @@ python scripts/run.py --recipient "$RECIPIENT" --workspace "$AGENT_WORKSPACE"
 python scripts/run.py --recipient $env:RECIPIENT --workspace $env:AGENT_WORKSPACE
 ```
 
-Pass `--workspace` as the platform's per-run subdirectory when available (`runs/<timestamp>-HelloWorld/`).
+Pass `--workspace` as the active ephemeral directory for this run (execution agent chooses when `{agentWorkspace}` is not supplied).
 
 ## References
 

@@ -63,7 +63,7 @@ All overlays live under `layer2-overlays/`. Playbooks reference them from manife
 Given a pack instance address and a resolved playbook, execution must:
 
 1. Read `pack.app.yaml`, then `layer3-playbooks/<id>/<id>.app.yaml`, then manifest-referenced artifacts only.
-2. Bind required pack-level inputs (`userDatastore`, `agentWorkspace`) and resolve playbook inputs before core output.
+2. Bind required pack-level inputs (`userDatastore`; `agentWorkspace` when supplied or agent-selected) and resolve playbook inputs before core output.
 3. Run required workflows; clear gates per playbook manifest.
 4. Execute referenced skills per each skill's `SKILL.md`.
 5. Apply overlays when manifest conditions match.
@@ -127,8 +127,10 @@ inputs:
     layoutContract: contracts/user-datastore-layout.md
   agentWorkspace:
     type: workspace
-    required: true
-    description: Agent-controlled temp and intermediate artifacts
+    required: false
+    description: >-
+      Optional. Ephemeral temp and intermediate artifacts. Omit when the
+      execution agent chooses and cleans up its own workspace (default).
 
 playbooks:
   - hello-world
