@@ -1,14 +1,15 @@
 # Documentation
 
-Human-facing product documentation. **Not** the APP execution standard.
+Human-facing product documentation and format reference instances. **Not** the APP execution standard.
 
 ## Authoring path
 
 | File | Purpose |
 | --- | --- |
 | [`app-workbench-guide.md`](app-workbench-guide.md) | Product context for users, contributors, and pack authors |
+| [`examples/`](examples/) | Reference pack instances — side-by-side helpers for understanding the standard |
 
-Normative standard: [`../standard/`](../standard/). Format reference: [`../examples/`](../examples/).
+Normative standard: [`../standard/`](../standard/).
 
 Execution agents: [`../standard/app-authoring.md`](../standard/app-authoring.md) → [`../standard/app-execution.md`](../standard/app-execution.md). Distribution repos for pack execution.
 

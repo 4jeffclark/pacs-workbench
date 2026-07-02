@@ -19,11 +19,11 @@ Pack `README.md` is lightweight user documentation. It is not authoritative for 
 Standards Workbench                 Distribution repo (published product)
 agent-playbook-pack/                  my-product-app/
   standard/                             README.md
-  examples/                             {packId}.app/
-  documentation/
+  documentation/                        {packId}.app/
+    examples/
 ```
 
-A **pack instance** (`{packId}.app/`) has the same shape in `examples/` and in a distribution repo:
+A **pack instance** (`{packId}.app/`) has the same shape in `documentation/examples/` and in a distribution repo:
 
 ```text
 {packId}.app/
@@ -380,7 +380,7 @@ pip install pyyaml jsonschema
 python standard/validate-manifests.py
 ```
 
-Validate specific files by passing paths. With no arguments, validates all manifests under `examples/` and checks layout rules (overlay paths under `layer2-overlays/`, playbook index, forbidden legacy artifacts).
+Validate specific files by passing paths. With no arguments, validates all manifests under `documentation/examples/` and checks layout rules (overlay paths under `layer2-overlays/`, playbook index, forbidden legacy artifacts).
 
 **Execution agents do not run this validator** before executing a distribution pack. Authoring and CI only, unless a run request or pack README explicitly requires it.
 

@@ -1,6 +1,6 @@
 # APP Reference Instances
 
-Reference `{packId}.app/` folders — side-by-side helpers for understanding [`../standard/app-authoring.md`](../standard/app-authoring.md).
+Reference `{packId}.app/` folders — side-by-side helpers for understanding [`../../standard/app-authoring.md`](../../standard/app-authoring.md).
 
 **Not execution targets.** To run a pack, use its published distribution repo.
 

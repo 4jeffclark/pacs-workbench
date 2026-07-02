@@ -6,10 +6,10 @@ Human-facing guide for users, contributors, and pack authors. **Not** the APP ex
 | --- | --- |
 | Author or validate pack structure | [`../standard/app-authoring.md`](../standard/app-authoring.md) and JSON Schemas in [`../standard/`](../standard/) |
 | Execute a pack | [`../standard/app-execution.md`](../standard/app-execution.md) and [`../standard/post-run-checklist.md`](../standard/post-run-checklist.md) |
-| See working instances | [`../examples/`](../examples/) |
+| See working instances | [`examples/`](examples/) |
 | Workbench map | [`../README.md`](../README.md) |
 
-Execution agents learn APP from [`../standard/app-authoring.md`](../standard/app-authoring.md) and [`../standard/app-execution.md`](../standard/app-execution.md), then consume pack instances from a **distribution repo** (`README.md` + `{packId}.app/` at repo root). Reference instances under [`../examples/`](../examples/) illustrate the format only — they are not execution targets. This document does not define runtime bootstrap or engine integration.
+Execution agents learn APP from [`../standard/app-authoring.md`](../standard/app-authoring.md) and [`../standard/app-execution.md`](../standard/app-execution.md), then consume pack instances from a **distribution repo** (`README.md` + `{packId}.app/` at repo root). Reference instances under [`examples/`](examples/) illustrate the format only — they are not execution targets. This document does not define runtime bootstrap or engine integration.
 
 ---
 
@@ -38,15 +38,16 @@ This repository is the **APP Standards Workbench** — format definition and ref
 agent-playbook-pack/
   README.md           workbench map
   standard/           normative standard (authoring + JSON Schema)
-  examples/           reference pack instances
-  documentation/      this guide
+  documentation/      product guide and reference pack instances
+    app-workbench-guide.md
+    examples/
 ```
 
 | Folder | Role |
 | --- | --- |
 | [`standard/`](../standard/) | Authoritative standard. Manifests are YAML; validity is defined by JSON Schema. Includes `app-authoring.md`, `app-execution.md`, and `post-run-checklist.md`. |
-| [`examples/`](../examples/) | Side-by-side reference instances (format study only; not execution targets). Must conform to `standard/`. |
-| [`documentation/`](../documentation/) | Product context for humans only. |
+| [`documentation/`](../documentation/) | Product context for humans and format reference instances. |
+| [`documentation/examples/`](examples/) | Side-by-side reference instances (format study only; not execution targets). Must conform to `standard/`. |
 
 When `standard/` and an example disagree, **update the example** to match the standard.
 
@@ -77,7 +78,7 @@ Only `README.md` and `*.app/` folders at repo root.
   contracts/
 ```
 
-Same shape in `examples/` and in a distribution repo.
+Same shape in `documentation/examples/` and in a distribution repo.
 
 ---
 
@@ -134,7 +135,7 @@ Every playbook defines **core output** that runs without optional overlays. Over
 ## Authoring a pack
 
 1. Read [`../standard/app-authoring.md`](../standard/app-authoring.md).
-2. Study [`../examples/hello-world.app/`](../examples/hello-world.app/) for minimal layer coverage.
+2. Study [`examples/hello-world.app/`](examples/hello-world.app/) for minimal layer coverage.
 3. Create `{packId}.app/` with `pack.app.yaml` as entry.
 4. Add layer 0–3 artifacts and `contracts/`; reference them from manifests.
 5. Write pack `README.md` as user welcome content — examples and narrative, not a manifest duplicate.
@@ -145,14 +146,14 @@ pip install -r standard/requirements.txt
 python standard/validate-manifests.py path/to/pack.app.yaml path/to/hello-world.app.yaml
 ```
 
-7. Publish as a distribution repo (`README.md` + `*.app/` only). Example: [hello-world-app](https://github.com/4jeffclark/hello-world-app) from [`hello-world.app`](../examples/hello-world.app/).
+7. Publish as a distribution repo (`README.md` + `*.app/` only). Example: [hello-world-app](https://github.com/4jeffclark/hello-world-app) from [`hello-world.app`](examples/hello-world.app/).
 
 ---
 
 ## Contributing to the workbench
 
 - Propose standard changes in [`../standard/app-authoring.md`](../standard/app-authoring.md) and JSON Schemas together.
-- Add or update reference instances under [`../examples/`](../examples/) to exercise standard features.
+- Add or update reference instances under [`examples/`](examples/) to exercise standard features.
 - Run `python standard/validate-manifests.py` with no arguments to validate all example manifests and layout rules.
 - Do not duplicate normative rules in this folder — keep product prose here, standard prose in `standard/`.
 

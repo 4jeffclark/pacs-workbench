@@ -9,7 +9,7 @@ from pathlib import Path
 
 STANDARD_DIR = Path(__file__).resolve().parent
 REPO_ROOT = STANDARD_DIR.parent
-EXAMPLES_DIR = REPO_ROOT / "examples"
+EXAMPLES_DIR = REPO_ROOT / "documentation" / "examples"
 
 PACK_SCHEMA = STANDARD_DIR / "pack.manifest.schema.json"
 PLAYBOOK_SCHEMA = STANDARD_DIR / "playbook.manifest.schema.json"

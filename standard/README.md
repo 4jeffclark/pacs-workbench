@@ -14,4 +14,4 @@ Normative APP standard files.
 
 Manifests are **YAML on disk**; schemas are **JSON** for validation tooling.
 
-Reference instances (format study only): [`../examples/`](../examples/). Product guide: [`../documentation/app-workbench-guide.md`](../documentation/app-workbench-guide.md).
+Reference instances (format study only): [`../documentation/examples/`](../documentation/examples/). Product guide: [`../documentation/app-workbench-guide.md`](../documentation/app-workbench-guide.md).

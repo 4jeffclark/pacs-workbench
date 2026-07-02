@@ -19,7 +19,7 @@ Pack `README.md` is lightweight user documentation. It is not authoritative for 
 | 5 | `layer3-playbooks/<id>/<id>.app.yaml` | Resolve playbook inputs, composition, gates, outputs |
 | 6 | Manifest-referenced artifacts only | Workflows, skills, overlays, contracts |
 
-Do not crawl the full pack tree. Do not treat workbench `examples/` as an execution target unless explicitly directed — use a **distribution repo**.
+Do not crawl the full pack tree. Do not treat workbench `documentation/examples/` as an execution target unless explicitly directed — use a **distribution repo**.
 
 ---
 

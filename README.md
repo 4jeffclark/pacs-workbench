@@ -12,8 +12,9 @@ Entry point for the workbench. Defines the APP format. **Not** an APP distributi
 agent-playbook-pack/
   README.md           ← this file (workbench map + agent instructions)
   standard/           ← normative APP standard
-  examples/           ← reference pack instances
-  documentation/      ← product guide for humans (not APP standard)
+  documentation/      ← product guide and reference pack instances
+    app-workbench-guide.md
+    examples/
 ```
 
 ```text
@@ -47,7 +48,7 @@ my-product-app/                           pack.app.yaml
 | [`standard/pack.manifest.schema.json`](standard/pack.manifest.schema.json) | JSON Schema for `pack.app.yaml` |
 | [`standard/playbook.manifest.schema.json`](standard/playbook.manifest.schema.json) | JSON Schema for `<playbook-id>.app.yaml` |
 | [`standard/README.md`](standard/README.md) | Standard folder label |
-| [`examples/`](examples/) | Reference pack instances |
+| [`documentation/examples/`](documentation/examples/) | Reference pack instances |
 | [`documentation/app-workbench-guide.md`](documentation/app-workbench-guide.md) | Workbench product guide for users, contributors, and authors |
 | [`documentation/README.md`](documentation/README.md) | Documentation folder index |
 | [`documentation/session-transcripts/README.md`](documentation/session-transcripts/README.md) | Session handover catalog (task index only; not in read order) |
@@ -66,7 +67,7 @@ For AI agents working in this repo. Human contributors may also use [`documentat
 | **Workbench agent** | This repo | Learn the standard; study reference instances; author or validate packs |
 | **Execution agent** | A distribution repo | Learn APP from [`standard/app-authoring.md`](standard/app-authoring.md) and [`standard/app-execution.md`](standard/app-execution.md); consume `{packId}.app/` manifests and referenced layer artifacts |
 
-`examples/` is format reference only — **not** an execution target. Published packs live in distribution repos.
+`documentation/examples/` is format reference only — **not** an execution target. Published packs live in distribution repos.
 
 ### Read order (workbench agents)
 
@@ -77,9 +78,9 @@ For AI agents working in this repo. Human contributors may also use [`documentat
 | Post-run checklist | [`standard/post-run-checklist.md`](standard/post-run-checklist.md) |
 | JSON Schemas and validator | [`standard/`](standard/) |
 | Human product guide | [`documentation/app-workbench-guide.md`](documentation/app-workbench-guide.md) |
-| Reference pack instances (study) | [`examples/`](examples/) |
+| Reference pack instances (study) | [`documentation/examples/`](documentation/examples/) |
 
-Pack `README.md` files in `examples/` are user welcome only — not execution authority.
+Pack `README.md` files in `documentation/examples/` are user welcome only — not execution authority.
 
 ### Work rules
 
@@ -98,4 +99,4 @@ Pack `README.md` files in `examples/` are user welcome only — not execution au
 
 | Instance | Workbench role | Published distribution |
 | --- | --- | --- |
-| [`examples/hello-world.app/`](examples/hello-world.app/) | Minimal layer coverage | [hello-world-app](https://github.com/4jeffclark/hello-world-app) |
+| [`documentation/examples/hello-world.app/`](documentation/examples/hello-world.app/) | Minimal layer coverage | [hello-world-app](https://github.com/4jeffclark/hello-world-app) |
