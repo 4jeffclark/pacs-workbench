@@ -25,14 +25,14 @@ Example:
 
 ## Report.md
 
-Minimum sections:
+Canonical section order (omit overlay sections when their `when:` condition is false):
 
-1. **Greeting** — core output from `compose-greeting` skill
-2. **Welcome banner** — present only when `banner: true` (overlay)
-3. **Sign-off** — present only when `friendly: true` (overlay)
+1. **Welcome banner** — presentation overlay when `banner: true`
+2. **Greeting** — core output from `compose-greeting` skill
+3. **Sign-off** — enrichment overlay when `friendly: true`
 4. **Appendix: Inputs Resolved** — final resolved playbook inputs
 
-Report assembly (section order, timestamp folder, Inputs Resolved table) is **agent responsibility** per the output contract. The core skill produces greeting text only.
+Presentation overlays precede core output; enrichment overlays follow core output. Report assembly (timestamp folder, Inputs Resolved table) is **agent responsibility** per this contract. The core skill produces greeting text only.
 
 ### Appendix: Inputs Resolved (template)
 

@@ -14,7 +14,7 @@ Add a short welcome banner above the core greeting when `banner: true`.
 
 ## Content
 
-Insert a **Welcome banner** section at the top of `Report.md`:
+Insert a **Welcome banner** section as the first section in `Report.md` (before **Greeting**; see `contracts/output-artifact-contract.md`):
 
 ```markdown
 ## Welcome banner

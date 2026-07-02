@@ -16,6 +16,6 @@ inputs:
   agentWorkspace:
     type: workspace
     required: false
-    description: Optional ephemeral workspace; execution agent chooses when omitted
+    description: Optional ephemeral workspace; execution agent chooses and cleans up when omitted
 playbooks:
   - hello-world

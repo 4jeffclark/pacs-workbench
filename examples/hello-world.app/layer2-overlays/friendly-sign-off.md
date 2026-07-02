@@ -14,7 +14,7 @@ Add a friendly closing line when `friendly: true`.
 
 ## Content
 
-Append a **Sign-off** section to `Report.md`:
+Insert a **Sign-off** section after **Greeting** and before **Appendix: Inputs Resolved** (see `contracts/output-artifact-contract.md`):
 
 ```markdown
 ## Sign-off

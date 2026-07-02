@@ -27,11 +27,14 @@ Users do not need fixed parameter syntax (for example `friendly: true`).
 
 ## Defaults
 
-| Input | Default |
-| --- | --- |
-| `recipient` | `World` |
-| `friendly` | `false` |
-| `banner` | `false` |
+Read defaults from the playbook manifest `inputs:` block in `layer3-playbooks/<id>/<id>.app.yaml`. Do not invent values beyond manifest defaults and the reconciliation rules below.
+
+## Recipient inference
+
+When the run binds `{userDatastore}` to a user folder (for example `UserData/alice`) and the user does not name a recipient:
+
+- Prefer a display name derived from the folder name (for example `alice` → `Alice`)
+- If the folder name is ambiguous or not a personal name, ask once before proceeding
 
 ## Outputs
 

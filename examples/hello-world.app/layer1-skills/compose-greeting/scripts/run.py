@@ -11,6 +11,10 @@ from pathlib import Path
 def main() -> int:
     parser = argparse.ArgumentParser(description="Compose a Hello World greeting.")
     parser.add_argument("--recipient", default="World", help="Name to greet")
+    parser.add_argument(
+        "--datastore",
+        help="Bound user datastore path (accepted per APP script interface; unused by this skill)",
+    )
     parser.add_argument("--workspace", required=True, help="Agent workspace directory")
     args = parser.parse_args()
 
