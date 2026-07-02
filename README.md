@@ -43,8 +43,9 @@ my-product-app/                           pack.app.yaml
 | --- | --- |
 | [`README.md`](README.md) | Workbench identity, layout, vocabulary, agent instructions (this file) |
 | [`standard/app-authoring.md`](standard/app-authoring.md) | Authoring standard — layout, layers, execution outcomes |
-| [`standard/app-execution.md`](standard/app-execution.md) | Execution guide — bind, run, post-run verification |
-| [`standard/post-run-checklist.md`](standard/post-run-checklist.md) | Contract checklist for execution agents |
+| [`standard/app-execution.md`](standard/app-execution.md) | Execution guide — refresh, bind, run, pre/post verification |
+| [`standard/pre-run-checklist.md`](standard/pre-run-checklist.md) | Contract checklist before execution (workbench and pack refresh) |
+| [`standard/post-run-checklist.md`](standard/post-run-checklist.md) | Contract checklist after execution |
 | [`standard/pack.manifest.schema.json`](standard/pack.manifest.schema.json) | JSON Schema for `pack.app.yaml` |
 | [`standard/playbook.manifest.schema.json`](standard/playbook.manifest.schema.json) | JSON Schema for `<playbook-id>.app.yaml` |
 | [`standard/README.md`](standard/README.md) | Standard folder label |
@@ -65,7 +66,7 @@ For AI agents working in this repo. Human contributors may also use [`documentat
 | Role | Context | Purpose |
 | --- | --- | --- |
 | **Workbench agent** | This repo | Learn the standard; study reference instances; author or validate packs |
-| **Execution agent** | A distribution repo | Learn APP from [`standard/app-authoring.md`](standard/app-authoring.md) and [`standard/app-execution.md`](standard/app-execution.md); consume `{packId}.app/` manifests and referenced layer artifacts |
+| **Execution agent** | A distribution repo | Learn APP from [`standard/app-authoring.md`](standard/app-authoring.md), [`standard/app-execution.md`](standard/app-execution.md), and checklists; refresh workbench and pack before execution; consume `{packId}.app/` manifests and referenced layer artifacts |
 
 `documentation/examples/` is format reference only — **not** an execution target. Published packs live in distribution repos.
 
@@ -75,6 +76,7 @@ For AI agents working in this repo. Human contributors may also use [`documentat
 | --- | --- |
 | Authoring standard | [`standard/app-authoring.md`](standard/app-authoring.md) |
 | Execution guide | [`standard/app-execution.md`](standard/app-execution.md) |
+| Pre-run checklist | [`standard/pre-run-checklist.md`](standard/pre-run-checklist.md) |
 | Post-run checklist | [`standard/post-run-checklist.md`](standard/post-run-checklist.md) |
 | JSON Schemas and validator | [`standard/`](standard/) |
 | Human product guide | [`documentation/app-workbench-guide.md`](documentation/app-workbench-guide.md) |
@@ -89,7 +91,7 @@ Pack `README.md` files in `documentation/examples/` are user welcome only — no
 - Gate metadata lives on `<playbook-id>.app.yaml` only (no `gates/` folder).
 - All overlays live under `layer2-overlays/` (not under `layer3-playbooks/`).
 - Pack shell entry is `pack.app.yaml`.
-- Execution agents read [`standard/app-execution.md`](standard/app-execution.md) and [`standard/post-run-checklist.md`](standard/post-run-checklist.md) after the authoring standard.
+- Execution agents read [`standard/app-execution.md`](standard/app-execution.md), [`standard/pre-run-checklist.md`](standard/pre-run-checklist.md), and [`standard/post-run-checklist.md`](standard/post-run-checklist.md) after the authoring standard; refresh workbench standard and distribution pack before running any playbook unless the run request pins a `ref`.
 - APP is fire-and-forget: behavioral instructions only; no run manifests or execution tracking.
 - Use Sketch-Then-Materialize: do not create whole example trees unless explicitly requested.
 - Treat `documentation/dev-archive/` as historical only; normative source is `standard/`.

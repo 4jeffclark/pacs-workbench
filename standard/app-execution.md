@@ -1,6 +1,6 @@
 # APP Execution Guide v0.1
 
-Operational guide for **execution agents** running APP packs. Normative format rules live in [`app-authoring.md`](app-authoring.md). This document defines how to **close** a run with the same rigor authors expect when writing packs.
+Operational guide for **execution agents** running APP packs. Normative format rules live in [`app-authoring.md`](app-authoring.md). This document defines how to **open** and **close** a run with the same rigor authors expect when writing packs.
 
 APP is **fire-and-forget**: read instructions, execute, write primary outputs, self-verify, done. APP does not orchestrate, track runs, or stay involved afterward.
 
@@ -13,11 +13,12 @@ Pack `README.md` is lightweight user documentation. It is not authoritative for 
 | Step | Read | Purpose |
 | --- | --- | --- |
 | 1 | [`app-authoring.md`](app-authoring.md) | Format grammar — layers, manifests, contracts, outcomes |
-| 2 | This file | Operational steps — bind, execute, verify |
-| 3 | Distribution repo `README.md` | Pack index (optional human context) |
-| 4 | `{packId}.app/pack.app.yaml` | Bind pack inputs; discover playbooks |
-| 5 | `layer3-playbooks/<id>/<id>.app.yaml` | Resolve playbook inputs, composition, gates, outputs |
-| 6 | Manifest-referenced artifacts only | Workflows, skills, overlays, contracts |
+| 2 | This file | Operational steps — refresh, bind, execute, verify |
+| 3 | [`pre-run-checklist.md`](pre-run-checklist.md) | Pre-run refresh verification — workbench and pack updates before execution |
+| 4 | Distribution repo `README.md` | Pack index (optional human context) |
+| 5 | `{packId}.app/pack.app.yaml` | Bind pack inputs; discover playbooks |
+| 6 | `layer3-playbooks/<id>/<id>.app.yaml` | Resolve playbook inputs, composition, gates, outputs |
+| 7 | Manifest-referenced artifacts only | Workflows, skills, overlays, contracts |
 
 Do not crawl the full pack tree. Do not treat workbench `documentation/examples/` as an execution target unless explicitly directed — use a **distribution repo**.
 
@@ -48,7 +49,32 @@ The standard defines pack **shape**, not how an engine obtains a pack. Use this 
 
 Example intent: *Run `hello-world` from `hello-world-app` at ref `v1.0.0`, pack instance `hello-world.app/`, user datastore `UserData/alice`.*
 
-How the engine clones, vendors, or caches the repo is **platform scope** — not APP standard.
+How the engine clones, vendors, or caches the repo is **platform scope** — not APP standard. Hosts may run refresh before the agent session starts; when they do, the agent still attests per [Pre-run verification](#pre-run-verification).
+
+---
+
+## Pre-run refresh
+
+Before reading pack manifests or binding `{userDatastore}` for **execution**, refresh two sources:
+
+| Source | Contents | When local copy exists | When no local copy yet |
+| --- | --- | --- | --- |
+| **Workbench standard** | `app-authoring.md`, `app-execution.md`, checklists | `git fetch`; compare HEAD to remote; `git pull` when not pinned and behind | Fetch canonical URLs or clone workbench at requested ref |
+| **Distribution pack** | `{packId}.app/` behavior in the product repo | `git fetch`; compare HEAD to remote; `git pull` or re-clone when not pinned and behind | Clone at pinned `ref` or latest default branch during [Provision](#execution-sequence) |
+
+### Pinning
+
+| Run request | Behavior |
+| --- | --- |
+| Pinned `ref` (commit, tag, branch) | Verify local copy matches pin; do **not** pull a newer version |
+| **Latest** or no `ref` | Fetch remote and update local copy before manifest reads |
+| Discovery-only (no execution handoff) | Pack refresh optional; workbench refresh recommended when using a local clone |
+
+Record resolved refs and `pack.app.yaml` `version` in [pre-run attestation](pre-run-checklist.md#attestation).
+
+Packs may add optional `layer0-workflows/pack-sync.md` for repo-specific sync steps (private remotes, multi-repo skills). Complete it when referenced from the pack or playbook manifest, after generic refresh above.
+
+Platform hosts (CI, Cursor hooks, custom runners) may perform refresh before the agent runs. That does not replace agent attestation — record what the host synced or confirm local state matches remote.
 
 ---
 
@@ -87,15 +113,16 @@ Hosts may isolate concurrent runs with per-run subdirectories (e.g. `<workspace>
 
 Given a pack instance address and resolved playbook:
 
-1. **Provision** — obtain the distribution repo (see [Pack provisioning](#pack-provisioning-recommended)).
-2. **Read manifests** — `pack.app.yaml` → `<playbook-id>.app.yaml` → referenced artifacts only.
-3. **Bind** — set `{userDatastore}`; set or select ephemeral `{agentWorkspace}` (see above).
-4. **Resolve inputs** — run required layer 0 workflows (typically `input-discovery`). Apply manifest `default` values and playbook `defaultResolution` policies when the user did not specify a value (see [`app-authoring.md`](app-authoring.md#default-resolution-policies)).
-5. **Clear gates** — complete workflows and skills; record minimum evidence per gate (see [`app-authoring.md`](app-authoring.md#gates-and-evidence)).
-6. **Run skills** — execute per each `SKILL.md` Procedure; run bundled scripts only when instructed.
-7. **Apply overlays** — when manifest `when:` conditions match resolved inputs.
-8. **Write outputs** — primary report and contract-required artifacts under `{userDatastore}` per playbook manifest and output contracts.
-9. **Self-verify** — complete the [post-run checklist](post-run-checklist.md) against referenced contracts.
+1. **Refresh** — update workbench standard and distribution pack to latest (unless pinned); complete the [pre-run checklist](pre-run-checklist.md).
+2. **Provision** — obtain the distribution repo when no suitable local copy exists (see [Pack provisioning](#pack-provisioning-recommended)).
+3. **Read manifests** — `pack.app.yaml` → `<playbook-id>.app.yaml` → referenced artifacts only.
+4. **Bind** — set `{userDatastore}`; set or select ephemeral `{agentWorkspace}` (see above).
+5. **Resolve inputs** — run required layer 0 workflows (typically `input-discovery`). Apply manifest `default` values and playbook `defaultResolution` policies when the user did not specify a value (see [`app-authoring.md`](app-authoring.md#default-resolution-policies)).
+6. **Clear gates** — complete workflows and skills; record minimum evidence per gate (see [`app-authoring.md`](app-authoring.md#gates-and-evidence)).
+7. **Run skills** — execute per each `SKILL.md` Procedure; run bundled scripts only when instructed.
+8. **Apply overlays** — when manifest `when:` conditions match resolved inputs.
+9. **Write outputs** — primary report and contract-required artifacts under `{userDatastore}` per playbook manifest and output contracts.
+10. **Self-verify** — complete the [post-run checklist](post-run-checklist.md) against referenced contracts.
 
 ### Rules
 
@@ -143,6 +170,12 @@ Skills declare outputs in `SKILL.md`. Optional frontmatter `outputCompleteness` 
 | `scaffold` | Script produces structure or indexes; agent fills narrative per Procedure |
 
 When omitted, treat outputs as `complete` if a bundled script produces them; otherwise infer from the Procedure.
+
+---
+
+## Pre-run verification
+
+Before reading manifests or binding `{userDatastore}` for execution, self-verify using [`pre-run-checklist.md`](pre-run-checklist.md). Failed checks must be reported in the run summary; do not proceed to playbook execution until refresh passes or the user accepts a pinned stale ref.
 
 ---
 

@@ -5,7 +5,7 @@ Human-facing guide for users, contributors, and pack authors. **Not** the APP ex
 | Need | Read |
 | --- | --- |
 | Author or validate pack structure | [`../standard/app-authoring.md`](../standard/app-authoring.md) and JSON Schemas in [`../standard/`](../standard/) |
-| Execute a pack | [`../standard/app-execution.md`](../standard/app-execution.md) and [`../standard/post-run-checklist.md`](../standard/post-run-checklist.md) |
+| Execute a pack | [`../standard/app-execution.md`](../standard/app-execution.md), [`../standard/pre-run-checklist.md`](../standard/pre-run-checklist.md), and [`../standard/post-run-checklist.md`](../standard/post-run-checklist.md) |
 | See working instances | [`examples/`](examples/) |
 | Workbench map | [`../README.md`](../README.md) |
 
@@ -45,7 +45,7 @@ agent-playbook-pack/
 
 | Folder | Role |
 | --- | --- |
-| [`standard/`](../standard/) | Authoritative standard. Manifests are YAML; validity is defined by JSON Schema. Includes `app-authoring.md`, `app-execution.md`, and `post-run-checklist.md`. |
+| [`standard/`](../standard/) | Authoritative standard. Manifests are YAML; validity is defined by JSON Schema. Includes `app-authoring.md`, `app-execution.md`, `pre-run-checklist.md`, and `post-run-checklist.md`. |
 | [`documentation/`](../documentation/) | Product context for humans and format reference instances. |
 | [`documentation/examples/`](examples/) | Side-by-side reference instances (format study only; not execution targets). Must conform to `standard/`. |
 

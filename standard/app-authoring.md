@@ -9,7 +9,7 @@ Pack `README.md` is lightweight user documentation. It is not authoritative for 
 | Audience | Document |
 | --- | --- |
 | Pack authors | This file |
-| Execution agents | [`app-execution.md`](app-execution.md) and [`post-run-checklist.md`](post-run-checklist.md) |
+| Execution agents | [`app-execution.md`](app-execution.md), [`pre-run-checklist.md`](pre-run-checklist.md), and [`post-run-checklist.md`](post-run-checklist.md) |
 
 ---
 
@@ -62,13 +62,14 @@ All overlays live under `layer2-overlays/`. Playbooks reference them from manife
 
 Given a pack instance address and a resolved playbook, execution must:
 
-1. Read `pack.app.yaml`, then `layer3-playbooks/<id>/<id>.app.yaml`, then manifest-referenced artifacts only.
-2. Bind required pack-level inputs (`userDatastore`; `agentWorkspace` when supplied or agent-selected) and resolve playbook inputs before core output.
-3. Run required workflows; clear gates per playbook manifest.
-4. Execute referenced skills per each skill's `SKILL.md`.
-5. Apply overlays when manifest conditions match.
-6. Write primary outputs per playbook manifest and referenced output contracts.
-7. Self-verify per [`post-run-checklist.md`](post-run-checklist.md).
+1. Refresh workbench standard and distribution pack per [`pre-run-checklist.md`](pre-run-checklist.md) before reading manifests (unless discovery-only with no execution handoff).
+2. Read `pack.app.yaml`, then `layer3-playbooks/<id>/<id>.app.yaml`, then manifest-referenced artifacts only.
+3. Bind required pack-level inputs (`userDatastore`; `agentWorkspace` when supplied or agent-selected) and resolve playbook inputs before core output.
+4. Run required workflows; clear gates per playbook manifest.
+5. Execute referenced skills per each skill's `SKILL.md`.
+6. Apply overlays when manifest conditions match.
+7. Write primary outputs per playbook manifest and referenced output contracts.
+8. Self-verify per [`post-run-checklist.md`](post-run-checklist.md).
 
 Operational detail: [`app-execution.md`](app-execution.md).
 
@@ -285,7 +286,7 @@ Procedural detail belongs in the workflow or contract that enforces the gate—n
 | Script-backed procedure | Required when Procedure says run script | Script outputs on disk per `SKILL.md` Outputs; or contract-defined artifact |
 | Domain validation (merge, layout) | Recommended when checks are machine-verifiable | Contract-defined artifact (e.g. validation summary, range manifest) |
 
-Execution agents self-attest gate clearance and complete [`post-run-checklist.md`](post-run-checklist.md) after outputs are written.
+Execution agents self-attest pre-run refresh per [`pre-run-checklist.md`](pre-run-checklist.md), gate clearance, and post-run verification per [`post-run-checklist.md`](post-run-checklist.md).
 
 ---
 

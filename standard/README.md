@@ -5,7 +5,8 @@ Normative APP standard files.
 | File | Purpose |
 | --- | --- |
 | [`app-authoring.md`](app-authoring.md) | Authoring standard — layout, layers, execution outcomes |
-| [`app-execution.md`](app-execution.md) | Execution guide — bind, run, verify (operational) |
+| [`app-execution.md`](app-execution.md) | Execution guide — refresh, bind, run, verify (operational) |
+| [`pre-run-checklist.md`](pre-run-checklist.md) | Contract checklist for pre-run refresh (workbench and pack) |
 | [`post-run-checklist.md`](post-run-checklist.md) | Contract checklist for post-run self-verification |
 | [`pack.manifest.schema.json`](pack.manifest.schema.json) | JSON Schema for `pack.app.yaml` |
 | [`playbook.manifest.schema.json`](playbook.manifest.schema.json) | JSON Schema for `<playbook-id>.app.yaml` |

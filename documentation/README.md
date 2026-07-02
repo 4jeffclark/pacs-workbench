@@ -11,7 +11,7 @@ Human-facing product documentation and format reference instances. **Not** the A
 
 Normative standard: [`../standard/`](../standard/).
 
-Execution agents: [`../standard/app-authoring.md`](../standard/app-authoring.md) → [`../standard/app-execution.md`](../standard/app-execution.md). Distribution repos for pack execution.
+Execution agents: [`../standard/app-authoring.md`](../standard/app-authoring.md) → [`../standard/app-execution.md`](../standard/app-execution.md) → [`../standard/pre-run-checklist.md`](../standard/pre-run-checklist.md). Distribution repos for pack execution.
 
 ## Other
 

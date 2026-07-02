@@ -1,6 +1,6 @@
 # APP Post-Run Checklist v0.1
 
-Contract-driven self-verification for execution agents after primary outputs are written. Complete this checklist before considering a run closed. APP does not enforce the checklist automatically — the agent attests results in the run summary or report appendix.
+Contract-driven self-verification for execution agents after primary outputs are written. Complete this checklist before considering a run closed. Complete [`pre-run-checklist.md`](pre-run-checklist.md) before execution begins. APP does not enforce either checklist automatically — the agent attests results in the run summary or report appendix.
 
 Operational context: [`app-execution.md`](app-execution.md).
 
