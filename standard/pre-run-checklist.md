@@ -45,6 +45,7 @@ When the user asks for **latest** or does not specify a `ref`, fetch from remote
 | P2 | When pinned: local distribution ref matches the pin | Run request |
 | P3 | `pack.app.yaml` `version` field recorded for this run | `{packId}.app/pack.app.yaml` |
 | P4 | Target playbook id listed in `pack.app.yaml` `playbooks:` | Pack manifest |
+| P5 | Execution mode: distribution copy treated as read-only; no pack edits or git writes to the distribution remote from the execution workspace | [`app-execution.md`](app-execution.md#distribution-repo-boundary-execution-copy) |
 
 ### Optional pack workflow
 

@@ -38,6 +38,12 @@ A **pack instance** (`{packId}.app/`) has the same shape in `documentation/examp
 
 Distribution repos contain only `README.md` and `*.app/` at repo root.
 
+### Execution copy vs authoring source
+
+Distribution repos are **published products**. Execution agents consume them through a **one-way, read-only** local copy: pull (or re-clone) to refresh, then read manifests and run skills. They **do not** edit the execution copy for durable pack changes and **never** commit or push back to the distribution remote from an execution context.
+
+Pack authors work in a **separate authoring workspace** (clone or worktree), commit there, and publish to the distribution remote. Execution agents pull those updates into their read-only cache before the next run. Operational detail: [`app-execution.md`](app-execution.md#distribution-repo-boundary-execution-copy).
+
 ---
 
 ## Layer model
@@ -95,8 +101,8 @@ Pack instances are consumed from **distribution repos** (`README.md` + `{packId}
 | Mode | Outcome |
 | --- | --- |
 | Discovery | Answer what the pack can do; do not read datastore or write reports |
-| Execution | Run a playbook after user intent is clear |
-| Factory | Modify the pack itself |
+| Execution | Run a playbook after user intent is clear; treat the provisioned distribution copy as read-only |
+| Factory | Modify the pack in an authoring workspace; publish to the distribution remote — not in the execution cache |
 
 **Discovery → execution handoff:** Confirm target playbook, bindings, and resolved inputs before binding `{userDatastore}` or running workflows. Discovery must not write durable outputs. See [`app-execution.md`](app-execution.md#modes-and-handoff).
 

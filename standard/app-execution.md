@@ -29,10 +29,57 @@ Do not crawl the full pack tree. Do not treat workbench `documentation/examples/
 | Mode | Outcome |
 | --- | --- |
 | **Discovery** | Answer what the pack can do. Do not bind `{userDatastore}`, read user data, or write reports. |
-| **Execution** | Run a playbook after user intent is clear. |
-| **Factory** | Modify the pack itself (authoring context only). |
+| **Execution** | Run a playbook after user intent is clear. Treat the provisioned distribution copy as read-only (see [Distribution repo boundary](#distribution-repo-boundary-execution-copy)). |
+| **Factory** | Modify the pack in an authoring workspace; publish to the distribution remote — not in the execution cache. |
 
 **Discovery → execution handoff:** When discovery and execution occur in the same session, stop discovery before binding `{userDatastore}`. Confirm the target playbook, bindings, and resolved inputs (or declared defaults) before any workflow runs. Discovery must not write durable outputs under `{userDatastore}`.
+
+**Factory is not execution:** Factory modifies pack behavior in an **authoring workspace** (see [Distribution repo boundary](#distribution-repo-boundary-execution-copy)). Execution reads a provisioned copy only. Do not mix the two trees unless the user explicitly opts into a combined dev setup (see below).
+
+---
+
+## Distribution repo boundary (execution copy)
+
+Execution agents consume distribution repos through a **one-way, read-only** relationship. The distribution remote is the published product; the local copy exists only to be refreshed and read during a run.
+
+| Direction | Execution mode |
+| --- | --- |
+| Remote → local copy | **Yes** — `git fetch`, `git pull`, or re-clone per [Pre-run refresh](#pre-run-refresh) (unless pinned) |
+| Local copy → remote | **Never** — do not commit, push, or open pull requests from the execution copy |
+| Edits inside local copy | **Avoid** — treat the provisioned pack as immutable for the run |
+
+### Durable writes belong elsewhere
+
+During execution, durable outputs go to `{userDatastore}` (reports, user data) and ephemeral intermediates to `{agentWorkspace}`. The distribution repo and its local execution copy are **not** run output targets.
+
+### Why read-only
+
+Pre-run refresh replaces the local copy with the remote default branch (or pinned `ref`). Any edit under the execution copy is **lost on the next pull** and must not be treated as published pack behavior. Accidental commits from an execution workspace corrupt the separation between **running** a pack and **shipping** a pack.
+
+### Factory vs execution workspace
+
+| Role | Workspace | Git writes to distribution remote |
+| --- | --- | --- |
+| **Execution** | Provisioned execution copy (host-defined cache or fresh clone) | **Never** |
+| **Factory** | Separate authoring clone or worktree (outside the execution cache) | **Yes** — authors commit and push here; execution agents pull the result |
+
+Pack authors (humans or agents in Factory mode) change behavior only in the authoring workspace, publish to the distribution remote, then execution agents refresh their read-only copy before the next run.
+
+### Platform provisioning
+
+How the engine clones, vendors, or caches a distribution repo is **platform scope**. A host may keep execution copies under a dedicated folder (for example `packs/` in a test harness). That folder is an **execution cache**: pull to refresh, read manifests, invoke skills. It is not a substitute for an authoring workspace.
+
+### Combined Factory + execution (explicit opt-in only)
+
+Some development setups assign one agent both roles: run playbooks against `{userDatastore}` **and** assist with pack development. This is **not** the default APP model.
+
+When the user explicitly opts in:
+
+1. **Factory** — edit, commit, and push only in the user-supplied **authoring clone** outside the execution workspace or execution cache.
+2. **Execution** — run playbooks only against the refreshed execution copy; complete pre-run refresh before manifest reads.
+3. **Handoff** — after Factory publishes to the distribution remote, refresh the execution copy (`git pull`) before the next execution run.
+
+Even in combined setups: **never** commit or push pack changes from the execution workspace or execution cache.
 
 ---
 
