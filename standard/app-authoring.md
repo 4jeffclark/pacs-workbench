@@ -1,4 +1,4 @@
-# APP Authoring Standard v0.1
+# APP Authoring Standard v0.2
 
 AgentPlaybookPack (APP) — portable, runtime-neutral domain workflow packages.
 
@@ -70,7 +70,7 @@ Given a pack instance address and a resolved playbook, execution must:
 
 1. Refresh workbench standard and distribution pack per [`pre-run-checklist.md`](pre-run-checklist.md) before reading manifests (unless discovery-only with no execution handoff).
 2. Read `pack.app.yaml`, then `layer3-playbooks/<id>/<id>.app.yaml`, then manifest-referenced artifacts only.
-3. Bind required pack-level inputs (`userDatastore`; `agentWorkspace` when supplied or agent-selected) and resolve playbook inputs before core output.
+3. Bind required pack-level inputs (`userDatastore`; `agentWorkspace` when supplied or agent-selected); declare [execution closure](app-execution.md#execution-closure-and-memory-planes); resolve playbook inputs before core output.
 4. Run required workflows; clear gates per playbook manifest.
 5. Execute referenced skills per each skill's `SKILL.md`.
 6. Apply overlays when manifest conditions match.
@@ -365,6 +365,17 @@ Contracts define durable data layout, artifact shape, persistence rules, and nam
 
 Primary report outputs use timestamped folders under `{userDatastore}/reports/` unless a contract specifies otherwise.
 
+### Execution closure (author guidance)
+
+Execution agents treat `{userDatastore}` as partially readable — only paths declared by pack contracts and the active playbook's resolved inputs belong in the run [closure set](app-execution.md#closure-set-default). Authors should make read scope explicit:
+
+- **Layout contracts** — document which `{userDatastore}` subtrees skills and playbooks may read (raw, canonical, knowledge, registries).
+- **Persistence contracts** — distinguish durable knowledge (for example `knowledge/`) from execution-local reports; state that future runs inherit from promoted knowledge, not from searching prior report folders.
+- **Continuity inputs** — when a playbook legitimately reads prior deliverables, declare a playbook input (for example `priorReportPath`, `baselineRunId`) or reference a layer 0 workflow that names required evidence. Do not rely on agents inferring continuity from workspace search.
+- **Delivery contracts** — "union of required sections" means the **output contract section list**, not prose copied from a prior run folder.
+
+Packs may add a dedicated `contracts/execution-datastore-read-scope.md` when layout and persistence contracts do not suffice.
+
 ---
 
 ## Manifest kinds
@@ -397,4 +408,4 @@ JSON may be used at tool or API boundaries later; YAML remains the canonical for
 
 ## Version
 
-APP authoring standard v0.1.
+APP authoring standard v0.2.

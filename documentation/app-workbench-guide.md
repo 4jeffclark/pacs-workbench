@@ -95,8 +95,11 @@ Same shape in `documentation/examples/` and in a distribution repo.
 | Gate | Playbook precondition — declared on `<playbook-id>.app.yaml`; cleared by workflows |
 | `{userDatastore}` | User persistent data; bound at execution; never in APP repos |
 | `{agentWorkspace}` | Optional ephemeral working area; execution agent chooses when not supplied; cleaned up after the run |
+| **Execution closure** | The set of pack artifacts and datastore paths authorized as inputs for one run; default denies prior reports and other runs' workspace |
+| **Ambient context** | Session chat, indexed workspace files, and undirected search results — non-authoritative during execution unless promoted into closure |
+| **Continuity mode** | Named relaxation of default closure when user or manifest explicitly authorizes reading prior deliverables |
 
-Layer numbering (0–3), manifest fields, and execution outcomes are defined in [`../standard/app-authoring.md`](../standard/app-authoring.md).
+Layer numbering (0–3), manifest fields, and execution outcomes are defined in [`../standard/app-authoring.md`](../standard/app-authoring.md). Execution closure is defined in [`../standard/app-execution.md`](../standard/app-execution.md#execution-closure-and-memory-planes).
 
 ---
 
@@ -109,6 +112,39 @@ Layer numbering (0–3), manifest fields, and execution outcomes are defined in 
 | Factory | Modify the pack itself |
 
 Keep discovery from triggering datastore reads or report generation.
+
+At execution handoff, agents re-resolve inputs from manifests — prior chat and visible old reports are not implicit inputs unless the user declares continuity. See [Execution closure](#execution-closure) below.
+
+---
+
+## Execution closure
+
+APP execution is **closure-first**: each run may treat as authoritative only what the pack manifest, contracts, and resolved inputs authorize. This preserves pack supremacy over agent session memory and prevents prior report folders from acting as a shadow prompt library.
+
+| What | Default during execution |
+| --- | --- |
+| Pack manifests, referenced skills, contracts | **In closure** — authoritative |
+| Contract-declared datastore (raw, canonical, knowledge) | **In closure** — authoritative |
+| `{userDatastore}/reports/` from prior runs | **Out of closure** — do not read for synthesis |
+| Other runs' `{agentWorkspace}` | **Out of closure** |
+| User-confirmed durable knowledge | **In closure** when persistence contract declares it |
+| Session chat, workspace index | **Non-authoritative** unless bound as a resolved input |
+
+**Continuity** (revise a prior report, compare runs, continue a thread) requires an explicit mode and named paths — not undirected search. Normative rules: [`../standard/app-execution.md`](../standard/app-execution.md#execution-closure-and-memory-planes).
+
+### Execution closure platform patterns
+
+Non-normative patterns hosts may adopt to reinforce closure (APP still requires agent attestation):
+
+| Pattern | Host | Effect |
+| --- | --- | --- |
+| Ignore prior reports | `.cursorignore` on `{userDatastore}/reports/**` | Reduces accidental reads in IDE agents |
+| Clean fixture datastore | CI with minimal `UserData/` snapshot | Isolated regression runs |
+| Fresh session per run | Cursor / SDK session boundary | Weakens ambient chat carryover |
+| Run-scoped workspace | Per-run subdirectory under `.tmp/runs/` | Prevents cross-run workspace reuse |
+| Closure attestation in report appendix | Any | Auditable pass/fail without sandbox |
+
+Platforms that cannot enforce reads rely on checklist attestation and post-run self-reporting of violations.
 
 ---
 

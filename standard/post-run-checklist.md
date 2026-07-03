@@ -1,4 +1,4 @@
-# APP Post-Run Checklist v0.1
+# APP Post-Run Checklist v0.2
 
 Contract-driven self-verification for execution agents after primary outputs are written. Complete this checklist before considering a run closed. Complete [`pre-run-checklist.md`](pre-run-checklist.md) before execution begins. APP does not enforce either checklist automatically — the agent attests results in the run summary or report appendix.
 
@@ -66,6 +66,15 @@ Operational context: [`app-execution.md`](app-execution.md).
 | W1 | Intermediate skill outputs written under ephemeral `{agentWorkspace}`, not mixed into `{userDatastore}` except contract-required deliverables | [`app-execution.md`](app-execution.md) |
 | W2 | Ephemeral workspace for this run removed after verification passes (unless user requested retention or run failed) | [`app-execution.md`](app-execution.md) |
 
+### Execution closure
+
+| # | Check | Source |
+| --- | --- | --- |
+| E0 | Pre-run closure mode and exceptions recorded; post-run reads match attestation | [`pre-run-checklist.md`](pre-run-checklist.md#attestation) |
+| E1 | When mode was `default`: no `{userDatastore}/reports/**` or other-run `{agentWorkspace}` reads used for synthesis | [`app-execution.md`](app-execution.md#default-deny) |
+| E2 | Narrative sections synthesized from closure-set sources and skill-authorized fetches in this run (not verbatim prior report reuse unless continuity mode) | [`app-execution.md`](app-execution.md#structural-determinism-vs-narrative-independence) |
+| E3 | When mode was not `default`: every non-closure read listed in report appendix or run summary | [`app-execution.md`](app-execution.md#continuity-modes) |
+
 ---
 
 ## Attestation
@@ -74,6 +83,8 @@ Record in the run summary or report appendix:
 
 ```text
 Post-run checklist: <passed | failed>
+Execution closure verified: <yes | no — list violations>
+Non-closure reads (if any): <none | paths>
 Failed items: <ids or "none">
 Notes: <optional>
 ```

@@ -1,4 +1,4 @@
-# APP Pre-Run Checklist v0.1
+# APP Pre-Run Checklist v0.2
 
 Contract-driven self-verification for execution agents **before** reading pack manifests or running a playbook. Complete this checklist when entering **execution** mode (and when discovery may hand off to execution in the same session). APP does not enforce the checklist automatically — the agent attests results in the run summary or report appendix.
 
@@ -53,6 +53,18 @@ When the user asks for **latest** or does not specify a `ref`, fetch from remote
 | --- | --- | --- |
 | O0 | When the pack defines `layer0-workflows/pack-sync.md` and the playbook or pack manifest references it: pack-specific sync steps completed | Pack layer 0 workflow |
 
+### Execution closure
+
+Complete after resolving the run request and before reading `{userDatastore}` content outside manifest closure (see [`app-execution.md`](app-execution.md#execution-closure-and-memory-planes)).
+
+| # | Check | Source |
+| --- | --- | --- |
+| C0 | Execution closure mode declared (`default`, `continuity`, `revision`, or `regression`) | [`app-execution.md`](app-execution.md#continuity-modes) |
+| C1 | When mode is `default`: no plan to read `{userDatastore}/reports/**` or other runs' `{agentWorkspace}` before synthesis | [`app-execution.md`](app-execution.md#default-deny) |
+| C2 | When mode is not `default`: user run request or playbook input names each prior artifact to read | Run request, playbook manifest `inputs:` |
+| C3 | Pack authority read chain limited to manifest-referenced artifacts (no undirected pack tree crawl) | [`app-execution.md`](app-execution.md#read-order) |
+| C4 | At discovery → execution handoff in the same session: inputs re-resolved from manifest and user request; ambient chat not treated as implicit inputs | [`app-execution.md`](app-execution.md#modes-and-handoff) |
+
 ---
 
 ## Attestation
@@ -64,6 +76,8 @@ Pre-run refresh: <passed | skipped-pinned | failed | not-applicable>
 Workbench ref: <commit, tag, or URL@ref>
 Distribution ref: <commit or tag>
 Pack version: <from pack.app.yaml>
+Execution closure mode: <default | continuity | revision | regression>
+Closure exceptions: <none | list of named paths or run ids authorized for read>
 Failed items: <ids or "none">
 Notes: <optional — e.g. updated from abc123 to def456>
 ```

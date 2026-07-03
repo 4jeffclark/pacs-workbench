@@ -1,4 +1,4 @@
-# APP Execution Guide v0.1
+# APP Execution Guide v0.2
 
 Operational guide for **execution agents** running APP packs. Normative format rules live in [`app-authoring.md`](app-authoring.md). This document defines how to **open** and **close** a run with the same rigor authors expect when writing packs.
 
@@ -32,7 +32,7 @@ Do not crawl the full pack tree. Do not treat workbench `documentation/examples/
 | **Execution** | Run a playbook after user intent is clear. Treat the provisioned distribution copy as read-only (see [Distribution repo boundary](#distribution-repo-boundary-execution-copy)). |
 | **Factory** | Modify the pack in an authoring workspace; publish to the distribution remote — not in the execution cache. |
 
-**Discovery → execution handoff:** When discovery and execution occur in the same session, stop discovery before binding `{userDatastore}`. Confirm the target playbook, bindings, and resolved inputs (or declared defaults) before any workflow runs. Discovery must not write durable outputs under `{userDatastore}`.
+**Discovery → execution handoff:** When discovery and execution occur in the same session, stop discovery before binding `{userDatastore}`. Confirm the target playbook, bindings, and resolved inputs (or declared defaults) before any workflow runs. Discovery must not write durable outputs under `{userDatastore}`. At handoff, re-resolve inputs from the manifest and user run request — do not treat earlier discovery prose or visible prior deliverables as implicit inputs (see [Execution closure](#execution-closure-and-memory-planes)).
 
 **Factory is not execution:** Factory modifies pack behavior in an **authoring workspace** (see [Distribution repo boundary](#distribution-repo-boundary-execution-copy)). Execution reads a provisioned copy only. Do not mix the two trees unless the user explicitly opts into a combined dev setup (see below).
 
@@ -156,6 +156,75 @@ Hosts may isolate concurrent runs with per-run subdirectories (e.g. `<workspace>
 
 ---
 
+## Execution closure and memory planes
+
+Execution agents operate in environments with **ambient context**: chat history, indexed workspace files, prior run artifacts, and platform rules. APP treats ambient context as **non-authoritative** during execution unless explicitly promoted into the run's **closure set**.
+
+### Memory planes
+
+| Plane | Examples | Role during execution |
+| --- | --- | --- |
+| **Pack authority** | Workbench standard, distribution pack @ ref, manifest-referenced artifacts | Authoritative behavior |
+| **Declared datastore** | Contract-defined raw, canonical, and knowledge paths; resolved playbook inputs | Authoritative inputs |
+| **Ambient context** | Prior reports, other runs' `{agentWorkspace}`, undirected workspace search, session chat | Non-authoritative unless promoted |
+
+**Pack supremacy:** For synthesis and gate evidence, the first two planes govern the run. Ambient context may inform Discovery or Factory; it does not substitute for manifest reads or contract-declared datastore paths.
+
+### Closure set (default)
+
+After pre-run refresh and before core execution, the agent's **closure set** is:
+
+1. Workbench standard and distribution pack artifacts reachable from the playbook manifest read chain (see [Read order](#read-order)).
+2. Pack `contracts/` referenced by the playbook manifest, its skills, workflows, overlays, or output contracts.
+3. `{userDatastore}` subtrees the pack declares readable for this playbook (layout contract, persistence contract, skill `--datastore` paths).
+4. `{agentWorkspace}` for **this run only** (including skill scratch under the active run subdirectory).
+5. External sources only when a referenced skill procedure authorizes them (for example web research).
+
+### Default deny
+
+Unless [continuity execution](#continuity-modes) applies, do **not** read or treat as synthesis inputs:
+
+- `{userDatastore}/reports/**` except the new report folder being written in the current run (after synthesis, not before).
+- `{agentWorkspace}` directories belonging to **other** runs.
+- Prior deliverables discovered by undirected search (`Glob`, `Grep`, workspace index) when not named in the closure set.
+
+Prior report folders are **immutable run artifacts**, not a shadow memory system. User-confirmed continuity belongs in contract-declared durable knowledge paths (for example `{userDatastore}/knowledge/`) per pack persistence contracts.
+
+### Authoritative precedence (execution synthesis)
+
+When sources conflict, prefer in order:
+
+1. Playbook manifest and manifest-referenced contracts, skills, workflows, overlays.
+2. Resolved playbook inputs and attested defaults (**Inputs Resolved**).
+3. Contract-declared datastore paths and skill script outputs from this run.
+4. Skill-authorized external fetches from this run.
+5. Ambient context (session chat, indexed files) — **non-authoritative** until bound as (2) or included in (3).
+
+### Continuity modes
+
+Default posture is **closure-first** (closure set only; often described as "greenfield" for narrative synthesis). These named modes relax the default **only** when explicitly declared:
+
+| Mode | Trigger | Additional reads allowed |
+| --- | --- | --- |
+| **Default execution** | Normal playbook run | Closure set only |
+| **Continuity execution** | User run request or playbook input names a prior artifact or run id | Named report(s) or registry entries only |
+| **Revision execution** | User asks to revise, update, or extend a named prior deliverable | Named target deliverable as edit source |
+| **Regression / diff** | Harness, CI, or explicit test request | Prior deliverables for comparison — not for production narrative reuse |
+
+Record the active mode in [pre-run attestation](pre-run-checklist.md#attestation). When mode is not `default`, list every path read outside the default closure set.
+
+### Structural determinism vs narrative independence
+
+Same playbook inputs and datastore state should yield **structurally consistent** outputs (sections, metrics, gate evidence). That is APP success, not pollution.
+
+**Narrative independence** means prose synthesis comes from closure-set sources and skill-authorized fetches in **this run** — not verbatim reuse of prior report text unless continuity mode explicitly authorizes it.
+
+### Platform enforcement (optional)
+
+Hosts may enforce closure with sandboxes, read-only datastore views, or ignore rules for `{userDatastore}/reports/`. APP defines **behavior and attestation**; platform mechanics are **platform scope**. See [Workbench guide](../documentation/app-workbench-guide.md#execution-closure-platform-patterns) for non-normative patterns.
+
+---
+
 ## Execution sequence
 
 Given a pack instance address and resolved playbook:
@@ -163,7 +232,7 @@ Given a pack instance address and resolved playbook:
 1. **Refresh** — update workbench standard and distribution pack to latest (unless pinned); complete the [pre-run checklist](pre-run-checklist.md).
 2. **Provision** — obtain the distribution repo when no suitable local copy exists (see [Pack provisioning](#pack-provisioning-recommended)).
 3. **Read manifests** — `pack.app.yaml` → `<playbook-id>.app.yaml` → referenced artifacts only.
-4. **Bind** — set `{userDatastore}`; set or select ephemeral `{agentWorkspace}` (see above).
+4. **Bind and declare closure** — set `{userDatastore}`; set or select ephemeral `{agentWorkspace}` (see above); declare execution closure mode and complete closure attestation per [pre-run checklist](pre-run-checklist.md#execution-closure).
 5. **Resolve inputs** — run required layer 0 workflows (typically `input-discovery`). Apply manifest `default` values and playbook `defaultResolution` policies when the user did not specify a value (see [`app-authoring.md`](app-authoring.md#default-resolution-policies)).
 6. **Clear gates** — complete workflows and skills; record minimum evidence per gate (see [`app-authoring.md`](app-authoring.md#gates-and-evidence)).
 7. **Run skills** — execute per each `SKILL.md` Procedure; run bundled scripts only when instructed.
@@ -177,6 +246,7 @@ Given a pack instance address and resolved playbook:
 - No ad-hoc scripts during a run.
 - Core output runs without optional overlays unless playbook inputs enable them.
 - When contracts and on-disk layout disagree, trust raw files and document the mismatch in the report.
+- Do not read `{userDatastore}/reports/` or other runs' `{agentWorkspace}` except under an attested [continuity mode](#continuity-modes).
 
 ---
 
@@ -242,4 +312,4 @@ Gate clearance remains self-attested unless a pack contract defines machine-chec
 
 ## Version
 
-APP execution guide v0.1. Pairs with APP authoring standard v0.1.
+APP execution guide v0.2. Pairs with APP authoring standard v0.2.
