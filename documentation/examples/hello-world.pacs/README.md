@@ -13,4 +13,4 @@ Produces a simple greeting report for a named recipient. Report assembly is agen
 
 - **Version:** 1.0.0 (see [`pack.pacs.yaml`](pack.pacs.yaml))
 - **License:** MIT
-- **Published for execution:** [hello-world-app](https://github.com/4jeffclark/hello-world-app)
+- **Published for execution:** [hello-world-pacs](https://github.com/4jeffclark/hello-world-pacs)

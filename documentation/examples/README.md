@@ -6,6 +6,6 @@ Reference `{packId}.pacs/` folders — side-by-side helpers for understanding [`
 
 | Instance | Scope | Published distribution |
 | --- | --- | --- |
-| [hello-world.pacs/](hello-world.pacs/) | Minimal instance exercising standard layer shapes | [hello-world-app](https://github.com/4jeffclark/hello-world-app) |
+| [hello-world.pacs/](hello-world.pacs/) | Minimal instance exercising standard layer shapes | [hello-world-pacs](https://github.com/4jeffclark/hello-world-pacs) |
 
 Instance entry: `pack.pacs.yaml`.

@@ -9,7 +9,7 @@ Entry point for the workbench. Defines the PACS format. **Not** a PACS distribut
 ## Workbench layout
 
 ```text
-agent-playbook-pack/
+pacs-workbench/
   README.md           ← this file (workbench map + agent instructions)
   standard/           ← normative PACS standard
   documentation/      ← product guide and reference pack instances
@@ -101,4 +101,4 @@ Pack `README.md` files in `documentation/examples/` are user welcome only — no
 
 | Instance | Workbench role | Published distribution |
 | --- | --- | --- |
-| [`documentation/examples/hello-world.pacs/`](documentation/examples/hello-world.pacs/) | Minimal layer coverage | [hello-world-app](https://github.com/4jeffclark/hello-world-app) |
+| [`documentation/examples/hello-world.pacs/`](documentation/examples/hello-world.pacs/) | Minimal layer coverage | [hello-world-pacs](https://github.com/4jeffclark/hello-world-pacs) |

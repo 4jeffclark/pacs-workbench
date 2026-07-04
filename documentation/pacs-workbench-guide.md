@@ -35,7 +35,7 @@ PACS is not a replacement for [Agent Skills](https://agentskills.io), MCP, a run
 This repository is the **PACS Standards Workbench** — format definition and reference material. It is **not** a PACS distribution repo.
 
 ```text
-agent-playbook-pack/
+pacs-workbench/
   README.md           workbench map
   standard/           normative standard (authoring + JSON Schema)
   documentation/      product guide and reference pack instances
@@ -182,7 +182,7 @@ pip install -r standard/requirements.txt
 python standard/validate-manifests.py path/to/pack.pacs.yaml path/to/hello-world.pacs.yaml
 ```
 
-7. Publish as a distribution repo (`README.md` + `*.pacs/` only). Example: [hello-world-app](https://github.com/4jeffclark/hello-world-app) from [`hello-world.pacs`](examples/hello-world.pacs/).
+7. Publish as a distribution repo (`README.md` + `*.pacs/` only). Example: [hello-world-pacs](https://github.com/4jeffclark/hello-world-pacs) from [`hello-world.pacs`](examples/hello-world.pacs/).
 
 ---
 

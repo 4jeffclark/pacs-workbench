@@ -94,7 +94,7 @@ The standard defines pack **shape**, not how an engine obtains a pack. Use this 
 | `packInstance` | Path to `{packId}.pacs/` inside the repo |
 | `playbookId` | Playbook `id` from `pack.pacs.yaml` `playbooks:` |
 
-Example intent: *Run `hello-world` from `hello-world-app` at ref `v1.0.0`, pack instance `hello-world.pacs/`, user datastore `UserData/alice`.*
+Example intent: *Run `hello-world` from `hello-world-pacs` at ref `v1.0.0`, pack instance `hello-world.pacs/`, user datastore `UserData/alice`.*
 
 How the engine clones, vendors, or caches the repo is **platform scope** — not PACS standard. Hosts may run refresh before the agent session starts; when they do, the agent still attests per [Pre-run verification](#pre-run-verification).
 

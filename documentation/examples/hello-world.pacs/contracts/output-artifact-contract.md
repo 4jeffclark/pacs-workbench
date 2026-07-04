@@ -53,4 +53,4 @@ Presentation overlays precede core output; enrichment overlays follow core outpu
 
 ## Post-run verification
 
-Self-verify per [PACS post-run checklist](https://github.com/4jeffclark/agent-playbook-pack/blob/main/standard/post-run-checklist.md) after writing the report folder.
+Self-verify per [PACS post-run checklist](https://github.com/4jeffclark/pacs-workbench/blob/main/standard/post-run-checklist.md) after writing the report folder.
