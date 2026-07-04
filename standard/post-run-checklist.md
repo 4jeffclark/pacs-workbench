@@ -1,4 +1,4 @@
-# PACS Post-Run Checklist v0.3
+# PACS Post-Run Checklist v0.4
 
 Contract-driven self-verification for execution agents after primary outputs are written. Complete this checklist before considering a run closed. Complete [`pre-run-checklist.md`](pre-run-checklist.md) before execution begins. PACS does not enforce either checklist automatically — the agent attests results in the run summary or report appendix.
 
@@ -40,6 +40,7 @@ Operational context: [`pacs-execution.md`](pacs-execution.md).
 | S2 | Bundled scripts invoked with `--datastore` / `--workspace` (or documented equivalent) when Scripts section requires | Skill `SKILL.md` |
 | S3 | `scaffold` skills: agent filled narrative sections the script did not produce | Skill `outputCompleteness` |
 | S4 | Quantitative tables in the delivered report trace to skill `Metrics.csv`, assembly CSVs, or contract-permitted narrative synthesis — not agent-invented figures | Skill outputs, output contract |
+| S5 | When a skill returned `status: warn` or `exposureQualityValid: false`, attestation reflects failure or documents the gap — not silent pass | Skill `skill-result.json`, output contract |
 | O1 | Overlays with matching `when:` applied; others omitted | Playbook manifest `overlays:` |
 
 ### Primary output
@@ -59,6 +60,7 @@ Operational context: [`pacs-execution.md`](pacs-execution.md).
 | --- | --- | --- |
 | D1 | Writes under `{userDatastore}` conform to layout contract when `pack.pacs.yaml` references one | `contracts/user-datastore-layout.md` or pack equivalent |
 | D2 | Mismatches between contract paths and on-disk layout documented in the report | [`pacs-execution.md`](pacs-execution.md) |
+| D3 | Portfolio linkage exposure symbols pass sanity check — no numeric-only tickers in weight tables; when `exposureQualityValid: false`, exposure tables omitted and attestation failed | Skill `Metrics.csv`, output contract |
 
 ### Workspace
 
