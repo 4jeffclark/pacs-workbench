@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hello World APP skill: compose-greeting. See SKILL.md."""
+"""Hello World PACS skill: compose-greeting. See SKILL.md."""
 from __future__ import annotations
 
 import argparse
@@ -13,7 +13,7 @@ def main() -> int:
     parser.add_argument("--recipient", default="World", help="Name to greet")
     parser.add_argument(
         "--datastore",
-        help="Bound user datastore path (accepted per APP script interface; unused by this skill)",
+        help="Bound user datastore path (accepted per PACS script interface; unused by this skill)",
     )
     parser.add_argument("--workspace", required=True, help="Agent workspace directory")
     args = parser.parse_args()

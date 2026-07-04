@@ -1,9 +1,9 @@
-appVersion: '0.1'
+pacsVersion: '0.1'
 kind: pack
 packId: hello-world
 name: Hello World
 version: '1.0.0'
-description: Minimal APP instance exercising all framework shapes and execution concepts.
+description: Minimal PACS stack instance exercising all framework shapes and execution concepts.
 license: MIT
 compatibility:
   agentSkills: '>=1.0'

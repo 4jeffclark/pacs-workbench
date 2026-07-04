@@ -21,13 +21,13 @@ Resolve playbook inputs from natural language before core execution.
 1. **Parse** — infer `recipient`, `friendly`, and `banner` from the user request and any supplied partial `inputs`
 2. **Summarize** — present **Inputs Resolved** with each parameter marked `confirmed`, `default`, or `pending`
 3. **Reconcile** — ask plain-language questions only for pending or ambiguous parameters
-4. **Confirm** — finalize the input block before clearing the `inputs-resolved` gate (see `<playbook-id>.app.yaml`)
+4. **Confirm** — finalize the input block before clearing the `inputs-resolved` gate (see `<playbook-id>.pacs.yaml`)
 
 Users do not need fixed parameter syntax (for example `friendly: true`).
 
 ## Defaults
 
-Read defaults from the playbook manifest `inputs:` block in `layer3-playbooks/<id>/<id>.app.yaml`. Do not invent values beyond manifest defaults and the reconciliation rules below.
+Read defaults from the playbook manifest `inputs:` block in `layer3-playbooks/<id>/<id>.pacs.yaml`. Do not invent values beyond manifest defaults and the reconciliation rules below.
 
 ## Recipient inference
 

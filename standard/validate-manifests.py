@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate APP YAML manifests and reference-instance layout conventions."""
+"""Validate PACS YAML manifests and reference-instance layout conventions."""
 
 from __future__ import annotations
 
@@ -31,33 +31,33 @@ def _load_schema(path: Path) -> dict:
 
 
 def _is_pack_manifest(path: Path) -> bool:
-    return path.name == "pack.app.yaml"
+    return path.name == "pack.pacs.yaml"
 
 
 def _is_playbook_manifest(path: Path) -> bool:
-    return path.name.endswith(".app.yaml") and path.name != "pack.app.yaml"
+    return path.name.endswith(".pacs.yaml") and path.name != "pack.pacs.yaml"
 
 
 def _pack_root(path: Path) -> Path | None:
     for parent in path.parents:
-        if parent.name.endswith(".app"):
+        if parent.name.endswith(".pacs"):
             return parent
     return None
 
 
 def _playbook_id_from_manifest(path: Path) -> str:
-    if path.name.endswith(".app.yaml") and path.name != "pack.app.yaml":
-        return path.name[: -len(".app.yaml")]
+    if path.name.endswith(".pacs.yaml") and path.name != "pack.pacs.yaml":
+        return path.name[: -len(".pacs.yaml")]
     return path.stem
 
 
 def _discover_manifests(root: Path) -> tuple[list[Path], list[Path]]:
-    packs = sorted(root.glob("**/*.app/pack.app.yaml"))
+    packs = sorted(root.glob("**/*.pacs/pack.pacs.yaml"))
     playbooks: list[Path] = []
     for pack_manifest in packs:
         pack_root = pack_manifest.parent
-        for path in sorted(pack_root.glob("layer3-playbooks/*/*.app.yaml")):
-            if path.name == "playbook.app.yaml":
+        for path in sorted(pack_root.glob("layer3-playbooks/*/*.pacs.yaml")):
+            if path.name == "playbook.pacs.yaml":
                 continue
             if _playbook_id_from_manifest(path) == path.parent.name:
                 playbooks.append(path)
@@ -83,12 +83,12 @@ def _validate_file(path: Path, validator, label: str) -> list[str]:
 
 def _validate_playbook_path(path: Path) -> list[str]:
     errors: list[str] = []
-    if path.name == "playbook.app.yaml":
-        errors.append(f"{path}: legacy playbook.app.yaml; use <playbook-id>.app.yaml")
+    if path.name == "playbook.pacs.yaml":
+        errors.append(f"{path}: legacy playbook.pacs.yaml; use <playbook-id>.pacs.yaml")
     if _playbook_id_from_manifest(path) != path.parent.name:
         errors.append(
             f"{path}: playbook manifest filename must match folder "
-            f"(expected {path.parent.name}.app.yaml)"
+            f"(expected {path.parent.name}.pacs.yaml)"
         )
     return errors
 
@@ -102,7 +102,7 @@ def _validate_playbook_id(path: Path, data: dict) -> list[str]:
         ]
     pack_id = data.get("packId")
     pack_root = _pack_root(path)
-    if pack_root and pack_id != pack_root.name.removesuffix(".app"):
+    if pack_root and pack_id != pack_root.name.removesuffix(".pacs"):
         return [f"{path}: packId '{pack_id}' must match pack folder '{pack_root.name}'"]
     return []
 
@@ -178,20 +178,20 @@ def _validate_pack_index(pack_path: Path, data: dict, playbook_paths: list[Path]
     found_ids = {
         _playbook_id_from_manifest(p)
         for p in playbook_paths
-        if _pack_root(p) == pack_root and p.name != "playbook.app.yaml"
+        if _pack_root(p) == pack_root and p.name != "playbook.pacs.yaml"
     }
     declared_set = set(declared)
 
     for playbook_id in declared:
-        manifest = pack_root / "layer3-playbooks" / playbook_id / f"{playbook_id}.app.yaml"
+        manifest = pack_root / "layer3-playbooks" / playbook_id / f"{playbook_id}.pacs.yaml"
         if not manifest.is_file():
             errors.append(f"{pack_path}: playbooks lists '{playbook_id}' but missing {manifest.relative_to(pack_root)}")
-        legacy = pack_root / "layer3-playbooks" / playbook_id / "playbook.app.yaml"
+        legacy = pack_root / "layer3-playbooks" / playbook_id / "playbook.pacs.yaml"
         if legacy.is_file():
             errors.append(f"{pack_path}: legacy manifest present: {legacy.relative_to(pack_root)}")
 
     for playbook_id in sorted(found_ids - declared_set):
-        errors.append(f"{pack_path}: undeclared playbook manifest: layer3-playbooks/{playbook_id}/{playbook_id}.app.yaml")
+        errors.append(f"{pack_path}: undeclared playbook manifest: layer3-playbooks/{playbook_id}/{playbook_id}.pacs.yaml")
 
     return errors
 
@@ -199,7 +199,7 @@ def _validate_pack_index(pack_path: Path, data: dict, playbook_paths: list[Path]
 def _validate_pack_layout(pack_root: Path) -> list[str]:
     errors: list[str] = []
 
-    legacy_playbook = sorted(pack_root.glob("layer3-playbooks/*/playbook.app.yaml"))
+    legacy_playbook = sorted(pack_root.glob("layer3-playbooks/*/playbook.pacs.yaml"))
     for path in legacy_playbook:
         errors.append(f"{pack_root}: legacy manifest present: {path.relative_to(pack_root)}")
 
@@ -226,7 +226,7 @@ def main(argv: list[str] | None = None) -> int:
         playbook_paths = [p for p in paths if _is_playbook_manifest(p)]
         unknown = [p for p in paths if p not in pack_paths and p not in playbook_paths]
         if unknown:
-            print("Unknown manifest paths (expected pack.app.yaml or <playbook-id>.app.yaml):")
+            print("Unknown manifest paths (expected pack.pacs.yaml or <playbook-id>.pacs.yaml):")
             for path in unknown:
                 print(f"  {path}")
             return 2

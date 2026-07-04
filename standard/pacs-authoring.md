@@ -1,15 +1,15 @@
-# APP Authoring Standard v0.2
+# PACS Authoring Standard v0.2
 
-AgentPlaybookPack (APP) — portable, runtime-neutral domain workflow packages.
+Portable Agent Capability Stacks (PACS) — portable, runtime-neutral domain workflow packages.
 
-APP is **fire-and-forget**: it supplies behavioral instructions for execution agents. APP has no ongoing involvement in runs after primary outputs are written. Execution tracking is out of scope.
+PACS is **fire-and-forget**: it supplies behavioral instructions for execution agents. PACS has no ongoing involvement in runs after primary outputs are written. Execution tracking is out of scope.
 
 Pack `README.md` is lightweight user documentation. It is not authoritative for execution.
 
 | Audience | Document |
 | --- | --- |
 | Pack authors | This file |
-| Execution agents | [`app-execution.md`](app-execution.md), [`pre-run-checklist.md`](pre-run-checklist.md), and [`post-run-checklist.md`](post-run-checklist.md) |
+| Execution agents | [`pacs-execution.md`](pacs-execution.md), [`pre-run-checklist.md`](pre-run-checklist.md), and [`post-run-checklist.md`](post-run-checklist.md) |
 
 ---
 
@@ -19,30 +19,30 @@ Pack `README.md` is lightweight user documentation. It is not authoritative for 
 Standards Workbench                 Distribution repo (published product)
 agent-playbook-pack/                  my-product-app/
   standard/                             README.md
-  documentation/                        {packId}.app/
+  documentation/                        {packId}.pacs/
     examples/
 ```
 
-A **pack instance** (`{packId}.app/`) has the same shape in `documentation/examples/` and in a distribution repo:
+A **pack instance** (`{packId}.pacs/`) has the same shape in `documentation/examples/` and in a distribution repo:
 
 ```text
-{packId}.app/
-  pack.app.yaml
+{packId}.pacs/
+  pack.pacs.yaml
   README.md
   layer0-workflows/
   layer1-skills/<id>/SKILL.md
   layer2-overlays/
-  layer3-playbooks/<id>/<id>.app.yaml
+  layer3-playbooks/<id>/<id>.pacs.yaml
   contracts/
 ```
 
-Distribution repos contain only `README.md` and `*.app/` at repo root.
+Distribution repos contain only `README.md` and `*.pacs/` at repo root.
 
 ### Execution copy vs authoring source
 
 Distribution repos are **published products**. Execution agents consume them through a **one-way, read-only** local copy: pull (or re-clone) to refresh, then read manifests and run skills. They **do not** edit the execution copy for durable pack changes and **never** commit or push back to the distribution remote from an execution context.
 
-Pack authors work in a **separate authoring workspace** (clone or worktree), commit there, and publish to the distribution remote. Execution agents pull those updates into their read-only cache before the next run. Operational detail: [`app-execution.md`](app-execution.md#distribution-repo-boundary-execution-copy).
+Pack authors work in a **separate authoring workspace** (clone or worktree), commit there, and publish to the distribution remote. Execution agents pull those updates into their read-only cache before the next run. Operational detail: [`pacs-execution.md`](pacs-execution.md#distribution-repo-boundary-execution-copy).
 
 ---
 
@@ -58,7 +58,7 @@ Pack authors work in a **separate authoring workspace** (clone or worktree), com
 | Cross-cutting | Folder | Contents |
 | --- | --- | --- |
 | Contracts | `contracts/` | Durable data, artifact, persistence, and naming rules |
-| Gates | `<playbook-id>.app.yaml` | Gate metadata (`id`, `description`, optional `after`, `when`) |
+| Gates | `<playbook-id>.pacs.yaml` | Gate metadata (`id`, `description`, optional `after`, `when`) |
 
 All overlays live under `layer2-overlays/`. Playbooks reference them from manifest `overlays:` with `when:` conditions.
 
@@ -69,21 +69,21 @@ All overlays live under `layer2-overlays/`. Playbooks reference them from manife
 Given a pack instance address and a resolved playbook, execution must:
 
 1. Refresh workbench standard and distribution pack per [`pre-run-checklist.md`](pre-run-checklist.md) before reading manifests (unless discovery-only with no execution handoff).
-2. Read `pack.app.yaml`, then `layer3-playbooks/<id>/<id>.app.yaml`, then manifest-referenced artifacts only.
-3. Bind required pack-level inputs (`userDatastore`; `agentWorkspace` when supplied or agent-selected); declare [execution closure](app-execution.md#execution-closure-and-memory-planes); resolve playbook inputs before core output.
+2. Read `pack.pacs.yaml`, then `layer3-playbooks/<id>/<id>.pacs.yaml`, then manifest-referenced artifacts only.
+3. Bind required pack-level inputs (`userDatastore`; `agentWorkspace` when supplied or agent-selected); declare [execution closure](pacs-execution.md#execution-closure-and-memory-planes); resolve playbook inputs before core output.
 4. Run required workflows; clear gates per playbook manifest.
 5. Execute referenced skills per each skill's `SKILL.md`.
 6. Apply overlays when manifest conditions match.
 7. Write primary outputs per playbook manifest and referenced output contracts.
 8. Self-verify per [`post-run-checklist.md`](post-run-checklist.md).
 
-Operational detail: [`app-execution.md`](app-execution.md).
+Operational detail: [`pacs-execution.md`](pacs-execution.md).
 
-Pack instances are consumed from **distribution repos** (`README.md` + `{packId}.app/` at repo root). See [Repo shapes](#repo-shapes).
+Pack instances are consumed from **distribution repos** (`README.md` + `{packId}.pacs/` at repo root). See [Repo shapes](#repo-shapes).
 
 ### Data locations
 
-| Role | In APP repo? |
+| Role | In PACS repo? |
 | --- | --- |
 | Behavior contract | Yes (read-only) |
 | `{userDatastore}` | No — bind at execution |
@@ -104,18 +104,18 @@ Pack instances are consumed from **distribution repos** (`README.md` + `{packId}
 | Execution | Run a playbook after user intent is clear; treat the provisioned distribution copy as read-only |
 | Factory | Modify the pack in an authoring workspace; publish to the distribution remote — not in the execution cache |
 
-**Discovery → execution handoff:** Confirm target playbook, bindings, and resolved inputs before binding `{userDatastore}` or running workflows. Discovery must not write durable outputs. See [`app-execution.md`](app-execution.md#modes-and-handoff).
+**Discovery → execution handoff:** Confirm target playbook, bindings, and resolved inputs before binding `{userDatastore}` or running workflows. Discovery must not write durable outputs. See [`pacs-execution.md`](pacs-execution.md#modes-and-handoff).
 
 ---
 
 ## Pack manifest
 
-File: `pack.app.yaml` (YAML on disk)
+File: `pack.pacs.yaml` (YAML on disk)
 
 Machine contract: [`pack.manifest.schema.json`](pack.manifest.schema.json)
 
 ```yaml
-appVersion: "0.1"
+pacsVersion: "0.1"
 kind: pack
 packId: hello-world
 name: Hello World
@@ -149,14 +149,14 @@ Canonical layout is convention. Omit path roots when using the standard tree.
 
 ## Playbook manifest
 
-File: `layer3-playbooks/<id>/<id>.app.yaml` (YAML on disk)
+File: `layer3-playbooks/<id>/<id>.pacs.yaml` (YAML on disk)
 
 The manifest filename must match the playbook `id` and parent folder name.
 
 Machine contract: [`playbook.manifest.schema.json`](playbook.manifest.schema.json)
 
 ```yaml
-appVersion: "0.1"
+pacsVersion: "0.1"
 kind: playbook
 id: hello-world
 packId: hello-world
@@ -298,7 +298,7 @@ Execution agents self-attest pre-run refresh per [`pre-run-checklist.md`](pre-ru
 
 ## Layer 1 — Skills
 
-`layer1-skills/` directories are [agentskills.io](https://agentskills.io/specification) Agent Skills. APP composes skills; it does not define an alternate skill format.
+`layer1-skills/` directories are [agentskills.io](https://agentskills.io/specification) Agent Skills. PACS composes skills; it does not define an alternate skill format.
 
 ```text
 layer1-skills/<skill-id>/
@@ -308,7 +308,7 @@ layer1-skills/<skill-id>/
   assets/           # optional
 ```
 
-When a pack ships bundled executables, include `scripts/run.py` and document it in the **Scripts** section of `SKILL.md`. Scripts must accept `--datastore` and `--workspace` as the canonical path interface. Document cross-platform invocation (Unix shell and PowerShell) or flag-only examples. See [`app-execution.md`](app-execution.md#script-invocation).
+When a pack ships bundled executables, include `scripts/run.py` and document it in the **Scripts** section of `SKILL.md`. Scripts must accept `--datastore` and `--workspace` as the canonical path interface. Document cross-platform invocation (Unix shell and PowerShell) or flag-only examples. See [`pacs-execution.md`](pacs-execution.md#script-invocation).
 
 ### `SKILL.md` frontmatter
 
@@ -337,7 +337,7 @@ Omit when a bundled script produces all listed outputs (`complete` implied). Use
 4. **Outputs** — artifacts produced
 5. **Used by** — playbooks that invoke this skill (pack documentation)
 
-Scripts read/write `{userDatastore}` and `{agentWorkspace}` — not the APP behavior repo.
+Scripts read/write `{userDatastore}` and `{agentWorkspace}` — not the PACS behavior repo.
 
 ---
 
@@ -367,7 +367,7 @@ Primary report outputs use timestamped folders under `{userDatastore}/reports/` 
 
 ### Execution closure (author guidance)
 
-Execution agents treat `{userDatastore}` as partially readable — only paths declared by pack contracts and the active playbook's resolved inputs belong in the run [closure set](app-execution.md#closure-set-default). Authors should make read scope explicit:
+Execution agents treat `{userDatastore}` as partially readable — only paths declared by pack contracts and the active playbook's resolved inputs belong in the run [closure set](pacs-execution.md#closure-set-default). Authors should make read scope explicit:
 
 - **Layout contracts** — document which `{userDatastore}` subtrees skills and playbooks may read (raw, canonical, knowledge, registries).
 - **Persistence contracts** — distinguish durable knowledge (for example `knowledge/`) from execution-local reports; state that future runs inherit from promoted knowledge, not from searching prior report folders.
@@ -382,14 +382,14 @@ Packs may add a dedicated `contracts/execution-datastore-read-scope.md` when lay
 
 | Kind | File | Schema |
 | --- | --- | --- |
-| `pack` | `pack.app.yaml` | [`pack.manifest.schema.json`](pack.manifest.schema.json) |
-| `playbook` | `<playbook-id>.app.yaml` | [`playbook.manifest.schema.json`](playbook.manifest.schema.json) |
+| `pack` | `pack.pacs.yaml` | [`pack.manifest.schema.json`](pack.manifest.schema.json) |
+| `playbook` | `<playbook-id>.pacs.yaml` | [`playbook.manifest.schema.json`](playbook.manifest.schema.json) |
 
-APP does not use a `skill` manifest kind. Skills use agentskills.io `SKILL.md`.
+PACS does not use a `skill` manifest kind. Skills use agentskills.io `SKILL.md`.
 
 ### Manifest format and validation
 
-- **On-disk format:** YAML (`pack.app.yaml`, `<playbook-id>.app.yaml`).
+- **On-disk format:** YAML (`pack.pacs.yaml`, `<playbook-id>.pacs.yaml`).
 - **Schema format:** JSON Schema in this folder (industry-standard machine contract).
 - **Validation:** Parse YAML to a JSON data model, then validate against the schema.
 
@@ -408,4 +408,4 @@ JSON may be used at tool or API boundaries later; YAML remains the canonical for
 
 ## Version
 
-APP authoring standard v0.2.
+PACS authoring standard v0.2.

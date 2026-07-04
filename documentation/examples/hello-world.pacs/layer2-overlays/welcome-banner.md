@@ -19,7 +19,7 @@ Insert a **Welcome banner** section as the first section in `Report.md` (before 
 ```markdown
 ## Welcome banner
 
-Welcome to the Hello World APP — a minimal end-to-end validation pack.
+Welcome to the Hello World PACS — a minimal end-to-end validation pack.
 ```
 
 ## Uses

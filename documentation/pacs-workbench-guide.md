@@ -1,21 +1,21 @@
-# APP Workbench Guide
+# PACS Workbench Guide
 
-Human-facing guide for users, contributors, and pack authors. **Not** the APP execution standard.
+Human-facing guide for users, contributors, and pack authors. **Not** the PACS execution standard.
 
 | Need | Read |
 | --- | --- |
-| Author or validate pack structure | [`../standard/app-authoring.md`](../standard/app-authoring.md) and JSON Schemas in [`../standard/`](../standard/) |
-| Execute a pack | [`../standard/app-execution.md`](../standard/app-execution.md), [`../standard/pre-run-checklist.md`](../standard/pre-run-checklist.md), and [`../standard/post-run-checklist.md`](../standard/post-run-checklist.md) |
+| Author or validate pack structure | [`../standard/pacs-authoring.md`](../standard/pacs-authoring.md) and JSON Schemas in [`../standard/`](../standard/) |
+| Execute a pack | [`../standard/pacs-execution.md`](../standard/pacs-execution.md), [`../standard/pre-run-checklist.md`](../standard/pre-run-checklist.md), and [`../standard/post-run-checklist.md`](../standard/post-run-checklist.md) |
 | See working instances | [`examples/`](examples/) |
 | Workbench map | [`../README.md`](../README.md) |
 
-Execution agents learn APP from [`../standard/app-authoring.md`](../standard/app-authoring.md) and [`../standard/app-execution.md`](../standard/app-execution.md), then consume pack instances from a **distribution repo** (`README.md` + `{packId}.app/` at repo root). Reference instances under [`examples/`](examples/) illustrate the format only — they are not execution targets. This document does not define runtime bootstrap or engine integration.
+Execution agents learn PACS from [`../standard/pacs-authoring.md`](../standard/pacs-authoring.md) and [`../standard/pacs-execution.md`](../standard/pacs-execution.md), then consume pack instances from a **distribution repo** (`README.md` + `{packId}.pacs/` at repo root). Reference instances under [`examples/`](examples/) illustrate the format only — they are not execution targets. This document does not define runtime bootstrap or engine integration.
 
 ---
 
-## What APP is
+## What PACS is
 
-**AgentPlaybookPack** (APP) is a portable, runtime-neutral format for domain workflows that agents discover and execute.
+**Portable Agent Capability Stacks** (PACS) is a portable, runtime-neutral format for domain workflows that agents discover and execute.
 
 A pack describes:
 
@@ -24,28 +24,28 @@ A pack describes:
 - Skills, workflows, overlays, and contracts to compose
 - Primary outputs to produce
 
-APP is **fire-and-forget**: it supplies behavioral instructions for execution agents. It has no ongoing involvement after primary outputs are written. Execution tracking is out of scope.
+PACS is **fire-and-forget**: it supplies behavioral instructions for execution agents. It has no ongoing involvement after primary outputs are written. Execution tracking is out of scope.
 
-APP is not a replacement for [Agent Skills](https://agentskills.io), MCP, a runtime orchestrator, or an application framework.
+PACS is not a replacement for [Agent Skills](https://agentskills.io), MCP, a runtime orchestrator, or an application framework.
 
 ---
 
 ## Workbench layout
 
-This repository is the **APP Standards Workbench** — format definition and reference material. It is **not** an APP distribution repo.
+This repository is the **PACS Standards Workbench** — format definition and reference material. It is **not** a PACS distribution repo.
 
 ```text
 agent-playbook-pack/
   README.md           workbench map
   standard/           normative standard (authoring + JSON Schema)
   documentation/      product guide and reference pack instances
-    app-workbench-guide.md
+    pacs-workbench-guide.md
     examples/
 ```
 
 | Folder | Role |
 | --- | --- |
-| [`standard/`](../standard/) | Authoritative standard. Manifests are YAML; validity is defined by JSON Schema. Includes `app-authoring.md`, `app-execution.md`, `pre-run-checklist.md`, and `post-run-checklist.md`. |
+| [`standard/`](../standard/) | Authoritative standard. Manifests are YAML; validity is defined by JSON Schema. Includes `pacs-authoring.md`, `pacs-execution.md`, `pre-run-checklist.md`, and `post-run-checklist.md`. |
 | [`documentation/`](../documentation/) | Product context for humans and format reference instances. |
 | [`documentation/examples/`](examples/) | Side-by-side reference instances (format study only; not execution targets). Must conform to `standard/`. |
 
@@ -60,21 +60,21 @@ When `standard/` and an example disagree, **update the example** to match the st
 ```text
 my-product-app/
   README.md              pack index (user welcome)
-  {packId}.app/
+  {packId}.pacs/
 ```
 
-Only `README.md` and `*.app/` folders at repo root.
+Only `README.md` and `*.pacs/` folders at repo root.
 
-**Pack instance** (`{packId}.app/`):
+**Pack instance** (`{packId}.pacs/`):
 
 ```text
-{packId}.app/
-  pack.app.yaml          entry manifest
+{packId}.pacs/
+  pack.pacs.yaml          entry manifest
   README.md              user welcome (not execution authority)
   layer0-workflows/
   layer1-skills/
   layer2-overlays/
-  layer3-playbooks/<id>/          playbook manifests only (<id>.app.yaml)
+  layer3-playbooks/<id>/          playbook manifests only (<id>.pacs.yaml)
   contracts/
 ```
 
@@ -92,14 +92,14 @@ Same shape in `documentation/examples/` and in a distribution repo.
 | Workflow | Shared lifecycle step — markdown under `layer0-workflows/` |
 | Overlay | Optional augmentation — markdown under `layer2-overlays/`; referenced from playbook manifest `overlays:` |
 | Contract | Durable data, artifact, or naming rule — markdown under `contracts/` |
-| Gate | Playbook precondition — declared on `<playbook-id>.app.yaml`; cleared by workflows |
-| `{userDatastore}` | User persistent data; bound at execution; never in APP repos |
+| Gate | Playbook precondition — declared on `<playbook-id>.pacs.yaml`; cleared by workflows |
+| `{userDatastore}` | User persistent data; bound at execution; never in PACS repos |
 | `{agentWorkspace}` | Optional ephemeral working area; execution agent chooses when not supplied; cleaned up after the run |
 | **Execution closure** | The set of pack artifacts and datastore paths authorized as inputs for one run; default denies prior reports and other runs' workspace |
 | **Ambient context** | Session chat, indexed workspace files, and undirected search results — non-authoritative during execution unless promoted into closure |
 | **Continuity mode** | Named relaxation of default closure when user or manifest explicitly authorizes reading prior deliverables |
 
-Layer numbering (0–3), manifest fields, and execution outcomes are defined in [`../standard/app-authoring.md`](../standard/app-authoring.md). Execution closure is defined in [`../standard/app-execution.md`](../standard/app-execution.md#execution-closure-and-memory-planes).
+Layer numbering (0–3), manifest fields, and execution outcomes are defined in [`../standard/pacs-authoring.md`](../standard/pacs-authoring.md). Execution closure is defined in [`../standard/pacs-execution.md`](../standard/pacs-execution.md#execution-closure-and-memory-planes).
 
 ---
 
@@ -119,7 +119,7 @@ At execution handoff, agents re-resolve inputs from manifests — prior chat and
 
 ## Execution closure
 
-APP execution is **closure-first**: each run may treat as authoritative only what the pack manifest, contracts, and resolved inputs authorize. This preserves pack supremacy over agent session memory and prevents prior report folders from acting as a shadow prompt library.
+PACS execution is **closure-first**: each run may treat as authoritative only what the pack manifest, contracts, and resolved inputs authorize. This preserves pack supremacy over agent session memory and prevents prior report folders from acting as a shadow prompt library.
 
 | What | Default during execution |
 | --- | --- |
@@ -130,11 +130,11 @@ APP execution is **closure-first**: each run may treat as authoritative only wha
 | User-confirmed durable knowledge | **In closure** when persistence contract declares it |
 | Session chat, workspace index | **Non-authoritative** unless bound as a resolved input |
 
-**Continuity** (revise a prior report, compare runs, continue a thread) requires an explicit mode and named paths — not undirected search. Normative rules: [`../standard/app-execution.md`](../standard/app-execution.md#execution-closure-and-memory-planes).
+**Continuity** (revise a prior report, compare runs, continue a thread) requires an explicit mode and named paths — not undirected search. Normative rules: [`../standard/pacs-execution.md`](../standard/pacs-execution.md#execution-closure-and-memory-planes).
 
 ### Execution closure platform patterns
 
-Non-normative patterns hosts may adopt to reinforce closure (APP still requires agent attestation):
+Non-normative patterns hosts may adopt to reinforce closure (PACS still requires agent attestation):
 
 | Pattern | Host | Effect |
 | --- | --- | --- |
@@ -158,10 +158,10 @@ Every playbook defines **core output** that runs without optional overlays. Over
 
 | Item | Convention |
 | --- | --- |
-| Product name | AgentPlaybookPack; shorthand **APP** |
-| Pack folder | `{packId}.app/` (kebab-case `packId`) |
-| Pack manifest | `pack.app.yaml` |
-| Playbook manifest | `layer3-playbooks/<playbook-id>/<playbook-id>.app.yaml` |
+| Product name | Portable Agent Capability Stacks; shorthand **PACS** |
+| Pack folder | `{packId}.pacs/` (kebab-case `packId`) |
+| Pack manifest | `pack.pacs.yaml` |
+| Playbook manifest | `layer3-playbooks/<playbook-id>/<playbook-id>.pacs.yaml` |
 | Skill directory | `layer1-skills/<skill-id>/` matching `SKILL.md` frontmatter `name` |
 | Overlay file | `layer2-overlays/<overlay-id>.md` (kebab-case; referenced from playbook manifest `overlays:`) |
 | Playbook / gate ids | kebab-case |
@@ -170,25 +170,25 @@ Every playbook defines **core output** that runs without optional overlays. Over
 
 ## Authoring a pack
 
-1. Read [`../standard/app-authoring.md`](../standard/app-authoring.md).
-2. Study [`examples/hello-world.app/`](examples/hello-world.app/) for minimal layer coverage.
-3. Create `{packId}.app/` with `pack.app.yaml` as entry.
+1. Read [`../standard/pacs-authoring.md`](../standard/pacs-authoring.md).
+2. Study [`examples/hello-world.pacs/`](examples/hello-world.pacs/) for minimal layer coverage.
+3. Create `{packId}.pacs/` with `pack.pacs.yaml` as entry.
 4. Add layer 0–3 artifacts and `contracts/`; reference them from manifests.
 5. Write pack `README.md` as user welcome content — examples and narrative, not a manifest duplicate.
 6. Validate manifests:
 
 ```bash
 pip install -r standard/requirements.txt
-python standard/validate-manifests.py path/to/pack.app.yaml path/to/hello-world.app.yaml
+python standard/validate-manifests.py path/to/pack.pacs.yaml path/to/hello-world.pacs.yaml
 ```
 
-7. Publish as a distribution repo (`README.md` + `*.app/` only). Example: [hello-world-app](https://github.com/4jeffclark/hello-world-app) from [`hello-world.app`](examples/hello-world.app/).
+7. Publish as a distribution repo (`README.md` + `*.pacs/` only). Example: [hello-world-app](https://github.com/4jeffclark/hello-world-app) from [`hello-world.pacs`](examples/hello-world.pacs/).
 
 ---
 
 ## Contributing to the workbench
 
-- Propose standard changes in [`../standard/app-authoring.md`](../standard/app-authoring.md) and JSON Schemas together.
+- Propose standard changes in [`../standard/pacs-authoring.md`](../standard/pacs-authoring.md) and JSON Schemas together.
 - Add or update reference instances under [`examples/`](examples/) to exercise standard features.
 - Run `python standard/validate-manifests.py` with no arguments to validate all example manifests and layout rules.
 - Do not duplicate normative rules in this folder — keep product prose here, standard prose in `standard/`.
@@ -197,4 +197,4 @@ python standard/validate-manifests.py path/to/pack.app.yaml path/to/hello-world.
 
 ## Distribution (future)
 
-A Pack Store or registry is not part of the current standard. Distribution today is: a public git repo with `README.md` and one or more `{packId}.app/` folders.
+A Pack Store or registry is not part of the current standard. Distribution today is: a public git repo with `README.md` and one or more `{packId}.pacs/` folders.

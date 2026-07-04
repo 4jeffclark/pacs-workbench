@@ -1,8 +1,8 @@
-# APP Execution Guide v0.2
+# PACS Execution Guide v0.2
 
-Operational guide for **execution agents** running APP packs. Normative format rules live in [`app-authoring.md`](app-authoring.md). This document defines how to **open** and **close** a run with the same rigor authors expect when writing packs.
+Operational guide for **execution agents** running PACS stacks. Normative format rules live in [`pacs-authoring.md`](pacs-authoring.md). This document defines how to **open** and **close** a run with the same rigor authors expect when writing packs.
 
-APP is **fire-and-forget**: read instructions, execute, write primary outputs, self-verify, done. APP does not orchestrate, track runs, or stay involved afterward.
+PACS is **fire-and-forget**: read instructions, execute, write primary outputs, self-verify, done. PACS does not orchestrate, track runs, or stay involved afterward.
 
 Pack `README.md` is lightweight user documentation. It is not authoritative for execution.
 
@@ -12,12 +12,12 @@ Pack `README.md` is lightweight user documentation. It is not authoritative for 
 
 | Step | Read | Purpose |
 | --- | --- | --- |
-| 1 | [`app-authoring.md`](app-authoring.md) | Format grammar — layers, manifests, contracts, outcomes |
+| 1 | [`pacs-authoring.md`](pacs-authoring.md) | Format grammar — layers, manifests, contracts, outcomes |
 | 2 | This file | Operational steps — refresh, bind, execute, verify |
 | 3 | [`pre-run-checklist.md`](pre-run-checklist.md) | Pre-run refresh verification — workbench and pack updates before execution |
 | 4 | Distribution repo `README.md` | Pack index (optional human context) |
-| 5 | `{packId}.app/pack.app.yaml` | Bind pack inputs; discover playbooks |
-| 6 | `layer3-playbooks/<id>/<id>.app.yaml` | Resolve playbook inputs, composition, gates, outputs |
+| 5 | `{packId}.pacs/pack.pacs.yaml` | Bind pack inputs; discover playbooks |
+| 6 | `layer3-playbooks/<id>/<id>.pacs.yaml` | Resolve playbook inputs, composition, gates, outputs |
 | 7 | Manifest-referenced artifacts only | Workflows, skills, overlays, contracts |
 
 Do not crawl the full pack tree. Do not treat workbench `documentation/examples/` as an execution target unless explicitly directed — use a **distribution repo**.
@@ -71,7 +71,7 @@ How the engine clones, vendors, or caches a distribution repo is **platform scop
 
 ### Combined Factory + execution (explicit opt-in only)
 
-Some development setups assign one agent both roles: run playbooks against `{userDatastore}` **and** assist with pack development. This is **not** the default APP model.
+Some development setups assign one agent both roles: run playbooks against `{userDatastore}` **and** assist with pack development. This is **not** the default PACS model.
 
 When the user explicitly opts in:
 
@@ -91,12 +91,12 @@ The standard defines pack **shape**, not how an engine obtains a pack. Use this 
 | --- | --- |
 | `distributionUrl` | Git or HTTP URL of the distribution repo |
 | `ref` | Commit, tag, or branch to pin (recommended for reproducibility) |
-| `packInstance` | Path to `{packId}.app/` inside the repo |
-| `playbookId` | Playbook `id` from `pack.app.yaml` `playbooks:` |
+| `packInstance` | Path to `{packId}.pacs/` inside the repo |
+| `playbookId` | Playbook `id` from `pack.pacs.yaml` `playbooks:` |
 
-Example intent: *Run `hello-world` from `hello-world-app` at ref `v1.0.0`, pack instance `hello-world.app/`, user datastore `UserData/alice`.*
+Example intent: *Run `hello-world` from `hello-world-app` at ref `v1.0.0`, pack instance `hello-world.pacs/`, user datastore `UserData/alice`.*
 
-How the engine clones, vendors, or caches the repo is **platform scope** — not APP standard. Hosts may run refresh before the agent session starts; when they do, the agent still attests per [Pre-run verification](#pre-run-verification).
+How the engine clones, vendors, or caches the repo is **platform scope** — not PACS standard. Hosts may run refresh before the agent session starts; when they do, the agent still attests per [Pre-run verification](#pre-run-verification).
 
 ---
 
@@ -106,8 +106,8 @@ Before reading pack manifests or binding `{userDatastore}` for **execution**, re
 
 | Source | Contents | When local copy exists | When no local copy yet |
 | --- | --- | --- | --- |
-| **Workbench standard** | `app-authoring.md`, `app-execution.md`, checklists | `git fetch`; compare HEAD to remote; `git pull` when not pinned and behind | Fetch canonical URLs or clone workbench at requested ref |
-| **Distribution pack** | `{packId}.app/` behavior in the product repo | `git fetch`; compare HEAD to remote; `git pull` or re-clone when not pinned and behind | Clone at pinned `ref` or latest default branch during [Provision](#execution-sequence) |
+| **Workbench standard** | `pacs-authoring.md`, `pacs-execution.md`, checklists | `git fetch`; compare HEAD to remote; `git pull` when not pinned and behind | Fetch canonical URLs or clone workbench at requested ref |
+| **Distribution pack** | `{packId}.pacs/` behavior in the product repo | `git fetch`; compare HEAD to remote; `git pull` or re-clone when not pinned and behind | Clone at pinned `ref` or latest default branch during [Provision](#execution-sequence) |
 
 ### Pinning
 
@@ -117,7 +117,7 @@ Before reading pack manifests or binding `{userDatastore}` for **execution**, re
 | **Latest** or no `ref` | Fetch remote and update local copy before manifest reads |
 | Discovery-only (no execution handoff) | Pack refresh optional; workbench refresh recommended when using a local clone |
 
-Record resolved refs and `pack.app.yaml` `version` in [pre-run attestation](pre-run-checklist.md#attestation).
+Record resolved refs and `pack.pacs.yaml` `version` in [pre-run attestation](pre-run-checklist.md#attestation).
 
 Packs may add optional `layer0-workflows/pack-sync.md` for repo-specific sync steps (private remotes, multi-repo skills). Complete it when referenced from the pack or playbook manifest, after generic refresh above.
 
@@ -134,11 +134,11 @@ Before core execution:
 | `{userDatastore}` | User persistent storage (reports, raw data, inputs) |
 | `{agentWorkspace}` | Ephemeral temp and intermediate artifacts for this run |
 
-`{userDatastore}` is always bound when a playbook reads or writes user data. Neither binding lives in the APP behavior repo.
+`{userDatastore}` is always bound when a playbook reads or writes user data. Neither binding lives in the PACS behavior repo.
 
 ### `{agentWorkspace}` — when the user is silent
 
-`agentWorkspace` is an **optional** pack input (see [`app-authoring.md`](app-authoring.md)). When the user or platform does not supply it, the execution agent **chooses** an ephemeral workspace for the run.
+`agentWorkspace` is an **optional** pack input (see [`pacs-authoring.md`](pacs-authoring.md)). When the user or platform does not supply it, the execution agent **chooses** an ephemeral workspace for the run.
 
 Outcomes:
 
@@ -146,19 +146,19 @@ Outcomes:
 - The user-facing experience is deliverables under `{userDatastore}` — not scratch files left in visible project roots.
 - After post-run verification passes, **remove the ephemeral workspace** for that run (or its run-scoped subdirectory). Retain only when debugging a failed run or when the user asked to keep artifacts.
 
-Platform hosts with project-scoped guardrails (e.g. Cursor) may use a hidden project folder such as `.tmp/` for ephemeral workspace and pack provisioning. That choice is platform scope; APP does not mandate a folder name.
+Platform hosts with project-scoped guardrails (e.g. Cursor) may use a hidden project folder such as `.tmp/` for ephemeral workspace and pack provisioning. That choice is platform scope; PACS does not mandate a folder name.
 
 When the user **does** supply `{agentWorkspace}`, use that path — typically because storage must be coordinated with the user or host policy.
 
 ### Run isolation (platform scope)
 
-Hosts may isolate concurrent runs with per-run subdirectories (e.g. `<workspace>/<timestamp>-<playbookReportId>/`). APP does not prescribe internal layout; pass the active directory as `--workspace` to skill scripts.
+Hosts may isolate concurrent runs with per-run subdirectories (e.g. `<workspace>/<timestamp>-<playbookReportId>/`). PACS does not prescribe internal layout; pass the active directory as `--workspace` to skill scripts.
 
 ---
 
 ## Execution closure and memory planes
 
-Execution agents operate in environments with **ambient context**: chat history, indexed workspace files, prior run artifacts, and platform rules. APP treats ambient context as **non-authoritative** during execution unless explicitly promoted into the run's **closure set**.
+Execution agents operate in environments with **ambient context**: chat history, indexed workspace files, prior run artifacts, and platform rules. PACS treats ambient context as **non-authoritative** during execution unless explicitly promoted into the run's **closure set**.
 
 ### Memory planes
 
@@ -215,13 +215,13 @@ Record the active mode in [pre-run attestation](pre-run-checklist.md#attestation
 
 ### Structural determinism vs narrative independence
 
-Same playbook inputs and datastore state should yield **structurally consistent** outputs (sections, metrics, gate evidence). That is APP success, not pollution.
+Same playbook inputs and datastore state should yield **structurally consistent** outputs (sections, metrics, gate evidence). That is PACS success, not pollution.
 
 **Narrative independence** means prose synthesis comes from closure-set sources and skill-authorized fetches in **this run** — not verbatim reuse of prior report text unless continuity mode explicitly authorizes it.
 
 ### Platform enforcement (optional)
 
-Hosts may enforce closure with sandboxes, read-only datastore views, or ignore rules for `{userDatastore}/reports/`. APP defines **behavior and attestation**; platform mechanics are **platform scope**. See [Workbench guide](../documentation/app-workbench-guide.md#execution-closure-platform-patterns) for non-normative patterns.
+Hosts may enforce closure with sandboxes, read-only datastore views, or ignore rules for `{userDatastore}/reports/`. PACS defines **behavior and attestation**; platform mechanics are **platform scope**. See [Workbench guide](../documentation/pacs-workbench-guide.md#execution-closure-platform-patterns) for non-normative patterns.
 
 ---
 
@@ -231,10 +231,10 @@ Given a pack instance address and resolved playbook:
 
 1. **Refresh** — update workbench standard and distribution pack to latest (unless pinned); complete the [pre-run checklist](pre-run-checklist.md).
 2. **Provision** — obtain the distribution repo when no suitable local copy exists (see [Pack provisioning](#pack-provisioning-recommended)).
-3. **Read manifests** — `pack.app.yaml` → `<playbook-id>.app.yaml` → referenced artifacts only.
+3. **Read manifests** — `pack.pacs.yaml` → `<playbook-id>.pacs.yaml` → referenced artifacts only.
 4. **Bind and declare closure** — set `{userDatastore}`; set or select ephemeral `{agentWorkspace}` (see above); declare execution closure mode and complete closure attestation per [pre-run checklist](pre-run-checklist.md#execution-closure).
-5. **Resolve inputs** — run required layer 0 workflows (typically `input-discovery`). Apply manifest `default` values and playbook `defaultResolution` policies when the user did not specify a value (see [`app-authoring.md`](app-authoring.md#default-resolution-policies)).
-6. **Clear gates** — complete workflows and skills; record minimum evidence per gate (see [`app-authoring.md`](app-authoring.md#gates-and-evidence)).
+5. **Resolve inputs** — run required layer 0 workflows (typically `input-discovery`). Apply manifest `default` values and playbook `defaultResolution` policies when the user did not specify a value (see [`pacs-authoring.md`](pacs-authoring.md#default-resolution-policies)).
+6. **Clear gates** — complete workflows and skills; record minimum evidence per gate (see [`pacs-authoring.md`](pacs-authoring.md#gates-and-evidence)).
 7. **Run skills** — execute per each `SKILL.md` Procedure; run bundled scripts only when instructed.
 8. **Apply overlays** — when manifest `when:` conditions match resolved inputs.
 9. **Write outputs** — primary report and contract-required artifacts under `{userDatastore}` per playbook manifest and output contracts.
@@ -312,4 +312,4 @@ Gate clearance remains self-attested unless a pack contract defines machine-chec
 
 ## Version
 
-APP execution guide v0.2. Pairs with APP authoring standard v0.2.
+PACS execution guide v0.2. Pairs with PACS authoring standard v0.2.

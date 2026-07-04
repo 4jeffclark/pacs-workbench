@@ -19,7 +19,7 @@ Insert a **Sign-off** section after **Greeting** and before **Appendix: Inputs R
 ```markdown
 ## Sign-off
 
-Have a great day, and thanks for validating APP end-to-end!
+Have a great day, and thanks for validating PACS end-to-end!
 ```
 
 ## Uses

@@ -11,7 +11,7 @@ metadata:
 ## Procedure
 
 1. Read resolved playbook input `recipient` (default `World`)
-2. Run `scripts/run.py` with `--recipient`, `--datastore`, and `--workspace` pointing at the active ephemeral workspace for this run (see APP `app-execution.md`)
+2. Run `scripts/run.py` with `--recipient`, `--datastore`, and `--workspace` pointing at the active ephemeral workspace for this run (see PACS `pacs-execution.md`)
 3. Read `greeting.txt` and `skill-result.json` from the workspace run directory; use `skill-result.json` to verify `recipient` and `greeting` before report assembly
 4. Use the greeting text as the core **Greeting** section in `Report.md` (report assembly is agent responsibility)
 

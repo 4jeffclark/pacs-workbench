@@ -1,6 +1,6 @@
 # Hello World
 
-A minimal **AgentPlaybookPack** reference instance — every standard layer shape in one pack.
+A minimal **PACS** reference instance — every standard layer shape in one capability stack.
 
 Produces a simple greeting report for a named recipient. Report assembly is agent responsibility; the core skill produces greeting text only.
 
@@ -11,6 +11,6 @@ Produces a simple greeting report for a named recipient. Report assembly is agen
 
 ## About
 
-- **Version:** 1.0.0 (see [`pack.app.yaml`](pack.app.yaml))
+- **Version:** 1.0.0 (see [`pack.pacs.yaml`](pack.pacs.yaml))
 - **License:** MIT
 - **Published for execution:** [hello-world-app](https://github.com/4jeffclark/hello-world-app)
