@@ -1,4 +1,4 @@
-# PACS Pre-Run Checklist v0.2
+# PACS Pre-Run Checklist v0.3
 
 Contract-driven self-verification for execution agents **before** reading pack manifests or running a playbook. Complete this checklist when entering **execution** mode (and when discovery may hand off to execution in the same session). PACS does not enforce the checklist automatically — the agent attests results in the run summary or report appendix.
 
@@ -43,9 +43,10 @@ When the user asks for **latest** or does not specify a `ref`, fetch from remote
 | P0 | Distribution repo identified (`distributionUrl` or local path) | Run request, pack `README.md`, or user |
 | P1 | When not pinned: remote fetched and local copy updated to latest default branch (or user-specified branch) before manifest reads | Git or platform sync |
 | P2 | When pinned: local distribution ref matches the pin | Run request |
-| P3 | `pack.pacs.yaml` `version` field recorded for this run | `{packId}.pacs/pack.pacs.yaml` |
-| P4 | Target playbook id listed in `pack.pacs.yaml` `playbooks:` | Pack manifest |
-| P5 | Execution mode: distribution copy treated as read-only; no pack edits or git writes to the distribution remote from the execution workspace | [`pacs-execution.md`](pacs-execution.md#distribution-repo-boundary-execution-copy) |
+| P3 | `pack.pacs.yaml` `version` field read and recorded for this run (must match attestation) | `{packId}.pacs/pack.pacs.yaml` |
+| P4 | Attested **Pack version** equals the `version` field in `pack.pacs.yaml` on disk after refresh — not a prior session value or README alone | Pack manifest |
+| P5 | Target playbook id listed in `pack.pacs.yaml` `playbooks:` | Pack manifest |
+| P6 | Execution mode: distribution copy treated as read-only; no pack edits or git writes to the distribution remote from the execution workspace | [`pacs-execution.md`](pacs-execution.md#distribution-repo-boundary-execution-copy) |
 
 ### Optional pack workflow
 
